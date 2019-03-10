@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-public class Leetcode343 {
+public class Leetcode343Test {
     //    Example 1:
     //
     //    Input: ["h","e","l","l","o"]

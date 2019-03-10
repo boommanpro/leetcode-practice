@@ -2,7 +2,7 @@ package array;
 
 import org.junit.Test;
 
-public class Leetcode209 {
+public class Leetcode209Test {
 
     //     Example:
     //

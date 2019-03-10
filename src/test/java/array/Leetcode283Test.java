@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-public class Leetcode283 {
+public class Leetcode283Test {
 
     //     Example:
     //

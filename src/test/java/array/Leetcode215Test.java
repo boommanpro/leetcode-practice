@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-public class Leetcode215 {
+public class Leetcode215Test {
 
     //     Example 1:
     //
@@ -28,5 +28,9 @@ public class Leetcode215 {
     public int findKthLargest(int[] nums, int k) {
         Arrays.sort(nums);
         return nums[nums.length-k];
+    }
+
+    public int findKthLargest1(int[] nums, int k) {
+        return 0;
     }
 }
