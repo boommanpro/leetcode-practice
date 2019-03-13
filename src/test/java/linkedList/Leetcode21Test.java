@@ -10,15 +10,7 @@ import org.junit.Test;
  */
 public class Leetcode21Test {
 
-    @Data
-    public class ListNode {
-        int val;
-        ListNode next;
 
-        ListNode(int x) {
-            val = x;
-        }
-    }
 
 
     @Test

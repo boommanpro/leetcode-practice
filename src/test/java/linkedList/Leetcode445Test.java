@@ -101,18 +101,6 @@ public class Leetcode445Test {
     }
 
 
-
-    @Data
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
-
-
     public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         ListNode resultHead=new ListNode(-1);
 

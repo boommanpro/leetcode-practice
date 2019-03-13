@@ -11,24 +11,7 @@ import org.junit.Test;
 public class Leetcode92Test {
 
 
-    /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     * int val;
-     * ListNode next;
-     * ListNode(int x) { val = x; }
-     * }
-     */
 
-    @Data
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
 
     @Test
     public void leetcode92Test() {

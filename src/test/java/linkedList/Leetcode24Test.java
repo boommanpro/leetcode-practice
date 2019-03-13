@@ -7,21 +7,14 @@ import org.junit.Test;
  * @author BoomManPro
  * @mail 592323211@qq.com
  * @description
+ * link:
  */
 public class Leetcode24Test {
 
 
-    @Data
-    public class ListNode {
-        int val;
-        ListNode next;
 
-        ListNode(int x) {
-            val = x;
-        }
-    }
 
-//    @Test
+    @Test
     public void leetcode24Test() {
 
         //      Given a linked list, swap every two adjacent nodes and return its head.
@@ -43,7 +36,48 @@ public class Leetcode24Test {
     }
 
 
+
+
+
     public ListNode swapPairs(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return head;
+
+        }
+
+        ListNode dummyHead = new ListNode(-1);
+        dummyHead.next = head;
+
+        ListNode preHead = dummyHead;
+        ListNode left = dummyHead.next;
+        ListNode right = left.next;
+
+        while (left != null && left.next != null) {
+
+            left.next = right.next;
+
+            right.next = left;
+
+            preHead.next = right;
+
+            //一轮交换完毕
+
+            preHead = left;
+
+            left = preHead.next;
+            if (left != null) {
+                right = left.next;
+            }
+        }
+
+        return dummyHead.next;
+    }
+
+
+    //csdn:https://blog.csdn.net/ma_chen_qq/article/details/80112607
+
+    public ListNode swapPairs2(ListNode head) {
 
         if (head == null)
             return null;
@@ -76,26 +110,4 @@ public class Leetcode24Test {
 
     }
 
-
-    public ListNode swapPairs2(ListNode head) {
-
-        if (head == null||head.next==null) {
-            return head;
-        }
-
-        ListNode dummy = new ListNode(-1);
-
-        dummy.next = head;
-
-
-
-
-
-
-
-
-
-        return dummy.next;
-
-    }
 }

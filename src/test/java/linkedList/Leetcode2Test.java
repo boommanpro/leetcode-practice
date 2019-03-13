@@ -40,15 +40,6 @@ public class Leetcode2Test {
     }
 
 
-    @Data
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int sum = 0;
