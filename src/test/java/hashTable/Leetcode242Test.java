@@ -2,9 +2,6 @@ package hashTable;
 
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author BoomManPro
  * @mail 592323211@qq.com

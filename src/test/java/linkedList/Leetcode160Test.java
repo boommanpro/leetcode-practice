@@ -1,7 +1,5 @@
 package linkedList;
 
-import org.junit.Test;
-
 /**
  * @author BoomManPro
  * @mail 592323211@qq.com

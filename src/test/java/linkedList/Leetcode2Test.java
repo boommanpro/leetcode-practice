@@ -1,6 +1,5 @@
 package linkedList;
 
-import lombok.Data;
 import org.junit.Test;
 
 /**
