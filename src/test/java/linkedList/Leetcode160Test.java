@@ -10,7 +10,7 @@ import org.junit.Test;
 public class Leetcode160Test {
 
 
-    @Test
+//    @Test
     public void leetcode160Test(){
 
 
@@ -32,14 +32,6 @@ public class Leetcode160Test {
     }
 
 
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-            next = null;
-        }
-    }
 
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
