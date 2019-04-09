@@ -5,8 +5,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Leetcode17 {
+public class Leetcode17Test {
 
+
+    /**
+     * 这道题会出现变种  --- 变简单 在真实面试中遇到了哈
+     */
 
     @Test
     public void leetcode17Test() throws Exception {
