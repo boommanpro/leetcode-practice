@@ -1,5 +1,7 @@
 package array;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 /**
@@ -8,10 +10,13 @@ import org.junit.Test;
  * @description
  */
 public class Leetcode26Test {
+
     @Test
     public void leetcode26Test() {
-        int i = removeDuplicates(new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
+        int[] array = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+        int i = removeDuplicates(array);
         System.out.println(String.format("result:%s", i));
+        System.out.println(Arrays.toString(array));
     }
 
     public int removeDuplicates(int[] nums) {
@@ -24,6 +29,6 @@ public class Leetcode26Test {
             j++;
         }
 
-        return i+1;
+        return i + 1;
     }
 }
