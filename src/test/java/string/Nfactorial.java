@@ -15,14 +15,17 @@ import org.junit.Test;
 public class Nfactorial {
 
     public String factorial(int n) {
+        if (n == 0) {
+            return "0";
+        }
         int[] result = new int[10001];
         result[0] = 1;
         for (int i = 2; i <= n; i++) {
             int up = 0;
-            for (int j = 0; j <= 10000; j++) {
-                int s = result[j] * i + up;
-                result[j] = s % 10;
-                up = s / 10;
+            for (int j = 0; j < result.length; j++) {
+                int temp = result[j] * i + up;
+                result[j] = temp % 10;
+                up = temp / 10;
             }
         }
         return arrayToString(result);
@@ -30,10 +33,10 @@ public class Nfactorial {
 
     private String arrayToString(int[] result) {
         StringBuilder sb = new StringBuilder();
-        for (int j = result.length - 1; j >= 0; j--) {
-            if (result[j] != 0) {
-                for (; j >= 0; j--) {
-                    sb.append(result[j]);
+        for (int i = result.length - 1; i >= 0; i--) {
+            if (result[i] != 0) {
+                for (; i >= 0; i--) {
+                    sb.append(result[i]);
                 }
             }
         }
