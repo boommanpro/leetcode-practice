@@ -27,3 +27,21 @@ And Interview Some problem !
 |   [283](https://leetcode-cn.com/problems/move-zeroes/)|  [Move Zeroes](https://leetcode.com/problems/move-zeroes/)| Easy|
 |   [344](https://leetcode-cn.com/problems/reverse-string/)|  [Reverse String](https://leetcode.com/problems/reverse-string/)| Easy|
 
+
+## HashTable
+
+&emsp;&emsp;[Hash Table](https://leetcode.com/problemset/all/?topicSlugs=hash-table)
+&emsp;&emsp;[@花花酱大佬](https://www.youtube.com/user/xxfflower)说一个标签做10-20题,遂找到如下进行练习。
+
+|  #| Title | Difficulty |
+|--|--|--|
+|[30 ](https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/)|[Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/)|Hard|
+|[36 ](https://leetcode-cn.com/problems/valid-sudoku/)|[Valid Sudoku ](https://leetcode.com/problems/valid-sudoku/)|Medium|
+|[136](https://leetcode-cn.com/problems/single-number/)|[Single Number](https://leetcode.com/problems/single-number/)|Easy|
+|[202](https://leetcode-cn.com/problems/happy-number/)|[Happy Number ](https://leetcode.com/problems/happy-number/)|Easy|
+|[204](https://leetcode-cn.com/problems/count-primes/)|[Count Primes ](https://leetcode.com/problems/count-primes/)|Easy|
+|[205](https://leetcode-cn.com/problems/isomorphic-strings/)|[Isomorphic Strings ](https://leetcode.com/problems/isomorphic-strings/)|Easy|
+|[217](https://leetcode-cn.com/problems/contains-duplicate/)|[Contains Duplicate ](https://leetcode.com/problems/contains-duplicate/)|Easy|
+|[219](https://leetcode-cn.com/problems/contains-duplicate-ii/)|[Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)|Easy|
+|[242](https://leetcode-cn.com/problems/valid-anagram/)|[Valid Anagram](https://leetcode.com/problems/valid-anagram/)|Easy|
+|[290](https://leetcode-cn.com/problems/word-pattern/)|[Word Pattern ](https://leetcode.com/problems/word-pattern/)|Easy|
