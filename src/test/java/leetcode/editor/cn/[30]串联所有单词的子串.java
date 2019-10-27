@@ -60,8 +60,8 @@ class SolutionTest30 {
             int i = 0, j = wordLength;
             String currStr;
             //什么时候i++   1.第一个字符在dict中时  2.找到了一个满足条件的
-            while (j <= s.length()) {
-                currStr = s.substring(j-wordLength, j);
+            while (j <= s.length() && i + wordLength * words.length <= s.length()) {
+                currStr = s.substring(j - wordLength, j);
                 window.put(currStr, window.getOrDefault(currStr, 0) + 1);
                 //如果dict包含的话,继续向后
                 if (dictMap.containsKey(currStr) && dictMap.get(currStr).equals(window.get(currStr))) {
