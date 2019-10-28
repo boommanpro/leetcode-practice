@@ -32,7 +32,7 @@ class SolutionTest206 {
         //1->2->3->4->5->NULL
         //
 
-        public ListNode reverseList(ListNode head) {
+        public ListNode reverse(ListNode head) {
             if (head == null || head.next == null) {
                 return head;
             }
@@ -47,7 +47,19 @@ class SolutionTest206 {
             }
             return prev;
         }
+
         //迭代 递归的方式反转链表
+        public ListNode reverseList(ListNode head) {
+            if (head == null || head.next == null) {
+                return head;
+            }
+            //1->2->3  3->2->1
+            ListNode temp = head.next;
+            ListNode newHead = reverseList(head.next);
+            head.next = null;
+            temp.next = head;
+            return newHead;
+        }
 
         //其他方式
     }
@@ -62,6 +74,12 @@ class SolutionTest206 {
             ListNode listNode1 = new ListNode(1);
             listNode1.addNext(2).addNext(3).addNext(4).addNext(5);
             Assert.assertEquals("54321",solution.reverseList(listNode1).getPositiveListNodeValue());
+
+            ListNode listNode2 = new ListNode(1);
+            listNode2.addNext(2).addNext(3).addNext(4).addNext(5);
+            Assert.assertEquals("54321",solution.reverse(listNode2).getPositiveListNodeValue());
+
+
         }
     }
 }
