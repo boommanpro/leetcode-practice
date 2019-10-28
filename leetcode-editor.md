@@ -13,7 +13,7 @@ ${question.content}
 
         @Test
         public void defaultSolutionTest() {
-
+            Solution solution = new Solution();
         }
     }
 }
