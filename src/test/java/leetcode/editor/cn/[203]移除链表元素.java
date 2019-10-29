@@ -57,9 +57,9 @@ class SolutionTest203 {
             Assert.assertEquals("", nodeResult2 == null ? "" : nodeResult2.getPositiveListNodeValue());
 
             ListNode node3 = new ListNode(1);
-            node3.addNext(1);
+            node3.addNext(2).addNext(1).addNext(1).addNext(1);
             ListNode nodeResult3 = solution.removeElements(node3, 1);
-            Assert.assertEquals("", nodeResult3 == null ? "" : nodeResult3.getPositiveListNodeValue());
+            Assert.assertEquals("2", nodeResult3 == null ? "" : nodeResult3.getPositiveListNodeValue());
         }
     }
 }
