@@ -75,6 +75,23 @@ And Interview Some problem !
 |[328](https://leetcode-cn.com/problems/odd-even-linked-list/)|[Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)|  Medium|
 |[445](https://leetcode-cn.com/problems/add-two-numbers-ii/)|[Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/)|  Medium|
 
+## String
+
+|  #| Title | Difficulty |
+|--|--|--|
+|  [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)|  [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/)| Medium|
+|  [583](https://leetcode-cn.com/problems/delete-operation-for-two-strings/)|  [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)| Medium|
+|  [678](https://leetcode-cn.com/problems/valid-parenthesis-string/)|  [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/)| Medium|
+|  [680](https://leetcode-cn.com/problems/valid-palindrome-ii/)|  [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)| Easy  |
+|  [686](https://leetcode-cn.com/problems/repeated-string-match/)|  [Repeated String Match](https://leetcode.com/problems/repeated-string-match/)| Easy  |
+|  [20](https://leetcode-cn.com/problems/valid-parentheses/)|  [ Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| Easy  |
+|  [32](https://leetcode-cn.com/problems/longest-valid-parentheses/)|  [ Longest Valid Parentheses ](https://leetcode.com/problems/longest-valid-parentheses/)| Hard  |
+|  [3](https://leetcode-cb.com/problems/longest-substring-without-repeating-characters/)|  [ Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)| Medium  |
+|  [300](https://leetcode-cn.com/problems/longest-increasing-subsequence/)|  [ Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)| Medium  |
+|  [673](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)|  [ Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)| Medium  |
+
+
+
 ## 排序算法
 
 1.冒泡排序
