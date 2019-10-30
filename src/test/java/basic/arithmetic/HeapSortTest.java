@@ -1,4 +1,4 @@
-package basic;
+package basic.arithmetic;
 
 import org.junit.Test;
 
