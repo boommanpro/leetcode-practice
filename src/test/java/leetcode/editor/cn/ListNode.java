@@ -39,4 +39,17 @@ public class ListNode {
         }
         return sb.toString();
     }
+
+    public String getNegativeListNodeValue(){
+        StringBuilder sb = new StringBuilder();
+        getNegativeListNodeValue(this,sb);
+        return sb.toString();
+    }
+
+    private void getNegativeListNodeValue(ListNode head,StringBuilder sb){
+        if (head.next != null) {
+             getNegativeListNodeValue(head.next, sb);
+        }
+         sb.append(head.val);
+    }
 }
