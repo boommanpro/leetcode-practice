@@ -27,6 +27,14 @@ public class ListNode {
         return nextNode;
     }
 
+    public ListNode addNode(ListNode node) {
+        this.next = node;
+        while (node.next != null) {
+            node = node.next;
+        }
+        return node;
+    }
+
     /**
      * 只是为方便测试创建的 不允许非测试调用
      */
