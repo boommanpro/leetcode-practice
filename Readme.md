@@ -79,8 +79,6 @@ And Interview Some problem !
 
 |  #| Title | Difficulty |
 |--|--|--|
-|  [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)|  [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/)| Medium|
-|  [583](https://leetcode-cn.com/problems/delete-operation-for-two-strings/)|  [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)| Medium|
 |  [678](https://leetcode-cn.com/problems/valid-parenthesis-string/)|  [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/)| Medium|
 |  [680](https://leetcode-cn.com/problems/valid-palindrome-ii/)|  [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)| Easy  |
 |  [686](https://leetcode-cn.com/problems/repeated-string-match/)|  [Repeated String Match](https://leetcode.com/problems/repeated-string-match/)| Easy  |
@@ -90,6 +88,11 @@ And Interview Some problem !
 |  [300](https://leetcode-cn.com/problems/longest-increasing-subsequence/)|  [ Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)| Medium  |
 |  [673](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)|  [ Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)| Medium  |
 
+
+## 动态规划
+
+|  [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)|  [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/)| Medium|
+|  [583](https://leetcode-cn.com/problems/delete-operation-for-two-strings/)|  [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)| Medium|
 
 
 ## 排序算法
