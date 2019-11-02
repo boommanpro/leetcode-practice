@@ -85,14 +85,14 @@ And Interview Some problem !
 |  [20](https://leetcode-cn.com/problems/valid-parentheses/)|  [ Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)| Easy  |
 |  [32](https://leetcode-cn.com/problems/longest-valid-parentheses/)|  [ Longest Valid Parentheses ](https://leetcode.com/problems/longest-valid-parentheses/)| Hard  |
 |  [3](https://leetcode-cb.com/problems/longest-substring-without-repeating-characters/)|  [ Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)| Medium  |
-|  [300](https://leetcode-cn.com/problems/longest-increasing-subsequence/)|  [ Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)| Medium  |
-|  [673](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)|  [ Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)| Medium  |
 
 
 ## 动态规划
 
 |  [718](https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray/)|  [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/)| Medium|
 |  [583](https://leetcode-cn.com/problems/delete-operation-for-two-strings/)|  [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)| Medium|
+|  [300](https://leetcode-cn.com/problems/longest-increasing-subsequence/)|  [ Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)| Medium  |
+|  [673](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)|  [ Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)| Medium  |
 
 
 ## 排序算法
