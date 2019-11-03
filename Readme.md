@@ -95,6 +95,15 @@ And Interview Some problem !
 |  [673](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)|  [ Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)| Medium  |
 
 
+
+Leetcode待增加题目种类
+分治，递归回溯，广度优先，深度优先
+
+
+
+
+
+
 ## 排序算法
 
 1.冒泡排序
