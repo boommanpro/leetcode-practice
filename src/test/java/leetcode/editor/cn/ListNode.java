@@ -29,8 +29,11 @@ public class ListNode {
 
     public ListNode addNode(ListNode node) {
         this.next = node;
-        while (node.next != null) {
-            node = node.next;
+//        while (node.next != null) {
+//            node = node.next;
+//        }
+        if (node.next != null) {
+            return node.next;
         }
         return node;
     }
