@@ -52,11 +52,17 @@ class SolutionTest289 {
     class Solution {
 
         public void gameOfLife(int[][] board) {
-            //1——保持1
-            //-1——1转0
-            //0——保持0
-            //-2——0转1
+            //一个位置如何持有两种状态  二进制
+            // 00   ->0
+            // 01   ->1
+            // 10   ->2
+            // 11   ->3
 
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[0].length; j++) {
+                    board[i][j] = board[i][j] << 1;
+                }
+            }
             //标记
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[0].length; j++) {
@@ -66,7 +72,7 @@ class SolutionTest289 {
             //赋值
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[0].length; j++) {
-                    board[i][j] = board[i][j] == 1 || board[i][j] == -2 ? 1 : 0;
+                    board[i][j] = board[i][j] & 1;
                 }
             }
         }
@@ -79,10 +85,11 @@ class SolutionTest289 {
             int bottom = Math.min(i + 1, board.length - 1);
             for (int x = top; x <= bottom; x++) {
                 for (int y = left; y <= right; y++) {
-                    count = board[x][y] == 1 || board[x][y] == -1 ? count + 1 : count;
+                    count = board[x][y] == 2 || board[x][y] == 3 ? count + 1 : count;
                 }
             }
-            return board[i][j] == 1 ? (count == 3 || count == 4 ? 1 : -1) : (count == 3 ? -2 : 0);
+            //是否会加载自身数据
+            return board[i][j] >> 1 == 1 ? (count == 3 || count == 4 ? 3 : 2) : (count == 3 ? 1 : 0);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
