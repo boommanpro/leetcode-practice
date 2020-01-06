@@ -52,44 +52,56 @@ class SolutionTest289 {
     class Solution {
 
         public void gameOfLife(int[][] board) {
-            //一个位置如何持有两种状态  二进制
-            // 00   ->0
-            // 01   ->1
-            // 10   ->2
-            // 11   ->3
 
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    board[i][j] = board[i][j] << 1;
+            int width = board.length;
+            int height = board[0].length;
+            //状态移位
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    board[i][j] <<= 1;
                 }
             }
-            //标记
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    board[i][j] = checkLoc(board, i, j);
+
+            //设置状态
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    board[i][j] = getStatus(board, i, j);
                 }
             }
-            //赋值
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    board[i][j] = board[i][j] & 1;
+
+            //状态处理
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    board[i][j] &= 1;
                 }
             }
+
         }
 
-        public int checkLoc(int[][] board, int i, int j) {
+        int[][] round = new int[][]{
+                {-1, -1},
+                {-1, 0},
+                {-1, 1},
+                {0, 1},
+                {0, -1},
+                {1, 1},
+                {1, 0},
+                {1, -1},
+        };
+
+        public int getStatus(int[][] board, int i, int j) {
             int count = 0;
-            int left = Math.max(j - 1, 0);
-            int right = Math.min(j + 1, board[i].length - 1);
-            int top = Math.max(i - 1, 0);
-            int bottom = Math.min(i + 1, board.length - 1);
-            for (int x = top; x <= bottom; x++) {
-                for (int y = left; y <= right; y++) {
-                    count = board[x][y] == 2 || board[x][y] == 3 ? count + 1 : count;
+            int width = board.length;
+            int height = board[0].length;
+            //对其周围8个进行统计
+            for (int[] around : round) {
+                int x = around[0] + i;
+                int y = around[1] + j;
+                if (x >= 0 && x < width && y >= 0 && y < height) {
+                    count += board[x][y] == 2 || board[x][y] == 3 ? 1 : 0;
                 }
             }
-            //是否会加载自身数据
-            return board[i][j] >> 1 == 1 ? (count == 3 || count == 4 ? 3 : 2) : (count == 3 ? 1 : 0);
+            return board[i][j] >> 1 == 0 ? (count == 3 ? 1 : 0) : (count == 2 || count == 3 ? 3 : 2);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
