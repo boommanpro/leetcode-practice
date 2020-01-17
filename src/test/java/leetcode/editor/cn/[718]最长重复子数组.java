@@ -1,5 +1,7 @@
 package leetcode.editor.cn;
 
+import java.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +31,46 @@ class SolutionTest718 {
 
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        //超出时间限制 Time Limit Error
+        public int findLength2(int[] A, int[] B) {
+            List<Set<Integer>> bpList = new ArrayList<>(A.length);
+            for (int b : B) {
+                Set<Integer> set = new LinkedHashSet<>();
+                for (int i = 0; i < A.length; i++) {
+                    if (A[i] == b) {
+                        set.add(i);
+                    }
+                }
+                bpList.add(set);
+            }
+
+            int maxLength = 0;
+            for (int i = 0; i < A.length; i++) {
+                int currentLength = 0;
+                Set<Integer> set = bpList.get(i);
+                if (!set.isEmpty()) {
+
+                    for (Integer s : set) {
+                        currentLength=1;
+                        maxLength = Math.max(currentLength, maxLength);
+                        for (int j = i + 1, step = 1; j < A.length; j++,step++) {
+                            if (bpList.get(j).contains(s + step)) {
+                                currentLength++;
+                                maxLength = Math.max(currentLength, maxLength);
+                            }else {
+                                maxLength = Math.max(currentLength, maxLength);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            return maxLength;
+        }
+
+
 
         //动态规划题目
         public int findLength(int[] A, int[] B) {
@@ -48,7 +90,7 @@ class SolutionTest718 {
         }
 
         //超出时间限制 Time Limit Error
-        public int findLength0(int[] A, int[] B) {
+        public int findLength1(int[] A, int[] B) {
             if (A == null || B == null || A.length == 0 || B.length == 0) {
                 return 0;
             }
