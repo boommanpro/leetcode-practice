@@ -1,9 +1,12 @@
 package leetcode.editor.cn;
 
-import java.util.*;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 class SolutionTest718 {
 

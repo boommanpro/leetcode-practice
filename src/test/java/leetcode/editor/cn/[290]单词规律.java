@@ -1,10 +1,10 @@
 package leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 class SolutionTest290 {
 //给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。 
 //

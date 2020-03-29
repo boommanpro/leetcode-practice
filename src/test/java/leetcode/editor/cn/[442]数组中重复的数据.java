@@ -1,10 +1,10 @@
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class SolutionTest442 {
 

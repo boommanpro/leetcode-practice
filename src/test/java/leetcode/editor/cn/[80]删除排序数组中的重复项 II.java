@@ -1,10 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 class SolutionTest80 {
 

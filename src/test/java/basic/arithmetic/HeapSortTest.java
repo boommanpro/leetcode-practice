@@ -1,7 +1,6 @@
 package basic.arithmetic;
 
 import org.junit.Test;
-import sun.security.util.Length;
 
 import java.util.Arrays;
 

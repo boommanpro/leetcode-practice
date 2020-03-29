@@ -1,9 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.Stack;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Stack;
 
 class SolutionTest155 {
 

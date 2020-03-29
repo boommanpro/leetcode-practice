@@ -1,7 +1,6 @@
 package leetcode.editor.cn;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 class SolutionTest21 {

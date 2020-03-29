@@ -1,6 +1,5 @@
 package leetcode.editor.cn;
 
-import jdk.nashorn.internal.objects.NativeNumber;
 import org.junit.Assert;
 import org.junit.Test;
 

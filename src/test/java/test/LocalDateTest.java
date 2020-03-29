@@ -1,10 +1,9 @@
 package test;
 
-import java.time.Duration;
+import org.junit.Test;
+
 import java.time.LocalDate;
 import java.time.Period;
-
-import org.junit.Test;
 
 /**
  * @author wangqimeng

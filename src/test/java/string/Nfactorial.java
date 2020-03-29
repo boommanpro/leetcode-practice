@@ -1,10 +1,10 @@
 package string;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * N的阶乘计算

@@ -1,10 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.*;
-import java.util.function.BiConsumer;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.*;
 
 class SolutionTest347 {
 

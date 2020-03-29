@@ -1,9 +1,9 @@
 package basic.arithmetic;
 
-import java.util.Random;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Random;
 
 /**
  * 快速排序

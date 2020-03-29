@@ -1,10 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.Stack;
-
-import jdk.nashorn.internal.ir.IfNode;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Stack;
 
 class SolutionTest678 {
 

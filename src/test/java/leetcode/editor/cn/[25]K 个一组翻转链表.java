@@ -1,7 +1,5 @@
 package leetcode.editor.cn;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
