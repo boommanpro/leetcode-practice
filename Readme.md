@@ -63,7 +63,7 @@ And Interview Some problem !
 |[82 ](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)|[Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)|  Medium|
 |[83 ](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)|[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)|  Easy
 |[86 ](https://leetcode-cn.com/problems/partition-list/)|[Partition List](https://leetcode.com/problems/partition-list/)|  Medium|
-|[92](https://leetcode-cn.com/problems/reverse-linked-list-ii/)| [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)|Medium|
+|[92 ](https://leetcode-cn.com/problems/reverse-linked-list-ii/)| [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)|Medium|
 |[143](https://leetcode-cn.com/problems/reorder-list/)|[Reorder List](https://leetcode.com/problems/reorder-list/)|  Medium|
 |[147](https://leetcode-cn.com/problems/insertion-sort-list/)|[Insertion Sort List ***](https://leetcode.com/problems/insertion-sort-list/)|  Medium|
 |[148](https://leetcode-cn.com/problems/sort-list/)|[Sort List ***](https://leetcode.com/problems/sort-list/)|  Medium|
@@ -74,6 +74,30 @@ And Interview Some problem !
 |[237](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)|[Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)|  Easy|
 |[328](https://leetcode-cn.com/problems/odd-even-linked-list/)|[Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)|  Medium|
 |[445](https://leetcode-cn.com/problems/add-two-numbers-ii/)|[Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/)|  Medium|
+
+刷题顺序
+
+206 反转链表
+92 反转链表II
+19 删除第n个节点
+82 删除重复节点
+83 删除重复节点
+25 反转n组节点
+21 合并两个排序好的链表
+24 交换两组节点
+61 滚动链表
+2  两个链表相加
+86 根据值分成两部分
+143 重排序链表
+147 插入排序链表
+148 链表排序
+160 相交链表
+203 移除链表元素
+234 回文链表
+237 删除链表的节点
+328 奇偶链表
+445 两数相加II
+
 
 ## String
 
