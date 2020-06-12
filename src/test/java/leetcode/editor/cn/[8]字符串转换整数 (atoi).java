@@ -62,38 +62,179 @@ class SolutionTest8 {
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        /**
+         * 有限状态机
+         * start
+         * signed
+         * inNumber
+         * end
+         */
         public int myAtoi(String str) {
-            if (str == null) return 0;
-            str = str.trim();
-            if (str.length() == 0) return 0;
-            int i = 0;
-            //2.判断数字的符号
-            int flag = 1;
-            char ch = str.charAt(i);
-            if (ch == '+') {
-                i++;
-            } else if (ch == '-') {
-                flag = -1;
-                i++;
+            Automaton automaton = new Automaton();
+            for (int i = 0; i < str.length(); i++) {
+                automaton.pushValue(str.charAt(i));
             }
-            //3.找出数字部分
-            int res = 0;
-            for (; i < str.length(); i++) {
-                ch = str.charAt(i);
-                if (ch < '0' || ch > '9')
-                    break;
-                //溢出判断
-                if (flag > 0 && res > Integer.MAX_VALUE / 10)
-                    return Integer.MAX_VALUE;
-                if (flag > 0 && res == Integer.MAX_VALUE / 10 && ch - '0' > Integer.MAX_VALUE % 10)
-                    return Integer.MAX_VALUE;
-                if (flag < 0 && -res < Integer.MIN_VALUE / 10)
-                    return Integer.MIN_VALUE;
-                if (flag < 0 && -res == Integer.MIN_VALUE / 10 && -(ch - '0') < Integer.MIN_VALUE % 10)
-                    return Integer.MIN_VALUE;
-                res = res * 10 + ch - '0';
+            return automaton.getResult();
+
+        }
+
+        static class Automaton {
+
+            private int positive = 1;
+
+            private int ans = 0;
+
+            private DFA state;
+
+            public Automaton() {
+                state = DFA.START;
             }
-            return res * flag;
+
+            public void pushValue(char c) {
+                if (state == DFA.END) {
+                    return;
+                }
+                Event event = Event.convert2(c);
+                state = DFA.sendEvent(state, event);
+                if (state == DFA.END) {
+                    return;
+                }
+                switch (event) {
+                    case SYMBOL:
+                        if (c == '-') {
+                            positive = -1;
+                            return;
+                        }
+                    case DIGIT:
+                        int value = c - '0';
+                        if (positive > 0 && ExceedMaxLimit(ans, value)) {
+                            ans = Integer.MAX_VALUE;
+                            state = DFA.END;
+                            return;
+                        }
+                        if (positive < 0 && ExceedMinLimit(ans, value)) {
+                            ans = Integer.MIN_VALUE;
+                            state = DFA.END;
+                            return;
+                        }
+                        ans = ans * 10 + value;
+                        return;
+                    default:
+                        break;
+                }
+
+            }
+
+            private boolean ExceedMinLimit(int ans, int value) {
+                if (ans > 214748364) {
+                    return true;
+                }
+                if (ans == 214748364 && value > 8) {
+                    return true;
+                }
+                return false;
+            }
+
+            private boolean ExceedMaxLimit(int ans, int value) {
+                if (ans > 214748364) {
+                    return true;
+                }
+                if (ans == 214748364 && value > 7) {
+                    return true;
+                }
+                return false;
+            }
+
+            public int getResult() {
+                return positive * ans;
+            }
+        }
+
+        enum DFA {
+            /**
+             * 开始
+             */
+            START,
+            /**
+             * 符号
+             */
+            SIGNED,
+            /**
+             * 数字
+             */
+            IN_NUMBER,
+            /**
+             * 结束
+             */
+            END,
+            ;
+
+            public static DFA sendEvent(DFA status, Event event) {
+                if (status == DFA.END) {
+                    return DFA.END;
+                }
+                switch (event) {
+                    case SYMBOL:
+                        if (status == DFA.START || status == DFA.SIGNED) {
+                            return DFA.IN_NUMBER;
+                        }
+                        return DFA.END;
+                    case DIGIT:
+                        if (status == DFA.START || status == DFA.SIGNED || status == DFA.IN_NUMBER) {
+                            return DFA.IN_NUMBER;
+                        }
+                        return DFA.END;
+                    case EMPTY:
+                        if (status == DFA.START) {
+                            return DFA.START;
+                        }
+                        return DFA.END;
+                    case OTHER:
+                        return DFA.END;
+                    default:
+                        throw new RuntimeException(String.format("Event not support,Event Value:[%s]", event));
+                }
+            }
+        }
+
+        enum Event {
+            /**
+             * 符号
+             */
+            SYMBOL,
+            /**
+             * 数字
+             */
+            DIGIT,
+            /**
+             * 空格
+             */
+            EMPTY,
+            /**
+             * 其他
+             */
+            OTHER;
+
+            public static Event convert2(char c) {
+                if (c == ' ') {
+                    return EMPTY;
+                }
+                if (isSymbol(c)) {
+                    return SYMBOL;
+                }
+                if (isDigit(c)) {
+                    return DIGIT;
+                }
+                return OTHER;
+            }
+
+            private static boolean isDigit(char c) {
+                return c >= '0' && c <= '9';
+            }
+
+            private static boolean isSymbol(char c) {
+                return c == '+' || c == '-';
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -109,6 +250,7 @@ class SolutionTest8 {
             Assert.assertEquals(-42, solution.myAtoi("-42"));
             Assert.assertEquals(4193, solution.myAtoi("4193 with words"));
             Assert.assertEquals(-2147483648, solution.myAtoi("-91283472332"));
+            Assert.assertEquals(2147483647, solution.myAtoi("2147483648"));
         }
     }
 }
