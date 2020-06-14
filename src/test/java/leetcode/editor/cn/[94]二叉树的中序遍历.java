@@ -1,7 +1,9 @@
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest94 {
@@ -35,7 +37,17 @@ class SolutionTest94 {
     class Solution {
 
         public List<Integer> inorderTraversal(TreeNode root) {
-            return null;
+            List<Integer> ans = new ArrayList<>();
+            inorderTree(root, ans);
+            return ans;
+        }
+
+        private void inorderTree(TreeNode root, List<Integer> ans) {
+            if (root != null) {
+                inorderTree(root.left, ans);
+                ans.add(root.val);
+                inorderTree(root.right, ans);
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -46,9 +58,8 @@ class SolutionTest94 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            solution.inorderTraversal(TreeNode.getTreeNode(new Integer[]{1, null, 2, 3}));
-            solution.inorderTraversal(TreeNode.getTreeNode(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8}));
-            solution.inorderTraversal(TreeNode.getTreeNode(new Integer[]{8, 7, 5, 4, 3, 2, 1}));
+            Assert.assertEquals("[1, 3, 2]", solution.inorderTraversal(TreeNode.getTreeNode(new Integer[]{1, null, 2, 3})).toString());
+
         }
     }
 }
