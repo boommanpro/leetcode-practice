@@ -1,9 +1,6 @@
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import lombok.Data;
 
@@ -99,10 +96,28 @@ public class TreeNode {
         for (int i = result.size() - 1; i >= 0; i--) {
             if (result.get(i) == null) {
                 result.remove(i);
-            }else {
+            } else {
                 return result.toString();
             }
         }
         return result.toString();
     }
+
+    public TreeNode getNodeForValue(int i) {
+        return bfs(this, i);
+    }
+
+    private TreeNode bfs(TreeNode treeNode, int i) {
+        if (treeNode == null) {
+            return null;
+        }
+        if (treeNode.val == i) {
+            return treeNode;
+        }
+        TreeNode left = bfs(treeNode.left, i);
+        TreeNode right = bfs(treeNode.right, i);
+        return left == null ? right : left;
+    }
+
+
 }
