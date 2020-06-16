@@ -1,9 +1,11 @@
 package leetcode.editor.cn;
 
-import lombok.Data;
-
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
+
+import lombok.Data;
 
 /**
  * @author wangqimeng
@@ -11,14 +13,16 @@ import java.util.LinkedList;
  */
 @Data
 public class TreeNode {
+
     int val;
+
     TreeNode left;
+
     TreeNode right;
 
     TreeNode(int x) {
         val = x;
     }
-
 
     /**
      * 通过Integer 数组构建树,编写测试用例使用
@@ -69,5 +73,36 @@ public class TreeNode {
 
         return root;
 
+    }
+
+    /**
+     * 转变成intArray
+     * 可以理解为 getTreeNode反转
+     */
+    public String toIntArrayString() {
+        List<Integer> result = new ArrayList<>();
+        TreeNode curr = this;
+        Deque<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.offer(curr);
+        while (nodeQueue.size() > 0) {
+            int n = nodeQueue.size();
+            curr = nodeQueue.poll();
+            if (curr != null) {
+                result.add(curr.val);
+                nodeQueue.offer(curr.left);
+                nodeQueue.offer(curr.right);
+            } else {
+                result.add(null);
+            }
+
+        }
+        for (int i = result.size() - 1; i >= 0; i--) {
+            if (result.get(i) == null) {
+                result.remove(i);
+            }else {
+                return result.toString();
+            }
+        }
+        return result.toString();
     }
 }
