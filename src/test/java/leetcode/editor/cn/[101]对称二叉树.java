@@ -1,11 +1,9 @@
 package leetcode.editor.cn;
 
+import java.util.Objects;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Objects;
 
 class SolutionTest101 {
 //给定一个二叉树，检查它是否是镜像对称的。 
@@ -51,35 +49,22 @@ class SolutionTest101 {
  * }
  */
     class Solution {
-        public boolean isSymmetric(TreeNode root) {
-            Deque<TreeNode> nodeQueue = new LinkedList<>();
-            Deque<Integer> valueQueue = new LinkedList<>();
-            TreeNode curr;
-            nodeQueue.offer(root);
-            while (nodeQueue.size() > 0) {
-                int n = nodeQueue.size();
-                while (n > 0) {
-                    curr = nodeQueue.poll();
-                    if (curr != null) {
-                        valueQueue.offerLast(curr.val);
-                        nodeQueue.offerLast(curr.left);
-                        nodeQueue.offerLast(curr.right);
-                    } else {
-                        valueQueue.offerLast(null);
-                    }
-                    n--;
-                }
-                //check valueQueue
-                while (valueQueue.size() > 0) {
-                    if (!Objects.equals(valueQueue.getFirst(),valueQueue.getLast()) ) {
-                        return false;
-                    }
-                    valueQueue.pollFirst();
-                    valueQueue.pollLast();
-                }
 
+        public boolean isSymmetric(TreeNode root) {
+            return symmetric(root, root);
+        }
+
+        private boolean symmetric(TreeNode left, TreeNode right) {
+            if (Objects.isNull(left)&&Objects.isNull(right)) {
+                return true;
             }
-            return true;
+            if (Objects.isNull(left) || Objects.isNull(right)) {
+                return false;
+            }
+            if (!Objects.equals(left.val, right.val)) {
+                return false;
+            }
+            return symmetric(left.left, right.right) && symmetric(left.right, right.left);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -92,6 +77,7 @@ class SolutionTest101 {
             Solution solution = new Solution();
             Assert.assertTrue(solution.isSymmetric(TreeNode.getTreeNode(new Integer[]{1, 2, 2, 3, 4, 4, 3})));
             Assert.assertFalse(solution.isSymmetric(TreeNode.getTreeNode(new Integer[]{1, 2, 2, null, 3, null, 3})));
+            Assert.assertFalse(solution.isSymmetric(TreeNode.getTreeNode(new Integer[]{1,2,3})));
 
         }
     }
