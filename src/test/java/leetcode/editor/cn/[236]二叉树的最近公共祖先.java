@@ -2,6 +2,12 @@ package leetcode.editor.cn;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 class SolutionTest236 {
 //给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。 
 //
@@ -18,7 +24,7 @@ class SolutionTest236 {
 //
 // 输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
 //输出: 3
-//解释: 节点 5 和节点 1 的最近公共祖先是节点 3。
+//解释:  m,节点 5 和节点 1 的最近公共祖先是节点 3。
 // 
 //
 // 示例 2: 
@@ -39,7 +45,7 @@ class SolutionTest236 {
 // Related Topics 树
 
     public static
-    //leetcode submit region begin(Prohibit modification and deletion)
+            //leetcode submit region begin(Prohibit modification and deletion)
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -47,16 +53,42 @@ class SolutionTest236 {
  *     TreeNode left;
  *     TreeNode right;
  *     TreeNode(int x) { val = x; }
- * }
+ * }]yh
  */
-class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        return null;
+    class Solution {
+        Map<Integer, TreeNode> parent = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+
+        public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+            dfs(root);
+            while (p != null) {
+                visited.add(p.val);
+                p = parent.get(p.val);
+            }
+            while (q != null) {
+                if (visited.contains(q.val)) {
+                    return q;
+                }
+                q = parent.get(q.val);
+            }
+            return null;
+        }
+
+        private void dfs(TreeNode root) {
+            if (root.left != null) {
+                parent.put(root.left.val, root);
+                dfs(root.left);
+            }
+            if (root.right != null) {
+                parent.put(root.right.val, root);
+                dfs(root.right);
+            }
+
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
-//Do some Test
+    //Do some Test
     public static class TestClass {
 
         @Test
@@ -66,7 +98,6 @@ class Solution {
             TreeNode p = root.getNodeForValue(5);
             TreeNode q = root.getNodeForValue(1);
             Assert.assertEquals(root.getNodeForValue(3), solution.lowestCommonAncestor(root, p, q));
-            ;
         }
     }
 }
