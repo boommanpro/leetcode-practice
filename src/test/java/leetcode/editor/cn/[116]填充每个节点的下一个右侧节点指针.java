@@ -81,43 +81,17 @@ class Node {
 
         @SuppressWarnings("all")
         public Node connect(Node root) {
-            if (root == null) {
-                return null;
-            }
-            Deque<Node> nodeQueue = new LinkedList<>();
-            nodeQueue.offerLast(root);
-            Node curr;
-            Deque<Node> rowQueue = new LinkedList<>();
-            while (nodeQueue.size() > 0) {
-                int n = nodeQueue.size();
-                while (n > 0) {
-                    curr = nodeQueue.pollFirst();
-                    if (curr.left != null) {
-                        nodeQueue.offerLast(curr.left);
-                        rowQueue.offerLast(curr.left);
-                    }
-                    if (curr.right != null) {
-                        nodeQueue.offerLast(curr.right);
-                        rowQueue.offerLast(curr.right);
-                    }
-                    n--;
-                }
-                linkAndClearRowQueue(rowQueue);
-            }
-            return root;
+            return connect(root,null);
         }
 
-        public void linkAndClearRowQueue(Deque<Node> rowQueue) {
-            if (rowQueue.size() == 0) {
-                return;
+        public Node connect(Node pre,Node next) {
+            if (pre == null) {
+                return null;
             }
-            Node pre = rowQueue.pollFirst();
-            Node next;
-            while (rowQueue.size() > 0) {
-                next = rowQueue.pollFirst();
-                pre.next = next;
-                pre = next;
-            }
+            pre.next = next;
+            connect(pre.left, pre.right);
+            connect(pre.right, pre.next != null ? pre.next.left : null);
+            return pre;
 
         }
     }
