@@ -2,6 +2,11 @@ package leetcode.editor.cn;
 
 import leetcode.editor.cn.graph.Node;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 class SolutionTest133 {
 //给你无向 连通 图中一个节点的引用，请你返回该图的 深拷贝（克隆）。 
 //
@@ -76,7 +81,7 @@ class SolutionTest133 {
 // Related Topics 深度优先搜索 广度优先搜索 图
 
     public static
-    //leetcode submit region begin(Prohibit modification and deletion)
+            //leetcode submit region begin(Prohibit modification and deletion)
 /*
 // Definition for a Node.
 class Node {
@@ -100,14 +105,30 @@ class Node {
 }
 */
 
-class Solution {
-    public Node cloneGraph(Node node) {
-        return null;
+    class Solution {
+        private Map<Node, Node> visited = new HashMap<>();
+
+        public Node cloneGraph(Node node) {
+            if (node == null) {
+                return null;
+            }
+            Node temp = visited.get(node);
+            if (temp != null) {
+                return temp;
+            }
+            Node cloneNode = new Node(node.val, new ArrayList<>());
+            visited.put(node, cloneNode);
+            for (Node neighbor : node.neighbors) {
+                cloneNode.neighbors.add(cloneGraph(neighbor));
+            }
+            return cloneNode;
+        }
+
+
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
-//Do some Test
+    //Do some Test
     public static class TestClass {
 
         @Test
