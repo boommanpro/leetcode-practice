@@ -42,7 +42,47 @@ class SolutionTest498 {
          * 如果遇到不可达的地方需要  +1,0或者 0,+1
          */
         public int[] findDiagonalOrder(int[][] matrix) {
-            return null;
+            if (matrix == null || matrix.length == 0) {
+                return new int[]{};
+            }
+            int m = matrix.length;
+            int n = matrix[0].length;
+            int[] ans = new int[m * n];
+            int K = m + n - 1;
+            int index = 0;
+            int x, y;
+            for (int k = 0; k < K; k++) {
+                boolean up = k % 2 == 0;
+                if (up) {
+                    //如果是向上的话
+                    if (k < m) {
+                        x = k;
+                        y = 0;
+                    } else {
+                        x = m - 1;
+                        y = k - x;
+                    }
+                    while (x >= 0 && y < n) {
+                        ans[index++] = matrix[x][y];
+                        x--;
+                        y++;
+                    }
+                } else {
+                    if (k < n) {
+                        y = k;
+                        x = 0;
+                    } else {
+                        y = n - 1;
+                        x = k - y;
+                    }
+                    while (y >= 0 && x < m) {
+                        ans[index++] = matrix[x][y];
+                        y--;
+                        x++;
+                    }
+                }
+            }
+            return ans;
         }
 
     }
@@ -54,8 +94,9 @@ class SolutionTest498 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals(new int[]{1, 2, 4, 7, 5, 3, 6, 8, 9}, solution.findDiagonalOrder(new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}));
-            Assert.assertEquals(new int[]{1, 2, 5, 9, 6, 3, 4, 7, 10, 13, 14, 11, 8, 12, 15, 16}, solution.findDiagonalOrder(new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}));
+            Assert.assertArrayEquals(new int[]{3,2}, solution.findDiagonalOrder(new int[][]{{3}, {2}}));
+            Assert.assertArrayEquals(new int[]{1, 2, 4, 7, 5, 3, 6, 8, 9}, solution.findDiagonalOrder(new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}));
+            Assert.assertArrayEquals(new int[]{1, 2, 5, 9, 6, 3, 4, 7, 10, 13, 14, 11, 8, 12, 15, 16}, solution.findDiagonalOrder(new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}));
         }
     }
 }
