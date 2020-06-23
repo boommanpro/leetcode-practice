@@ -63,4 +63,17 @@ public class ListNode {
         }
          sb.append(head.val);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ListNode listNode = (ListNode) o;
+        return listNode.val == this.val;
+    }
+
+    @Override
+    public int hashCode() {
+        return val;
+    }
 }
