@@ -1,9 +1,12 @@
 package leetcode.editor.cn;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.*;
 
 class SolutionTest347 {
 
@@ -33,28 +36,14 @@ class SolutionTest347 {
     class Solution {
 
         public List<Integer> topKFrequent(int[] nums, int k) {
-            //堆排序  + Map
-            Map<Integer, Integer> dict = new HashMap<>();
-            for (int num : nums) {
-                dict.put(num, dict.getOrDefault(num, 0) + 1);
-            }
-            Map<Integer, List<Integer>> map = new TreeMap<>(Comparator.reverseOrder());
-
-            dict.forEach((key, value) -> {
-                List<Integer> list = map.getOrDefault(value, new ArrayList<>());
-                list.add(key);
-                map.put(value, list);
-            });
-
-            List<Integer> result = new ArrayList<>(k);
-            for (List<Integer> value : map.values()) {
-                result.addAll(value);
-
-                if (result.size() >= k) {
-                    break;
-                }
-            }
-            return result;
+            return Arrays.stream(nums)
+                    .boxed()
+                    .collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()))
+                    .entrySet()
+                    .stream()
+                    .sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue()))
+                    .map(Map.Entry::getKey).collect(Collectors.toList())
+                    .subList(0, k);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
