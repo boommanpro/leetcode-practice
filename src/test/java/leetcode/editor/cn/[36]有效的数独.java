@@ -1,9 +1,15 @@
 package leetcode.editor.cn;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest36 {
+
     //判断一个 9x9 的数独是否有效。只需要根据以下规则，验证已经填入的数字是否有效即可。
 //
 // 
@@ -64,60 +70,43 @@ class SolutionTest36 {
 // Related Topics 哈希表
     public static
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public boolean isValidSudoku(char[][] board) {
-            //数组是9*9的
-
-            //判断行
-            int[] count;
-            char curr;
+            Map<Integer, Set<Character>> dict = new HashMap<>();
+            for (int i = 0; i < 27; i++) {
+                dict.put(i, new HashSet<>());
+            }
             for (int i = 0; i < 9; i++) {
-                count = new int[9];
                 for (int j = 0; j < 9; j++) {
-                    curr = board[i][j];
-                    if (curr != '.') {
-                        if (count[curr - '1'] == 1) {
-                            return false;
-                        }
-                        count[curr - '1']++;
+                    char c = board[i][j];
+                    if (board[i][j] == '.') {
+                        continue;
+                    }
+                    //获取行
+                    Set<Character> rowSet = dict.get(i);
+                    if (rowSet.contains(c)) {
+                        return false;
+                    } else {
+                        rowSet.add(c);
+                    }
+                    //获取列
+                    Set<Character> colSet = dict.get(9 + j);
+                    if (colSet.contains(c)) {
+                        return false;
+                    } else {
+                        colSet.add(c);
+                    }
+                    //获取3*3
+                    Set<Character> matrixSet = dict.get(18 + (i / 3) * 3 + j / 3);
+                    if (matrixSet.contains(c)) {
+                        return false;
+                    } else {
+                        matrixSet.add(c);
                     }
                 }
             }
-
-            //判断列
-            for (int i = 0; i < 9; i++) {
-                count = new int[9];
-                for (int j = 0; j < 9; j++) {
-                    curr = board[j][i];
-                    if (curr != '.') {
-                        if (count[curr - '1'] == 1) {
-                            return false;
-                        }
-                        count[curr - '1']++;
-                    }
-                }
-            }
-            //判断3*3
-            for (int m = 0; m < 3; m++) {
-                for (int n = 0; n < 3; n++) {
-                    count = new int[9];
-                    for (int i = 0; i < 3; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            curr = board[i + m * 3][j + n * 3];
-                            if (curr != '.') {
-                                if (count[curr - '1'] == 1) {
-                                    return false;
-                                }
-                                count[curr - '1']++;
-                            }
-                        }
-                    }
-                }
-            }
-
-
             return true;
         }
     }
@@ -152,6 +141,16 @@ class SolutionTest36 {
                     {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
                     {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
             }));
+            Assert.assertFalse(solution.isValidSudoku(new char[][]{
+                    {'.', '.', '4', '.', '.', '.', '6', '3', '.'},
+                    {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+                    {'5', '.', '.', '.', '.', '.', '.', '9', '.'},
+                    {'.', '.', '.', '5', '6', '.', '.', '.', '.'},
+                    {'4', '.', '3', '.', '.', '.', '.', '.', '1'},
+                    {'.', '.', '.', '7', '.', '.', '.', '.', '.'},
+                    {'.', '.', '.', '5', '.', '.', '.', '.', '.'},
+                    {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+                    {'.', '.', '.', '.', '.', '.', '.', '.', '.'}}));
         }
     }
 }
