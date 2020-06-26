@@ -3,6 +3,8 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.TreeSet;
+
 class SolutionTest220 {
 //在整数数组 nums 中，是否存在两个下标 i 和 j，使得 nums [i] 和 nums [j] 的差的绝对值小于等于 t ，且满足 i 和 j 的差的
 //绝对值也小于等于 ķ 。 
@@ -34,6 +36,17 @@ class SolutionTest220 {
         public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
             // |nums[i]-nums[j]|<=t
             // |i-j| <=k
+            TreeSet<Long> set = new TreeSet<>();
+            for (int i = 0; i < nums.length; i++) {
+                Long value = set.ceiling((long) nums[i] - t);
+                if (value != null && value - t <= nums[i]) {
+                    return true;
+                }
+                set.add((long) nums[i]);
+                if (set.size() == k + 1) {
+                    set.remove((long) nums[i - k]);
+                }
+            }
             return false;
         }
     }
