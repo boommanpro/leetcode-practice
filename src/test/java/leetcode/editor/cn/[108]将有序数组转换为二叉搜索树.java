@@ -35,7 +35,19 @@ class SolutionTest108 {
     class Solution {
 
         public TreeNode sortedArrayToBST(int[] nums) {
-            return null;
+            //nums是二叉平衡树的中序遍历
+            return treeBuildHelper(nums,0,nums.length);
+        }
+
+        private TreeNode treeBuildHelper(int[] nums, int start, int end) {
+            if (start >= end) {
+                return null;
+            }
+            int mid = ((end - start) >> 1) + start;
+            TreeNode root = new TreeNode(nums[mid]);
+            root.left = treeBuildHelper(nums, start, mid);
+            root.right = treeBuildHelper(nums, mid + 1, end);
+            return root;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -46,6 +58,7 @@ class SolutionTest108 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            System.out.println(solution.sortedArrayToBST(new int[]{-10, -3, 0, 5, 9}).toIntArrayString());
         }
     }
 }
