@@ -18,6 +18,17 @@ public class ListNode {
         val = x;
     }
 
+    public static ListNode fromArray(Integer[] array) {
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        for (Integer i : array) {
+            curr.next = new ListNode(i);
+            curr = curr.next;
+        }
+        return dummy.next;
+    }
+
+
     /**
      * 只是为方便测试创建的 不允许非测试调用
      */
@@ -49,6 +60,19 @@ public class ListNode {
             now = now.next;
         }
         return sb.toString();
+    }
+
+    public String toArrayString() {
+        ListNode now = this;
+        StringBuilder sb = new StringBuilder("[");
+        while (now != null) {
+            sb.append(now.val);
+            if (now.next != null) {
+                sb.append(", ");
+            }
+            now = now.next;
+        }
+        return sb.append("]").toString();
     }
 
     public String getNegativeListNodeValue(){
