@@ -1,9 +1,12 @@
 package leetcode.editor.cn;
 
-import java.util.*;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class SolutionTest212 {
 //给定一个二维网格 board 和一个字典中的单词列表 words，找出所有同时在二维网格和字典中出现的单词。 
@@ -40,87 +43,93 @@ class SolutionTest212 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        Set<String> allWord;
+        private static final char END = '#';
 
         public List<String> findWords(char[][] board, String[] words) {
-            allWord = new HashSet<>();
             List<String> ans = new ArrayList<>();
             int m = board.length;
+            if (m == 0) {
+                return ans;
+            }
             int n = board[0].length;
             Trie dict = new Trie();
-            //1.根据单元格通过回溯法构建所有的单词
-
-            //2.将这些单词插入trie树中
-            for (String word : allWord) {
+            for (String word : words) {
                 dict.insert(word);
             }
-            //3.通过前缀进行搜索是否存在
-            for (String word : words) {
-                if (dict.existByPrefix(word)) {
-                    ans.add(word);
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    backTracking(board, i, j, ans, dict, m, n);
                 }
             }
-            //返回存在的结果
             return ans;
         }
 
-        public static class Trie {
-
-            TrieNode root;
-
-            public Trie() {
-                root = new TrieNode();
+        private void backTracking(char[][] board, int i, int j, List<String> ans, Trie node, int m, int n) {
+            if (i < 0 || j < 0 || i >= m || j >= n) {
+                return;
             }
-
-            public boolean existByPrefix(String key) {
-                return root.existByPrefix(key);
+            char curr = board[i][j];
+            if (curr == END) {
+                return;
             }
-
-            public void insert(String word) {
-                root.insert(word);
+            Trie next = node.get(curr);
+            if (next == null) {
+                return;
             }
+            if (next.getWord() != null) {
+                ans.add(next.getWord());
+                next.setWord(null);
+            }
+            board[i][j] = END;
+            backTracking(board, i + 1, j, ans, next, m, n);
+            backTracking(board, i - 1, j, ans, next, m, n);
+            backTracking(board, i, j + 1, ans, next, m, n);
+            backTracking(board, i, j - 1, ans, next, m, n);
+            board[i][j] = curr;
+
         }
 
-        public static class TrieNode {
 
-            Map<Character, TrieNode> children;
+        public static class Trie {
 
-            public TrieNode() {
+            Map<Character, Trie> children;
+
+
+            String word;
+
+            public Trie() {
                 children = new HashMap<>();
             }
 
-            public void put(char ch, TrieNode node) {
+            public void put(char ch, Trie node) {
                 children.put(ch, node);
             }
 
-            public TrieNode get(char ch) {
+            public Trie get(char ch) {
                 return children.get(ch);
             }
 
-            public boolean existByPrefix(String key) {
-                int n = key.length();
-                TrieNode node = this;
-                for (int i = 0; i < n; i++) {
-                    char ch = key.charAt(i);
-                    if (node.get(ch) == null) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
             public void insert(String word) {
-                TrieNode node = this;
+                Trie node = this;
                 int n = word.length();
                 for (int i = 0; i < n; i++) {
                     char ch = word.charAt(i);
-                    TrieNode next = node.get(ch);
+                    Trie next = node.get(ch);
                     if (next == null) {
-                        next = new TrieNode();
+                        next = new Trie();
                         node.put(ch, next);
                     }
                     node = next;
                 }
+                node.setWord(word);
+            }
+
+            public void setWord(String word) {
+                this.word = word;
+            }
+
+            public String getWord() {
+                return word;
             }
         }
     }
@@ -135,7 +144,8 @@ class SolutionTest212 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertArrayEquals(new String[]{"eat", "oath"}, solution.findWords(new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}}, new String[]{"oath", "pea", "eat", "rain"}).toArray(new String[]{}));
+            Assert.assertArrayEquals(new String[]{"oath", "eat",}, solution.findWords(new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}}, new String[]{"oath", "pea", "eat", "rain"}).toArray(new String[]{}));
+            Assert.assertArrayEquals(new String[]{"acdb",}, solution.findWords(new char[][]{{'a', 'b'}, {'c', 'd'}}, new String[]{"acdb"}).toArray(new String[]{}));
 
         }
     }
