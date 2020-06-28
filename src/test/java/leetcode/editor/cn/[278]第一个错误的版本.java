@@ -31,22 +31,17 @@ class SolutionTest278 {
     public class Solution extends VersionControl {
 
         public int firstBadVersion(int n) {
-            if (isBadVersion(1)) {
-                return 1;
-            }
             int l = 1;
             int r = n;
-            //因为1不是错的,所以找到最后一个正确版本
             while (l < r) {
-                int mid = ((r - l) >> 1) + l + 1;
-                boolean bad = isBadVersion(mid);
-                if (bad) {
-                    r = mid - 1;
-                } else {
-                    l = mid;
+                int mid = l + ((r - l) >> 1);
+                if (isBadVersion(mid)) {
+                    r = mid;
+                }else {
+                    l = mid + 1;
                 }
             }
-            return l + 1;
+            return l;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
