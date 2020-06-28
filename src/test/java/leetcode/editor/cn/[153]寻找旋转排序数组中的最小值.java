@@ -26,25 +26,30 @@ class SolutionTest153 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int findMin(int[] nums) {
-            //即寻找前面大于 num[0] 后面小于num[0]的点
             int n = nums.length;
-            if (n < 2) {
+            if (n == 1) {
                 return nums[0];
             }
 
-            int target = nums[0];
             int l = 1;
             int r = n - 1;
-            if (target < nums[r]) {
-                return target;
+            //如果nums[0]<nums[n-1] 说明是正序的 没有被旋转
+            if (nums[0] < nums[r]) {
+                return nums[0];
             }
+            // [4,5,6,7,0,1,2]
+            //  0 1 2 3 4 5 6
+            int target = nums[0];
+            //思路是如果大于向左移动,如果小于不动 最终l就是最小的那个值
             while (l < r) {
+                //计算中心点
                 int mid = ((r - l) >> 1) + l;
-                if (nums[mid] < target) {
-                    r = mid;
-                } else {
+                if (nums[mid] > target) {
                     l = mid + 1;
+                } else {
+                    r = mid;
                 }
             }
             return nums[l];
@@ -61,6 +66,9 @@ class SolutionTest153 {
             Assert.assertEquals(0, solution.findMin(new int[]{4, 5, 6, 7, 0, 1, 2}));
             Assert.assertEquals(1, solution.findMin(new int[]{3, 4, 5, 1, 2}));
             Assert.assertEquals(1, solution.findMin(new int[]{1, 2, 3, 4, 5, 6, 7}));
+            Assert.assertEquals(1, solution.findMin(new int[]{3, 1}));
+            Assert.assertEquals(1, solution.findMin(new int[]{4, 5, 1, 2, 3}));
+            Assert.assertEquals(1, solution.findMin(new int[]{8, 1, 2, 3, 4, 5, 6, 7}));
         }
     }
 }
