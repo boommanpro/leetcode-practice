@@ -25,13 +25,30 @@ class SolutionTest367 {
     class Solution {
 
         public boolean isPerfectSquare(int num) {
-            if (num < 2) return true;
-
-            long x = num / 2;
-            while (x * x > num) {
-                x = (x + num / x) / 2;
+            if (num == 0) {
+                return false;
             }
-            return (x * x == num);
+            if (num == 1) {
+                return true;
+            }
+            if (num < 4) {
+                return false;
+            }
+            long l = 2;
+            long r = num >> 1;
+            while (l <= r) {
+                long mid = ((r - l) >> 1) + l;
+                long value = mid * mid;
+                if (value == num) {
+                    return true;
+                }
+                if (value < num) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+            return false;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -44,6 +61,7 @@ class SolutionTest367 {
             Solution solution = new Solution();
             Assert.assertTrue(solution.isPerfectSquare(16));
             Assert.assertFalse(solution.isPerfectSquare(14));
+            Assert.assertTrue(solution.isPerfectSquare(808201));
         }
     }
 }
