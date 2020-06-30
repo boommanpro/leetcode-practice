@@ -33,12 +33,13 @@ class SolutionTest面试题01_01 {
     class Solution {
 
         public boolean isUnique(String astr) {
-            Set<Character> dict = new HashSet<>();
+            int mark = 0;
             for (char c : astr.toCharArray()) {
-                if (dict.contains(c)) {
+                int move = c - 'a';
+                if ((mark & (1 << move)) != 0) {
                     return false;
                 }
-                dict.add(c);
+                mark |= 1 << move;
             }
             return true;
         }
