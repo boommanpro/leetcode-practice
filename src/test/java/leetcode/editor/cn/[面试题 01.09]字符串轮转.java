@@ -50,7 +50,28 @@ class SolutionTest面试题01_09 {
             if (m != n) {
                 return false;
             }
+            if (m == 0) {
+                return true;
+            }
+            char start = s1.charAt(0);
+            int p = s2.indexOf(start);
+            while (p >= 0) {
+                if (isEquals(s1, s2, p, m)) {
+                    return true;
+                }
+                p = s2.indexOf(start, p + 1);
+            }
+            return false;
+        }
 
+        private boolean isEquals(String s1, String s2, int r, int m) {
+            for (int i = 0; i < m; i++) {
+                r = r % m;
+                if (s1.charAt(i) != s2.charAt(r)) {
+                    return false;
+                }
+                r++;
+            }
             return true;
         }
     }
@@ -62,8 +83,11 @@ class SolutionTest面试题01_09 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertTrue(solution.isFlipedString("waterbottle","erbottlewat"));
-            Assert.assertTrue(solution.isFlipedString("aa","aba"));
+            Assert.assertTrue(solution.isFlipedString("waterbottle", "erbottlewat"));
+            Assert.assertFalse(solution.isFlipedString("aa", "aba"));
+            Assert.assertTrue(solution.isFlipedString("", ""));
+            Assert.assertTrue(solution.isFlipedString("a", "a"));
+            Assert.assertFalse(solution.isFlipedString("aba", "bab"));
         }
     }
 }
