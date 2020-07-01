@@ -28,7 +28,6 @@ public class ListNode {
         return dummy.next;
     }
 
-
     /**
      * 只是为方便测试创建的 不允许非测试调用
      */
@@ -54,12 +53,13 @@ public class ListNode {
      */
     public String getPositiveListNodeValue() {
         ListNode now = this;
-        StringBuilder sb = new StringBuilder();
-        while (now != null) {
-            sb.append(now.val);
+        StringBuilder sb = new StringBuilder("[");
+        while (now.next != null) {
+            sb.append(now.val).append(", ");
             now = now.next;
         }
-        return sb.toString();
+        sb.append(now.val);
+        return sb.append("]").toString();
     }
 
     public String toArrayString() {
@@ -75,17 +75,17 @@ public class ListNode {
         return sb.append("]").toString();
     }
 
-    public String getNegativeListNodeValue(){
+    public String getNegativeListNodeValue() {
         StringBuilder sb = new StringBuilder();
-        getNegativeListNodeValue(this,sb);
+        getNegativeListNodeValue(this, sb);
         return sb.toString();
     }
 
-    private void getNegativeListNodeValue(ListNode head,StringBuilder sb){
+    private void getNegativeListNodeValue(ListNode head, StringBuilder sb) {
         if (head.next != null) {
-             getNegativeListNodeValue(head.next, sb);
+            getNegativeListNodeValue(head.next, sb);
         }
-         sb.append(head.val);
+        sb.append(head.val);
     }
 
     @Override
