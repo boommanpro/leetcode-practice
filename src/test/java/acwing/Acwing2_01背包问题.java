@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * link: https://www.acwing.com/problem/content/2/
  */
-class Main {
+class Acwing2_Main {
 
     public static void main(String[] args) {
 
@@ -33,6 +33,9 @@ class Main {
 
     public static class Solution {
 
+        /**
+         * 一个物品只能装一次
+         */
         public int calcMaxValue(int n, int v, int[][] goodsList) {
             //n个物品 v的体积
             int[][] f = new int[n + 1][v + 1];
