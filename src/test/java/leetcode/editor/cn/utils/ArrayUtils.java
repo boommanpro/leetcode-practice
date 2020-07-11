@@ -23,4 +23,17 @@ public class ArrayUtils {
         return sb.toString();
     }
 
+
+    public static String threeDimension2String(int[][][] array) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < array.length; i++) {
+            sb.append(twoDimension2String(array[i]));
+            if (i != array.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
