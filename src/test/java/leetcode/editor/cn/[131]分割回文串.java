@@ -30,41 +30,45 @@ class SolutionTest131 {
          * 给定一个字符串,在任意分割若干次,是的都是回文串
          */
         public List<List<String>> partition(String s) {
-            return partitionHelper(s, 0);
+            if (s == null || s.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return partitionHelper(s, 0, s.length());
         }
 
-        private List<List<String>> partitionHelper(String s, int start) {
-            if (start == s.length()) {
+        private List<List<String>> partitionHelper(String s, int start, int len) {
+            if (start == len) {
                 List<List<String>> res = new ArrayList<>();
-                List<String> sub = new ArrayList<>();
-                res.add(sub);
+                //这块一定要有new ArrayList<>(); 因为是有结果的
+                res.add(new ArrayList<>());
                 return res;
             }
             List<List<String>> res = new ArrayList<>();
-            int length = s.length();
-            for (int i = start; i < length; i++) {
-                if (isPalindrome(s, start, i )) {
-                    String left = s.substring(start, i + 1);
-                    for (List<String> l : partitionHelper(s, i + 1)) {
-                        l.add(0, left);
-                        res.add(l);
+            for (int i = start; i < len; i++) {
+                //判断是否是回文 如果是的话可以当做一个单元处理
+                if (isPalindrome(s, start, i)) {
+                    //第一个值
+                    String prefix = s.substring(start, i + 1);
+                    //他的子集
+                    for (List<String> subList : partitionHelper(s, i + 1, len)) {
+                        subList.add(0, prefix);
+                        res.add(subList);
                     }
                 }
             }
             return res;
         }
 
-        private boolean isPalindrome(String s, int i, int j) {
-            while (i < j) {
-                if (s.charAt(i) != s.charAt(j)) {
+        private boolean isPalindrome(String s, int l, int r) {
+            while (l < r) {
+                if (s.charAt(l) != s.charAt(r)) {
                     return false;
                 }
-                i++;
-                j--;
+                l++;
+                r--;
             }
             return true;
         }
-
 
         public List<List<String>> partition0(String s) {
             boolean[][] dp = new boolean[s.length()][s.length()];
@@ -130,8 +134,6 @@ class SolutionTest131 {
             }
         }
 
-
-
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -141,10 +143,11 @@ class SolutionTest131 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            List<List<String>> aabResult = solution.partition("aab");
-            System.out.println(aabResult);
-            System.out.println(solution.partition("aaaa"));
-            Assert.assertEquals("", "");
+
+            Assert.assertEquals("[[a]]", solution.partition("a").toString());
+            Assert.assertEquals("[[a, a, b], [aa, b]]", solution.partition("aab").toString());
+            Assert.assertEquals("[[a, a, a, a], [a, a, aa], [a, aa, a], [a, aaa], [aa, a, a], [aa, aa], [aaa, a], [aaaa]]", solution.partition("aaaa").toString());
+            Assert.assertEquals("[]", solution.partition("").toString());
         }
     }
 }
