@@ -25,14 +25,20 @@ class SolutionTest58 {
     class Solution {
 
         public int lengthOfLastWord(String s) {
-            if (s == null || s.length() == 0) return 0;
+            if (s == null || s.isEmpty()) {
+                return 0;
+            }
+            int r = s.length() - 1;
+            while (r >= 0 && s.charAt(r) == ' ') {
+                r--;
+            }
+            if (r == -1) {
+                return 0;
+            }
             int count = 0;
-            for (int i = s.length() - 1; i >= 0; i--) {
+            for (int i = r; i >= 0; i--) {
                 if (s.charAt(i) == ' ') {
-                    if (count == 0) {
-                        continue;
-                    }
-                    break;
+                    return count;
                 }
                 count++;
             }
@@ -48,6 +54,9 @@ class SolutionTest58 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
             Assert.assertEquals(0, solution.lengthOfLastWord(""));
+            Assert.assertEquals(1, solution.lengthOfLastWord("a"));
+            Assert.assertEquals(0, solution.lengthOfLastWord("       "));
+            Assert.assertEquals(2, solution.lengthOfLastWord("da       "));
             Assert.assertEquals(5, solution.lengthOfLastWord("Hello World"));
             Assert.assertEquals(1, solution.lengthOfLastWord("Hello s s Worldabcs s"));
             Assert.assertEquals(1, solution.lengthOfLastWord("Hello s s Worldabcs s   "));
