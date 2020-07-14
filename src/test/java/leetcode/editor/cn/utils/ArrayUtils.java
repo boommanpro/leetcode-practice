@@ -1,6 +1,9 @@
 package leetcode.editor.cn.utils;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author wangqimeng
@@ -36,4 +39,7 @@ public class ArrayUtils {
         return sb.toString();
     }
 
+    public static List<List<Integer>> twoDimension2List(int[][] array) {
+        return Arrays.stream(array).map(ints -> Arrays.stream(ints).boxed().collect(Collectors.toList())).collect(Collectors.toList());
+    }
 }
