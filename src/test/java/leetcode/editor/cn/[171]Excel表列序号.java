@@ -67,6 +67,7 @@ class SolutionTest171 {
             Assert.assertEquals(28, solution.titleToNumber("AB"));
             Assert.assertEquals(701, solution.titleToNumber("ZY"));
             Assert.assertEquals(18302, solution.titleToNumber("AAAX"));
+            Assert.assertEquals(321272381, solution.titleToNumber("ZZZZZA"));
 
         }
     }
