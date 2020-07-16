@@ -77,6 +77,7 @@ class SolutionTest35 {
             Assert.assertEquals(4, solution.searchInsert(new int[]{1, 3, 5, 6}, 7));
             Assert.assertEquals(0, solution.searchInsert(new int[]{1, 3, 5, 6}, 0));
             Assert.assertEquals(0, solution.searchInsert(new int[]{1}, 1));
+            Assert.assertEquals(1, solution.searchInsert(new int[]{1, 3}, 2));
         }
     }
 }
