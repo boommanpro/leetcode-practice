@@ -10,7 +10,7 @@ public class MN {
 
     @Test
     public void  MNTest(){
-        int route = getRoute(5, 5);
+        int route = getRoute(3, 3);
         System.out.println(route);
     }
 
