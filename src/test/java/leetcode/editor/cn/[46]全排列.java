@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 class SolutionTest46 {
@@ -30,32 +28,37 @@ class SolutionTest46 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public void backtrack(int n,
-                              ArrayList<Integer> output,
-                              List<List<Integer>> res,
-                              int first) {
-            // 所有数都填完了
-            if (first == n)
-                res.add(new ArrayList<>(output));
-            for (int i = first; i < n; i++) {
-                // 动态维护数组
-                Collections.swap(output, first, i);
-                // 继续递归填下一个数
-                backtrack(n, output, res, first + 1);
-                // 撤销操作
-                Collections.swap(output, first, i);
-            }
-        }
 
         public List<List<Integer>> permute(int[] nums) {
-            List<List<Integer>> res = new LinkedList<>();
-            ArrayList<Integer> output = new ArrayList<>();
-            for (int num : nums)
-                output.add(num);
+            List<List<Integer>> result = new ArrayList<>();
+            backtracking(nums, new ArrayList<>(), result, 0);
+            return result;
+        }
 
-            int n = nums.length;
-            backtrack(n, output, res, 0);
-            return res;
+        private void backtracking(int[] selectPath, List<Integer> path, List<List<Integer>> result, int start) {
+            int n = selectPath.length;
+            if (start == n) {
+                result.add(new ArrayList<>(path));
+                return;
+            }
+
+            for (int i = start; i < n; i++) {
+                path.add(selectPath[i]);
+                //分割成两部分 已经选择和待选择部分    核心是全排列的总共有 N!个
+                swap(selectPath, path.size() - 1, i);
+                backtracking(selectPath, path, result, start + 1);
+                path.remove(path.size() - 1);
+                swap(selectPath, path.size(), i);
+            }
+
+
+        }
+
+
+        private void swap(int[] selectPath, int i, int j) {
+            int temp = selectPath[i];
+            selectPath[i] = selectPath[j];
+            selectPath[j] = temp;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
