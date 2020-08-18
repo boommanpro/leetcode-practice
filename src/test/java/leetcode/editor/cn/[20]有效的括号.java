@@ -98,6 +98,7 @@ class SolutionTest20 {
             Assert.assertFalse(solution.isValid("{[]}{"));
             Assert.assertFalse(solution.isValid("(]"));
             Assert.assertFalse(solution.isValid("([)]"));
+            Assert.assertFalse(solution.isValid("]"));
         }
     }
 }
