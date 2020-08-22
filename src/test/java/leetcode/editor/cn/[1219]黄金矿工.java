@@ -91,7 +91,7 @@ class SolutionTest1219 {
             for (int[] direction : DIRECTION) {
                 int x = i + direction[0];
                 int y = j + direction[1];
-                if (x > 0 && y > 0 && x < m && y < n && grid[x][y] != 0 && !visited[x][y]) {
+                if (x >= 0 && y >= 0 && x < m && y < n && grid[x][y] != 0 && !visited[x][y]) {
                     visited[x][y] = true;
                     dfs(x, y, grid, visited, sum + grid[x][y], m, n);
                     visited[x][y] = false;
