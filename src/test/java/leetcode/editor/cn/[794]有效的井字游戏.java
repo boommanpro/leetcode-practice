@@ -51,8 +51,51 @@ class SolutionTest794 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public boolean validTicTacToe(String[] board) {
+            int xCount = 0;
+            int oCount = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    char curr = board[i].charAt(j);
+                    if (curr == ' ') {
+                        continue;
+                    }
+                    if (curr == 'X') {
+                        xCount++;
+                        continue;
+                    }
+                    if (curr == 'O') {
+                        oCount++;
+                    }
+                }
+            }
+            //数量上判断
+            if (oCount != xCount && oCount != xCount - 1) {
+                return false;
+            }
+            if (win(board, 'X') && oCount != xCount - 1) {
+                return false;
+            }
+            if (win(board, 'O') && xCount != oCount) {
+                return false;
+            }
             return true;
+        }
+
+        public boolean win(String[] B, char P) {
+            // B: board, P: player
+            for (int i = 0; i < 3; ++i) {
+                if (P == B[0].charAt(i) && P == B[1].charAt(i) && P == B[2].charAt(i))
+                    return true;
+                if (P == B[i].charAt(0) && P == B[i].charAt(1) && P == B[i].charAt(2))
+                    return true;
+            }
+            if (P == B[0].charAt(0) && P == B[1].charAt(1) && P == B[2].charAt(2))
+                return true;
+            if (P == B[0].charAt(2) && P == B[1].charAt(1) && P == B[2].charAt(0))
+                return true;
+            return false;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -63,10 +106,10 @@ class SolutionTest794 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertFalse(solution.validTicTacToe(new String[]{"O  ", "   ", "   "}));
-            Assert.assertFalse(solution.validTicTacToe(new String[]{"XOX", " X ", "   "}));
-            Assert.assertFalse(solution.validTicTacToe(new String[]{"XXX", "   ", "OOO"}));
-            Assert.assertFalse(solution.validTicTacToe(new String[]{"XOX", "O O", "XOX"}));
+//            Assert.assertFalse(solution.validTicTacToe(new String[]{"O  ", "   ", "   "}));
+//            Assert.assertFalse(solution.validTicTacToe(new String[]{"XOX", " X ", "   "}));
+//            Assert.assertFalse(solution.validTicTacToe(new String[]{"XXX", "   ", "OOO"}));
+            Assert.assertTrue(solution.validTicTacToe(new String[]{"XOX", "O O", "XOX"}));
         }
     }
 }
