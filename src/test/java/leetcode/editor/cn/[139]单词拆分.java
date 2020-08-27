@@ -4,7 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class SolutionTest139 {
 //给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。 
@@ -46,38 +48,21 @@ class SolutionTest139 {
             if (s == null || s.isEmpty()) {
                 return false;
             }
-            //单词能否被字典完美拆分
-            return dfs(s, 0, wordDict);
+            int n = s.length();
+            Set<String> dict = new HashSet<>(wordDict);
+            boolean[] f = new boolean[n + 1];
+            f[0] = true;
+            for (int i = 1; i <= n; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (f[j] && dict.contains(s.substring(j, i))) {
+                        f[i] = true;
+                        break;
+                    }
+                }
+            }
+            return f[n];
         }
 
-        public boolean dfs(String s, int i, List<String> wordDict) {
-            for (String dict : wordDict) {
-                int p = compare(s, i, dict);
-                if (p == -1) {
-                    continue;
-                }
-                if (p == s.length()) {
-                    return true;
-                }
-                if (dfs(s, p, wordDict)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private int compare(String s, int i, String dict) {
-            int n = dict.length();
-            if (n > s.length() - i) {
-                return -1;
-            }
-            for (int p = 0; p < n; p++) {
-                if (dict.charAt(p) != s.charAt(i + p)) {
-                    return -1;
-                }
-            }
-            return i + dict.length();
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
