@@ -66,4 +66,8 @@ public class ArrayUtils {
     public static List<List<Integer>> twoDimension2List(int[][] array) {
         return Arrays.stream(array).map(ints -> Arrays.stream(ints).boxed().collect(Collectors.toList())).collect(Collectors.toList());
     }
+
+    public static List<List<String>> twoDimension2List(String[][] array) {
+        return Arrays.stream(array).map(ints -> Arrays.stream(ints).collect(Collectors.toList())).collect(Collectors.toList());
+    }
 }
