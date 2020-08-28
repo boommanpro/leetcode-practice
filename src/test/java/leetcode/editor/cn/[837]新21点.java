@@ -81,6 +81,7 @@ class SolutionTest837 {
             Assert.assertEquals(1, solution.new21Game(10, 1, 10), 0.00001);
             Assert.assertEquals(0.6, solution.new21Game(6, 1, 10), 0.00001);
             Assert.assertEquals(0.73278, solution.new21Game(21, 17, 10), 0.00001);
+            Assert.assertEquals(0.01846, solution.new21Game(9301, 9224, 7771), 0.00001);
         }
     }
 }
