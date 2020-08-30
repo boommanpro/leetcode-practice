@@ -71,6 +71,7 @@ class SolutionTest464 {
             Solution solution = new Solution();
             Assert.assertFalse(solution.canIWin(10, 11));
             Assert.assertFalse(solution.canIWin(10, 40));
+            Assert.assertFalse(solution.canIWin(20, 210));
         }
     }
 }
