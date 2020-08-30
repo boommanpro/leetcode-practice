@@ -38,28 +38,31 @@ class SolutionTest464 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public boolean canIWin(int n, int desiredTotal){
-            return dfs(new boolean[n + 1],desiredTotal,  n);
+        public boolean canIWin(int n, int desiredTotal) {
+            //可能会存在 目标分数大于选择总和的情况
+            if ((1 + n) * n / 2 < desiredTotal) {
+                return false;
+            }
+            return helper(n, desiredTotal, new Boolean[1 << n], 0);
+        }
+
+        private boolean helper(int n, int desiredTotal, Boolean[] dp, int state) {
+            if (dp[state] != null) {
+                return dp[state];
+            }
+            for (int i = 1; i <= n; i++) {
+                int curr = 1 << (i - 1);
+                if ((curr & state) != 0) {
+                    continue;
+                }
+                if (desiredTotal - i <= 0 || !helper(n, desiredTotal - i, dp, state | curr)) {
+                    return dp[state] = true;
+                }
+            }
+            return dp[state] = false;
         }
 
         //是否胜利
-        public boolean dfs(boolean[] st, int curTotal, int n){
-            //暴力枚举所有状态
-            for(int i = 1; i <= n; i++){
-                if(!st[i]){
-                    if(curTotal - i <= 0)  return true; //能减到小于等于0， 就获胜
-                    st[i] = true;
-                    boolean dfs = dfs(st, curTotal - i, n);
-                    if(!dfs){
-                        //只要后面那个输了， 那么就必胜
-                        st[i] = false;
-                        return true;
-                    }
-                    st[i] = false;
-                }
-            }
-            return false;
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
