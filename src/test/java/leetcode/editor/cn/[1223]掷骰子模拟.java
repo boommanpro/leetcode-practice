@@ -1,5 +1,7 @@
 package leetcode.editor.cn;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -49,17 +51,33 @@ class SolutionTest1223 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         private static final int MOD = 1000000007;
 
         int count;
 
         public int dieSimulator(int n, int[] rollMax) {
-            //连续掷出的次数不超过 rollMax[i] --- 不是全部
-            count = 0;
-            dfs(rollMax, -1, 0, 0, n);
-            return count;
+            int ans = 0;
+            int[][] dp = new int[n][6];
+            for (int i = 0; i < 6; i++) {
+                dp[0][i] = 1;
+            }
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j < 6; j++) {
+                    dp[i][j] = Arrays.stream(dp[i - 1]).reduce(0, (a, b) -> a + b % MOD);
+                    if (i == rollMax[j]) {
+                        dp[i][j]--;
+                    } else if (i > rollMax[j]) {
+                        for (int k = 0; k < 6; k++) {
+                            if (j != k) {
+                                dp[i][j] = (dp[i][j] - dp[i - rollMax[j] - 1][k] + MOD) % MOD;
+                            }
+                        }
+                    }
+                }
+            }
+            return Arrays.stream(dp[n - 1]).reduce(0, (a, b) -> (a + b) % MOD);
         }
-
 
         private void dfs(int[] rollMax, int prevNum, int prevCount, int start, int n) {
             if (start == n) {
@@ -89,7 +107,7 @@ class SolutionTest1223 {
             Assert.assertEquals(34, solution.dieSimulator(2, new int[]{1, 1, 2, 2, 2, 3}));
             Assert.assertEquals(30, solution.dieSimulator(2, new int[]{1, 1, 1, 1, 1, 1}));
             Assert.assertEquals(181, solution.dieSimulator(3, new int[]{1, 1, 1, 2, 2, 3}));
-            Assert.assertEquals(181, solution.dieSimulator(20, new int[]{8, 5, 10, 8, 7, 2}));
+            Assert.assertEquals(508072737, solution.dieSimulator(20, new int[]{8, 5, 10, 8, 7, 2}));
         }
     }
 }
