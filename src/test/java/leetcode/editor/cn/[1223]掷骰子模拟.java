@@ -1,9 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 class SolutionTest1223 {
 //有一个骰子模拟器会每次投掷的时候生成一个 1 到 6 的随机数。 
@@ -53,47 +53,37 @@ class SolutionTest1223 {
     class Solution {
 
         private static final int MOD = 1000000007;
+        ;
 
-        int count;
 
         public int dieSimulator(int n, int[] rollMax) {
-            int ans = 0;
-            int[][] dp = new int[n][6];
-            for (int i = 0; i < 6; i++) {
-                dp[0][i] = 1;
+            int[][] dp = new int[n + 1][6];
+            for (int j = 0; j < 6; ++j) {
+                //在连续投掷的过程中 序列都为1
+                for (int i = 1; i <= Math.min(n, rollMax[j]); ++i) {
+                    dp[i][j] = 1;
+                }
             }
-            for (int i = 1; i < n; i++) {
-                for (int j = 0; j < 6; j++) {
-                    dp[i][j] = Arrays.stream(dp[i - 1]).reduce(0, (a, b) -> a + b % MOD);
-                    if (i == rollMax[j]) {
-                        dp[i][j]--;
-                    } else if (i > rollMax[j]) {
-                        for (int k = 0; k < 6; k++) {
-                            if (j != k) {
-                                dp[i][j] = (dp[i][j] - dp[i - rollMax[j] - 1][k] + MOD) % MOD;
+            //从第二次开始算
+            for (int i = 2; i <= n; ++i) {
+                //当前数字是j
+                for (int j = 0; j < 6; ++j) {
+                    //连续投掷次数是k
+                    for (int k = 1; k <= Math.min(rollMax[j], i); ++k) {
+                        for (int l = 0; l < 6; ++l) {
+                            //这块在之前已经计算过了
+                            if (j == l) {
+                                continue;
                             }
+                            //dp[i-k]为 i-k次投掷为l的数字
+                            dp[i][j] = (dp[i][j] + dp[i - k][l]) % MOD;
                         }
                     }
                 }
             }
-            return Arrays.stream(dp[n - 1]).reduce(0, (a, b) -> (a + b) % MOD);
+            return Arrays.stream(dp[n]).reduce(0, (a, b) -> (a + b) % MOD);
         }
 
-        private void dfs(int[] rollMax, int prevNum, int prevCount, int start, int n) {
-            if (start == n) {
-                count++;
-                return;
-            }
-            for (int i = 0; i < 6; i++) {
-                if ((i == prevNum && prevCount < rollMax[prevNum]) || prevNum == -1 || prevNum != i) {
-                    if (i == prevNum) {
-                        dfs(rollMax, i, prevCount + 1, start + 1, n);
-                    } else {
-                        dfs(rollMax, i, 1, start + 1, n);
-                    }
-                }
-            }
-        }
 
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -107,7 +97,7 @@ class SolutionTest1223 {
             Assert.assertEquals(34, solution.dieSimulator(2, new int[]{1, 1, 2, 2, 2, 3}));
             Assert.assertEquals(30, solution.dieSimulator(2, new int[]{1, 1, 1, 1, 1, 1}));
             Assert.assertEquals(181, solution.dieSimulator(3, new int[]{1, 1, 1, 2, 2, 3}));
-            Assert.assertEquals(508072737, solution.dieSimulator(20, new int[]{8, 5, 10, 8, 7, 2}));
+            Assert.assertEquals(822005673, solution.dieSimulator(20, new int[]{8, 5, 10, 8, 7, 2}));
         }
     }
 }
