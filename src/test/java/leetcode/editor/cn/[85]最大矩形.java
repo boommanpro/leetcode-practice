@@ -28,41 +28,27 @@ class SolutionTest85 {
             }
             int m = matrix.length;
             int n = matrix[0].length;
-            int[][] row = new int[m + 1][n + 1];
-            int[][] col = new int[m + 1][n + 1];
-            for (int i = 1; i <= m; i++) {
-                for (int j = 1; j <= n; j++) {
-                    if (matrix[i - 1][j - 1] == '1') {
-                        row[i][j] = row[i][j - 1] + 1;
-                        col[i][j] = col[i - 1][j] + 1;
-                    }
-                }
-            }
-            int max = 0;
-            for (int i = 1; i <= m; i++) {
-                for (int j = 1; j <= n; j++) {
-                    if (matrix[i - 1][j - 1] == '1') {
-                        max = Math.max(calcMaxArea(i, j, row, col), max);
-                    }
-                }
-            }
-            return max;
-        }
+            int[][] f = new int[m][n];
+            int maxArea = 0;
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (matrix[i][j] == '1') {
+                        if (j == 0) {
+                            f[i][j] = 1;
+                        } else {
+                            f[i][j] = f[i][j - 1] + 1;
+                        }
 
-        private int calcMaxArea(int i, int j, int[][] row, int[][] col) {
-            int rowLength = row[i][j];
-            int colLength = col[i][j];
-            int temp = 1;
-            while (temp < colLength) {
-                rowLength = Math.min(rowLength, row[i - temp ][j]);
-                temp++;
+                        //计算面积
+                        int width = f[i][j];
+                        for (int k = i; k >= 0; k--) {
+                            width = Math.min(width, f[k][j]);
+                            maxArea = Math.max(maxArea, (i - k + 1) * width);
+                        }
+                    }
+                }
             }
-            temp = 1;
-            while (temp < rowLength) {
-                colLength = Math.min(colLength, col[i][j - temp ]);
-                temp++;
-            }
-            return rowLength * colLength;
+            return maxArea;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -73,12 +59,12 @@ class SolutionTest85 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-//            Assert.assertEquals(6, solution.maximalRectangle(new char[][]{
-//                    {'1', '0', '1', '0', '0'},
-//                    {'1', '0', '1', '1', '1'},
-//                    {'1', '1', '1', '1', '1'},
-//                    {'1', '0', '0', '1', '0'}
-//            }));
+            Assert.assertEquals(6, solution.maximalRectangle(new char[][]{
+                    {'1', '0', '1', '0', '0'},
+                    {'1', '0', '1', '1', '1'},
+                    {'1', '1', '1', '1', '1'},
+                    {'1', '0', '0', '1', '0'}
+            }));
             Assert.assertEquals(9, solution.maximalRectangle(new char[][]{
                     {'0', '1', '1', '0', '1'},
                     {'1', '1', '0', '1', '0'},
