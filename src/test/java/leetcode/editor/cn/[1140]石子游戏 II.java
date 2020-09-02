@@ -40,8 +40,24 @@ class SolutionTest1140 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int stoneGameII(int[] piles) {
-            return 0;
+            int n = piles.length;
+            int[][] dp = new int[n][n + 1];
+            int sum = 0;
+            for (int i = n - 1; i >= 0; i--) {
+                sum += piles[i];
+                for (int M = 1; M <= n; M++) {
+                    if (i + 2 * M >= n) {
+                        dp[i][M] = sum;
+                    } else {
+                        for (int x = 1; x <= 2 * M; x++) {
+                            dp[i][M] = Math.max(dp[i][M], sum - dp[i + x][Math.max(x, M)]);
+                        }
+                    }
+                }
+            }
+            return dp[0][1];
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -53,6 +69,8 @@ class SolutionTest1140 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
             Assert.assertEquals(10, solution.stoneGameII(new int[]{2, 7, 9, 4, 4}));
+            Assert.assertEquals(98008, solution.stoneGameII(new int[]{8270, 7145, 575, 5156, 5126, 2905, 8793, 7817, 5532, 5726, 7071, 7730, 5200, 5369, 5763, 7148, 8287, 9449, 7567, 4850, 1385, 2135, 1737, 9511, 8065, 7063, 8023, 7729, 7084, 8407}));
+            Assert.assertEquals(155, solution.stoneGameII(new int[]{1, 2, 3, 4, 5, 7, 1, 2, 2, 1, 2, 3, 5, 6, 44, 55, 66, 77}));
         }
     }
 }
