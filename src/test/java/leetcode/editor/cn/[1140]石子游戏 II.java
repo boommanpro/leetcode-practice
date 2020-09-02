@@ -41,24 +41,41 @@ class SolutionTest1140 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        //不同的i应该对应不同的M，我一开始没区分M，导致提前结束了，答案出错。
         public int stoneGameII(int[] piles) {
             int n = piles.length;
-            int[][] dp = new int[n][n + 1];
-            int sum = 0;
-            for (int i = n - 1; i >= 0; i--) {
-                sum += piles[i];
-                for (int M = 1; M <= n; M++) {
-                    if (i + 2 * M >= n) {
-                        dp[i][M] = sum;
-                    } else {
-                        for (int x = 1; x <= 2 * M; x++) {
-                            dp[i][M] = Math.max(dp[i][M], sum - dp[i + x][Math.max(x, M)]);
-                        }
-                    }
+            int[][] memo = new int[n][n * 100];
+            int[][] dp = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                dp[i][i] = piles[i];
+                for (int j = i + 1; j < n; j++) {
+                    dp[i][j] = dp[i][j - 1] + piles[j];
                 }
             }
-            return dp[0][1];
+            int M = 1;
+            return dfs( dp,0, M, n, memo);
         }
+
+        private int dfs( int[][] dp,int start, int m, int n, int[][] memo) {
+            if (start >= n) {
+                return 0;
+            }
+            if (memo[start][m] != 0) {
+                return memo[start][m];
+            }
+            if (start + 2 * m >= n) {
+                return dp[start][n-1];
+            }
+            int max = -1;
+            for (int x = 1; x <= 2 * m && (x + start) <= n; x++) {
+                //当前max = 总和 - next
+                int next = dfs(dp, start + x, Math.max(m, x), n, memo);
+                max = Math.max(max, dp[start][n - 1] - next);
+            }
+            memo[start][m] = max;
+            return max;
+        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
