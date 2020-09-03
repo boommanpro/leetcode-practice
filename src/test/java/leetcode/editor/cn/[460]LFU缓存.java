@@ -154,6 +154,29 @@ class SolutionTest460 {
             Assert.assertEquals(-1, cache.get(1));
             Assert.assertEquals(3, cache.get(3));
             Assert.assertEquals(4, cache.get(4));
+
+
+            LFUCache cache0 = new LFUCache(3);
+            cache0.put(2, 2);
+            cache0.put(1, 1);
+            Assert.assertEquals(2, cache0.get(2));
+            Assert.assertEquals(1, cache0.get(1));
+            Assert.assertEquals(2, cache0.get(2));
+            //此时 2-3  1-2  3-1
+            cache0.put(3, 3);
+            // 2-3 1-2 4-1
+            cache0.put(4, 4);
+            Assert.assertEquals(-1, cache0.get(3));
+            //2-4 1-2  4-1
+            Assert.assertEquals(2, cache0.get(2));
+            //2-4 1-3 4-1
+            Assert.assertEquals(1, cache0.get(1));
+            Assert.assertEquals(4, cache0.get(4));
+
+            LFUCache cache1 = new LFUCache(0);
+            cache1.put(0, 0);
+            Assert.assertEquals(-1, cache1.get(0));
+
         }
     }
 }
