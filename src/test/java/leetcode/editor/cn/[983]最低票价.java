@@ -3,9 +3,6 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-
 class SolutionTest983 {
 //在一个火车旅行很受欢迎的国度，你提前一年计划了一些火车旅行。在接下来的一年里，你要旅行的日子将以一个名为 days 的数组给出。每一项是一个从 1 到 36
 //5 的整数。 
@@ -65,34 +62,24 @@ class SolutionTest983 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        int[] costs;
-        Integer[] memo;
-        Set<Integer> dayset;
 
         public int mincostTickets(int[] days, int[] costs) {
-            this.costs = costs;
-            memo = new Integer[366];
-            dayset = new HashSet<>();
-            for (int d : days) {
-                dayset.add(d);
+            int n = days.length;
+            int minDay = days[0];
+            int maxDay = days[n - 1];
+            int[] f = new int[maxDay + 31];
+            for (int i = maxDay, p = n - 1; i >= minDay; i--) {
+                if (i == days[p]) {
+                    f[i] = Math.min(f[i + 1] + costs[0], f[i + 7] + costs[1]);
+                    f[i] = Math.min(f[i], f[i + 30] + costs[2]);
+                    p--;
+                } else {
+                    f[i] = f[i + 1];
+                }
             }
-            return dp(1);
+            return f[minDay];
         }
 
-        public int dp(int i) {
-            if (i > 365) {
-                return 0;
-            }
-            if (memo[i] != null) {
-                return memo[i];
-            }
-            if (dayset.contains(i)) {
-                memo[i] = Math.min(Math.min(dp(i + 1) + costs[0], dp(i + 7) + costs[1]), dp(i + 30) + costs[2]);
-            } else {
-                memo[i] = dp(i + 1);
-            }
-            return memo[i];
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -103,7 +90,7 @@ class SolutionTest983 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
             Assert.assertEquals(11, solution.mincostTickets(new int[]{1, 4, 6, 7, 8, 20}, new int[]{2, 7, 15}));
-//            Assert.assertEquals(17, solution.mincostTickets(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 31}, new int[]{2, 7, 15}));
+            Assert.assertEquals(17, solution.mincostTickets(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 31}, new int[]{2, 7, 15}));
         }
     }
 }
