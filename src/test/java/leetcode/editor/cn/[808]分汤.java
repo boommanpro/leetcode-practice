@@ -7,10 +7,10 @@ class SolutionTest808 {
 //有 A 和 B 两种类型的汤。一开始每种类型的汤有 N 毫升。有四种分配操作： 
 //
 // 
-// 提供 100ml 的汤A 和 0ml 的汤B。 
-// 提供 75ml 的汤A 和 25ml 的汤B。 
-// 提供 50ml 的汤A 和 50ml 的汤B。 
-// 提供 25ml 的汤A 和 75ml 的汤B。 
+// 提供 100ml 的汤A 和 0ml 的汤B。      ->  (4,0)
+// 提供 75ml 的汤A 和 25ml 的汤B。      ->  (3,1)
+// 提供 50ml 的汤A 和 50ml 的汤B。      ->  (2,2)
+// 提供 25ml 的汤A 和 75ml 的汤B。      ->  (1,3)
 // 
 //
 // 当我们把汤分配给某人之后，汤就没有了。每个回合，我们将从四种概率同为0.25的操作中进行分配选择。如果汤的剩余量不足以完成某次操作，我们将尽可能分配。当两
@@ -44,12 +44,12 @@ class SolutionTest808 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public double soupServings(int N) {
+            // 拆分 -> / 25
             N = N / 25 + (N % 25 > 0 ? 1 : 0);
             if (N >= 500) {
                 return 1.0;
             }
-
-            double[][] memo = new double[N + 1][N + 1];
+            double[][] f = new double[N + 1][N + 1];
             for (int s = 0; s <= 2 * N; ++s) {
                 for (int i = 0; i <= N; ++i) {
                     int j = s - i;
@@ -64,21 +64,22 @@ class SolutionTest808 {
                         ans = 0.5;
                     }
                     if (i > 0 && j > 0) {
-                        ans = 0.25 * (memo[M(i - 4)][j] +
-                                memo[M(i - 3)][M(j - 1)] +
-                                memo[M(i - 2)][M(j - 2)] +
-                                memo[M(i - 1)][M(j - 3)]);
+                        ans = 0.25 * (f[M(i - 4)][j] +
+                                f[M(i - 3)][M(j - 1)] +
+                                f[M(i - 2)][M(j - 2)] +
+                                f[M(i - 1)][M(j - 3)]
+                        );
                     }
-                    memo[i][j] = ans;
-
+                    f[i][j] = ans;
                 }
             }
-            return memo[N][N];
+            return f[N][N];
         }
 
-        public int M(int x) {
-            return Math.max(0, x);
+        public int M(int x){
+            return Math.max(x, 0);
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -88,7 +89,8 @@ class SolutionTest808 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals(0.625, solution.soupServings(50), 0.0001);
+            Assert.assertEquals(0.625, solution.soupServings(50), 0.00001);
+            Assert.assertEquals(0.71875, solution.soupServings(100), 0.00001);
         }
     }
 }
