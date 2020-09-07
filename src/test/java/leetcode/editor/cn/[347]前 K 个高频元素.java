@@ -1,7 +1,6 @@
 package leetcode.editor.cn;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,8 @@ class SolutionTest347 {
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public List<Integer> topKFrequent(int[] nums, int k) {
+        public int[] topKFrequent(int[] nums, int k) {
+
             return Arrays.stream(nums)
                     .boxed()
                     .collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()))
@@ -43,7 +43,7 @@ class SolutionTest347 {
                     .stream()
                     .sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue()))
                     .map(Map.Entry::getKey).collect(Collectors.toList())
-                    .subList(0, k);
+                    .subList(0, k).stream().mapToInt(Integer::intValue).toArray();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -55,13 +55,11 @@ class SolutionTest347 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
 
-            List<Integer> result1 = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
-            int[] result1Array = result1.stream().mapToInt(Integer::intValue).toArray();
-            Assert.assertArrayEquals(new int[]{1, 2}, result1Array);
+            int[] result1 = solution.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2);
+            Assert.assertArrayEquals(new int[]{1, 2}, result1);
 
-            List<Integer> result2 = solution.topKFrequent(new int[]{1}, 1);
-            int[] result2Array = result2.stream().mapToInt(Integer::intValue).toArray();
-            Assert.assertArrayEquals(new int[]{1}, result2Array);
+            int[] result2 = solution.topKFrequent(new int[]{1}, 1);
+            Assert.assertArrayEquals(new int[]{1}, result2);
         }
     }
 }
