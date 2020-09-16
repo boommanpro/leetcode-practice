@@ -45,7 +45,7 @@ class SolutionTest226 {
 
         public TreeNode invertTree(TreeNode root) {
             if (root == null) {
-                return root;
+                return null;
             }
             invertTree(root.left);
             invertTree(root.right);
@@ -63,8 +63,7 @@ class SolutionTest226 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("[4, 2, 7, 9, 6, 3, 1]", solution.invertTree(TreeNode.getTreeNode(new Integer[]{4, 2, 7, 1, 3, 6, 9})).toIntArrayString());
-
+            Assert.assertEquals("[4, 7, 2, 9, 6, 3, 1]", solution.invertTree(TreeNode.getTreeNode(new Integer[]{4, 2, 7, 1, 3, 6, 9})).toIntArrayString());
         }
     }
 }
