@@ -32,7 +32,22 @@ class SolutionTestLCP_19 {
     class Solution {
 
         public int minimumOperations(String leaves) {
-            return 0;
+            int n = leaves.length();
+            int[][] f = new int[n][3];
+            // 0是前面都是红色  1是黄色 2是后面是红色
+            f[0][0] = leaves.charAt(0) == 'y' ? 1 : 0;
+            //因为要保证每个部分最少为一片
+            f[0][1] = f[0][2] = f[1][2] = Integer.MAX_VALUE;
+            for (int i = 1; i < n; i++) {
+                int yellow = leaves.charAt(i) == 'y' ? 1 : 0;
+                int red = leaves.charAt(i) == 'r' ? 1 : 0;
+                f[i][0] = f[i - 1][0] + yellow;
+                f[i][1] = Math.min(f[i - 1][0], f[i - 1][1]) + red;
+                if (i >= 2) {
+                    f[i][2] = Math.min(f[i - 1][2], f[i - 1][1]) + yellow;
+                }
+            }
+            return f[n - 1][2];
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
