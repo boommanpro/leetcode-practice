@@ -32,44 +32,55 @@ class SolutionTest18 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        private List<List<Integer>> result;
-
-        private static final int N = 4;
-
         public List<List<Integer>> fourSum(int[] nums, int target) {
-            result = new ArrayList<>();
+            List<List<Integer>> quadruplets = new ArrayList<List<Integer>>();
             if (nums == null || nums.length < 4) {
-                return result;
+                return quadruplets;
             }
             Arrays.sort(nums);
-            dfs(nums, new ArrayList<>(), 0, 0, 0, target);
-            return result;
-        }
-
-        private void dfs(int[] nums, List<Integer> path, int sum, int location, int p, int target) {
-            //剪枝
-            if (location == N) {
-                if (sum == target) {
-                    result.add(new ArrayList<>(path));
-                }
-                return;
-            }
             int length = nums.length;
-            Set<Integer> visited = new HashSet<>();
-            for (int i = p; i < length; i++) {
-                if (visited.contains(nums[i])) {
+            for (int i = 0; i < length - 3; i++) {
+                if (i > 0 && nums[i] == nums[i - 1]) {
                     continue;
                 }
-                //剩余数目剪枝
-                if (length - i < N - location) {
-                    return;
+                if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
+                    break;
                 }
-                path.add(nums[i]);
-                visited.add(nums[i]);
-
-                dfs(nums, path, sum + nums[i], location + 1, i + 1, target);
-                path.remove(path.size() - 1);
+                if (nums[i] + nums[length - 3] + nums[length - 2] + nums[length - 1] < target) {
+                    continue;
+                }
+                for (int j = i + 1; j < length - 2; j++) {
+                    if (j > i + 1 && nums[j] == nums[j - 1]) {
+                        continue;
+                    }
+                    if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) {
+                        break;
+                    }
+                    if (nums[i] + nums[j] + nums[length - 2] + nums[length - 1] < target) {
+                        continue;
+                    }
+                    int left = j + 1, right = length - 1;
+                    while (left < right) {
+                        int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                        if (sum == target) {
+                            quadruplets.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                            while (left < right && nums[left] == nums[left + 1]) {
+                                left++;
+                            }
+                            left++;
+                            while (left < right && nums[right] == nums[right - 1]) {
+                                right--;
+                            }
+                            right--;
+                        } else if (sum < target) {
+                            left++;
+                        } else {
+                            right--;
+                        }
+                    }
+                }
             }
+            return quadruplets;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
