@@ -30,26 +30,24 @@ class SolutionTest24 {
     class Solution {
 
         public ListNode swapPairs(ListNode head) {
-            //如果节点数为0或1
             if (head == null || head.next == null) {
                 return head;
             }
-            ListNode result = new ListNode(-1);
-            result.next = head;
-            ListNode prev = result;
-            ListNode curr;
-            ListNode next;
-            ListNode temp;
-            while (prev.next != null && prev.next.next != null) {
-                curr = prev.next;
-                next = curr.next;
-                temp = next.next;
-                next.next = curr;
-                curr.next = temp;
+            ListNode dummy = new ListNode(-1);
+            dummy.next = head;
+            ListNode prev = dummy;
+            ListNode curr = prev.next;
+            while (curr != null && curr.next != null) {
+                ListNode next = curr.next;
+                ListNode tail = next.next;
                 prev.next = next;
+                curr.next = tail;
+                next.next = curr;
+
                 prev = curr;
+                curr = prev.next;
             }
-            return result.next;
+            return dummy.next;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -62,7 +60,10 @@ class SolutionTest24 {
             Solution solution = new Solution();
             ListNode node1 = new ListNode(1);
             node1.addNext(2).addNext(3).addNext(4);
-            Assert.assertEquals("2143", solution.swapPairs(node1).getPositiveListNodeValue());
+            Assert.assertEquals("[2, 1, 4, 3]", solution.swapPairs(node1).getPositiveListNodeValue());
+            ListNode node2 = new ListNode(1);
+            node2.addNext(2).addNext(3).addNext(4).addNext(5).addNext(6).addNext(7).addNext(8).addNext(9);
+            Assert.assertEquals("[2, 1, 4, 3, 6, 5, 8, 7, 9]", solution.swapPairs(node2).getPositiveListNodeValue());
         }
     }
 }
