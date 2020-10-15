@@ -1,7 +1,6 @@
 package leetcode.editor.cn.binaryTree;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author wangqimeng
@@ -68,5 +67,26 @@ public class Node {
             lineNum = nodeQueue.size() * 2;
         }
         return root;
+    }
+
+    public String toInString() {
+        List<Integer> result = new ArrayList<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(this);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            while (n > 0) {
+                Node temp = queue.poll();
+                if (temp.left != null) {
+                    queue.offer(temp.left);
+                }
+                if (temp.right != null) {
+                    queue.offer(temp.right);
+                }
+                result.add(temp.val);
+                n--;
+            }
+        }
+        return result.toString();
     }
 }

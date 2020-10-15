@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import leetcode.editor.cn.binaryTree.Node;
+import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest116 {
@@ -81,19 +82,19 @@ class Node {
 
         @SuppressWarnings("all")
         public Node connect(Node root) {
-            return connect(root,null);
+            return connect(root, null);
         }
 
-        public Node connect(Node pre,Node next) {
+        private Node connect(Node pre, Node next) {
             if (pre == null) {
                 return null;
             }
             pre.next = next;
             connect(pre.left, pre.right);
-            connect(pre.right, pre.next != null ? pre.next.left : null);
+            connect(pre.right, pre.next == null ? null : pre.next.left);
             return pre;
-
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -103,7 +104,7 @@ class Node {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            System.out.println(solution.connect(Node.getNode(new Integer[]{1, 2, 3, 4, 5, 6, 7})));
+            Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7]",solution.connect(Node.getNode(new Integer[]{1, 2, 3, 4, 5, 6, 7})).toInString());
         }
     }
 }
