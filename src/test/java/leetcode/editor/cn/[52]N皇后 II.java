@@ -46,50 +46,55 @@ class SolutionTest52 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         int count;
+
+        int N;
 
         public int totalNQueens(int n) {
             count = 0;
+            N = n;
             boolean[][] board = new boolean[n][n];
-            dfs(board, 0, n);
+            dfs(board, 0);
             return count;
         }
 
-        private void dfs(boolean[][] board, int start, int n) {
-            if (start == n) {
+        private void dfs(boolean[][] board, int start) {
+            if (start == N) {
                 count++;
                 return;
             }
-            for (int i = 0; i < n; i++) {
-                if (isSafePosition(board, start, i)) {
-                    fillSafePosition(board, start, i);
-                    dfs(board, start + 1, n);
+            for (int i = 0; i < N; i++) {
+                if (checkSuccess(board, start, i)) {
+                    board[start][i] = true;
+                    dfs(board, start + 1);
+                    board[start][i] = false;
                 }
             }
         }
 
-        private void fillSafePosition(boolean[][] board, int row, int col) {
-            Arrays.fill(board[row], false);
-            board[row][col] = true;
-        }
-
-        private boolean isSafePosition(boolean[][] board, int row, int col) {
-            int N = board.length;
-            int step = 1;
-            while (row - step >= 0) {
-                if (board[row - step][col]) {
+        private boolean checkSuccess(boolean[][] board, int row, int col) {
+            //不能在同一列
+            //不能在同一对角
+            for (int i = 0; i < row; i++) {
+                if (board[i][col]) {
                     return false;
                 }
-                if (col - step >= 0 && board[row - step][col - step]) {
+            }
+            int l = 0, r = 0;
+            for (int i = row-1; i >= 0; i--) {
+                l--;
+                r++;
+                if (col + l >= 0 && board[i][col + l]) {
                     return false;
                 }
-                if (col + step < N && board[row - step][col + step]) {
+                if (col + r < N && board[i][col + r]) {
                     return false;
                 }
-                step++;
             }
             return true;
         }
+
 
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -101,6 +106,11 @@ class SolutionTest52 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
             Assert.assertEquals(2, solution.totalNQueens(4));
+            Assert.assertEquals(10, solution.totalNQueens(5));
+            Assert.assertEquals(4, solution.totalNQueens(6));
+            Assert.assertEquals(40, solution.totalNQueens(7));
+            Assert.assertEquals(92, solution.totalNQueens(8));
+            Assert.assertEquals(352, solution.totalNQueens(9));
         }
     }
 }
