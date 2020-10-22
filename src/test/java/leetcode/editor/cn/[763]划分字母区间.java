@@ -1,7 +1,6 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,32 +40,24 @@ class SolutionTest763 {
         Map<Character, Integer> endDict;
 
         public List<Integer> partitionLabels(String S) {
-            //字符串划分为尽可能多的片段，同一个字母只会出现在其中的一个片段
-            if (S == null || S.isEmpty()) {
-                return new ArrayList<>();
-            }
-            endDict = new HashMap<>();
+            int[] dict = new int[26];
             char[] array = S.toCharArray();
-            for (int i = 0; i < array.length; i++) {
-                endDict.put(array[i], i);
+            int len = array.length;
+            //填充dict
+            for (int i = 0; i < len; i++) {
+                dict[array[i] - 'a'] = i;
             }
-            return partitionLabels0(S);
-        }
+            List<Integer> partition = new ArrayList<>();
+            int start = 0, end = 0;
+            for (int i = 0; i < len; i++) {
+                end = Math.max(end, dict[S.charAt(i) - 'a']);
+                if (i == end) {
+                    partition.add(end - start + 1);
+                    start = end + 1;
+                }
 
-        private List<Integer> partitionLabels0(String S) {
-            List<Integer> result = new ArrayList<>();
-            if (S.isEmpty()) {
-                return result;
             }
-            int start = 0;
-            int endPosition = endDict.get(S.charAt(start));
-            while (start < endPosition) {
-                endPosition = Math.max(endDict.get(S.charAt(start)),endPosition);
-                start++;
-            }
-            result.add(start + 1);
-            result.addAll(partitionLabels(S.substring(start+1)));
-            return result;
+            return partition;
         }
 
     }
@@ -78,7 +69,8 @@ class SolutionTest763 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("[9, 7, 8]", solution.partitionLabels("ababcbacadefegdehijhklij").toString());
+//            Assert.assertEquals("[9, 7, 8]", solution.partitionLabels("ababcbacadefegdehijhklij").toString());
+            Assert.assertEquals("[1, 9]", solution.partitionLabels("caedbdedda").toString());
         }
     }
 }
