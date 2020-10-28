@@ -1,9 +1,6 @@
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -51,11 +48,18 @@ class SolutionTest1207 {
     class Solution {
 
         public boolean uniqueOccurrences(int[] arr) {
-            List<Long> counts = new ArrayList<>(Arrays.stream(arr)
-                    .boxed()
-                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                    .values());
-            return counts.size() == new HashSet<>(counts).size();
+            int[] count = new int[2001];
+            for (int i = 0; i < arr.length; i++) {
+                count[1000 + arr[i]]++;
+            }
+            Set<Integer> set = new HashSet<>();
+            for (int value : count) {
+                if (value == 0)
+                    continue;
+                if (!set.add(value))//如果存储失败，说明有重复的
+                    return false;
+            }
+            return true;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
