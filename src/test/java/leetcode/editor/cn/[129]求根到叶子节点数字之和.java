@@ -3,9 +3,6 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class SolutionTest129 {
 //给定一个二叉树，它的每个结点都存放一个 0-9 的数字，每条从根到叶子节点的路径都代表一个数字。 
 //
@@ -57,39 +54,25 @@ class SolutionTest129 {
  */
     class Solution {
 
-        List<String> allPath;
+        int ans;
 
         public int sumNumbers(TreeNode root) {
-            if (root == null) {
-                return 0;
-            }
-            allPath = new ArrayList<>();
-            dfs(root, new StringBuilder());
-            if (allPath.isEmpty()) {
-                return 0;
-            }
-            int result = 0;
-            for (String s : allPath) {
-                result += Integer.parseInt(s);
-            }
-            return result;
+            ans = 0;
+            dfs(root, 0);
+            return ans;
         }
 
-        private void dfs(TreeNode root, StringBuilder path) {
+        private void dfs(TreeNode root, int v) {
             if (root == null) {
                 return;
             }
+            int next = v * 10 + root.val;
             if (root.left == null && root.right == null) {
-                String temp = path.toString();
-                allPath.add(temp + root.val);
+                ans += next;
                 return;
             }
-            path.append(root.val);
-            dfs(root.left, path);
-            dfs(root.right, path);
-            int end = path.length();
-            int start = end - 1;
-            path.delete(start, end);
+            dfs(root.left, next);
+            dfs(root.right, next);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
