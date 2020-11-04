@@ -46,13 +46,13 @@ class SolutionTest57 {
                 if (o1.get(0).equals(o2.get(0))) {
                     return o1.get(1) - o2.get(1);
                 }
-                return o1.get(0)-o2.get(0);
+                return o1.get(0) - o2.get(0);
             });
             List<List<Integer>> result = new ArrayList<>();
             ans.stream().reduce((before, after) -> {
                 //如果没有交集 加入集合 返回数据
                 //[1,2],[3,5],[4,8],[6,7],[8,10],[12,16]
-                if (before.get(1) <after.get(0)) {
+                if (before.get(1) < after.get(0)) {
                     result.add(before);
                     return after;
                 }
@@ -73,8 +73,8 @@ class SolutionTest57 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-//            Assert.assertEquals("[[1, 5],[6, 9]]", ArrayUtils.twoDimensionList2String(solution.insert(new int[][]{{1, 3}, {6, 9}}, new int[]{2, 5})));
-            Assert.assertEquals("", ArrayUtils.twoDimensionList2String(solution.insert(new int[][]{{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}}, new int[]{4, 8})));
+            Assert.assertEquals("[[1, 5],[6, 9]]", ArrayUtils.twoDimensionList2String(solution.insert(new int[][]{{1, 3}, {6, 9}}, new int[]{2, 5})));
+            Assert.assertEquals("[[1, 2],[3, 10],[12, 16]]", ArrayUtils.twoDimensionList2String(solution.insert(new int[][]{{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}}, new int[]{4, 8})));
         }
     }
 }
