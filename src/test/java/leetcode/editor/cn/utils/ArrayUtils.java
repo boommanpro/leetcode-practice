@@ -2,7 +2,6 @@ package leetcode.editor.cn.utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +55,7 @@ public class ArrayUtils {
         for (int i = 0; i < array.length; i++) {
             sb.append(twoDimension2String(array[i]));
             if (i != array.length - 1) {
-                sb.append(",");
+                sb.append(", ");
             }
         }
         sb.append("]");
@@ -69,5 +68,17 @@ public class ArrayUtils {
 
     public static List<List<String>> twoDimension2List(String[][] array) {
         return Arrays.stream(array).map(ints -> Arrays.stream(ints).collect(Collectors.toList())).collect(Collectors.toList());
+    }
+
+    public static String twoDimensionList2String(int[][] insert) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < insert.length; i++) {
+            sb.append(Arrays.toString(insert[i]));
+            if (i != insert.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
