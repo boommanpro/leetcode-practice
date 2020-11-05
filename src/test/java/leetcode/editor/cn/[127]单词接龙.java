@@ -76,7 +76,7 @@ class SolutionTest127 {
             int beginId = wordId.get(beginWord), endId = wordId.get(endWord);
             dis[beginId] = 0;
 
-            Queue<Integer> que = new LinkedList<Integer>();
+            Queue<Integer> que = new LinkedList<>();
             que.offer(beginId);
             while (!que.isEmpty()) {
                 int x = que.poll();
@@ -127,6 +127,7 @@ class SolutionTest127 {
             Solution solution = new Solution();
             Assert.assertEquals(5, solution.ladderLength("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log", "cog")));
             Assert.assertEquals(0, solution.ladderLength("hit", "cog", Arrays.asList("hot", "dot", "dog", "lot", "log")));
+            Assert.assertEquals(0, solution.ladderLength("hot", "dog", Arrays.asList("hot", "dog")));
         }
     }
 }
