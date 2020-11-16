@@ -86,10 +86,10 @@ class SolutionTest402 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-//            Assert.assertEquals("1219", solution.removeKdigits("1432219", 3));
-//            Assert.assertEquals("200", solution.removeKdigits("10200", 1));
-//            Assert.assertEquals("0", solution.removeKdigits("10", 2));
-//            Assert.assertEquals("1234", solution.removeKdigits("123456", 2));
+            Assert.assertEquals("1219", solution.removeKdigits("1432219", 3));
+            Assert.assertEquals("200", solution.removeKdigits("10200", 1));
+            Assert.assertEquals("0", solution.removeKdigits("10", 2));
+            Assert.assertEquals("1234", solution.removeKdigits("123456", 2));
             Assert.assertEquals("1224", solution.removeKdigits("12345264", 4));
         }
     }
