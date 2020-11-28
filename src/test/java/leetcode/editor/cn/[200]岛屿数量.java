@@ -1,6 +1,5 @@
 package leetcode.editor.cn;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Assert;
 import org.junit.Test;
 
