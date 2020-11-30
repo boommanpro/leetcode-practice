@@ -2,6 +2,7 @@ package leetcode.editor.cn.utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -78,6 +79,14 @@ public class ArrayUtils {
                 sb.append(",");
             }
         }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public static<T> String toString(T[] array) {
+        StringBuilder sb = new StringBuilder("[");
+        String content = Arrays.stream(array).map(t -> t.toString()).collect(Collectors.joining(", "));
+        sb.append(content);
         sb.append("]");
         return sb.toString();
     }
