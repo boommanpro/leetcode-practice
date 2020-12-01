@@ -26,51 +26,36 @@ class SolutionTest34 {
     class Solution {
 
         public int[] searchRange(int[] nums, int target) {
-            int[] ans = {-1, -1};
-            if (nums == null) {
-                return ans;
+
+            if (nums == null || nums.length == 0 || target < nums[0] || target > nums[nums.length - 1]) {
+                return new int[]{-1, -1};
             }
-            int n = nums.length;
-            if (n == 0) {
-                return ans;
-            }
-            //做两次二分查找即可
+            int len = nums.length;
             int l = 0;
-            int r = n - 1;
-            //寻找第一个位置
-            l = findFirstPosition(nums, l, r, target);
-            if (l == -1) {
-                return ans;
-            }
-
-            ans[0] = l;
-            r = n - 1;
-            //寻找最后一个位置
-            while (l + 1 <= r) {
-                if (nums[l + 1] == target) {
-                    l++;
-                    continue;
-                }
-                break;
-            }
-            ans[1] = l;
-            return ans;
-        }
-
-        private int findFirstPosition(int[] nums, int l, int r, int target) {
-            while (l < r) {
+            int r = len - 1;
+            while (l <= r) {
                 int mid = ((r - l) >> 1) + l;
-                if (nums[mid] >= target) {
-                    r = mid;
+                if (nums[mid] == target) {
+                    while (mid > 0 && nums[mid - 1] == target) {
+                        mid--;
+                    }
+                    return new int[]{mid, findTargetRight(nums, mid, target)};
+                } else if (nums[mid] > target) {
+                    r = mid - 1;
                 } else {
                     l = mid + 1;
                 }
             }
-            if (nums[l] == target) {
-                return l;
-            }
-            return -1;
+            return new int[]{-1, -1};
         }
+
+        private int findTargetRight(int[] nums, int mid, int target) {
+            while (mid < nums.length - 1 && nums[mid] == nums[mid + 1]) {
+                mid++;
+            }
+            return mid;
+        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -80,10 +65,13 @@ class SolutionTest34 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertArrayEquals(new int[]{-1, -1}, solution.searchRange(new int[]{}, 0));
+            Assert.assertArrayEquals(new int[]{0, 0}, solution.searchRange(new int[]{1}, 1));
             Assert.assertArrayEquals(new int[]{0, 1}, solution.searchRange(new int[]{2, 2}, 2));
             Assert.assertArrayEquals(new int[]{3, 4}, solution.searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8));
             Assert.assertArrayEquals(new int[]{-1, -1}, solution.searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6));
             Assert.assertArrayEquals(new int[]{5, 17}, solution.searchRange(new int[]{1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10}, 7));
+            Assert.assertArrayEquals(new int[]{5, 31}, solution.searchRange(new int[]{1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,}, 7));
 
         }
     }
