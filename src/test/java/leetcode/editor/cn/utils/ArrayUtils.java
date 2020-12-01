@@ -38,7 +38,6 @@ public class ArrayUtils {
         return sb.toString();
     }
 
-
     public static String threeDimension2String(int[][][] array) {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < array.length; i++) {
@@ -83,11 +82,15 @@ public class ArrayUtils {
         return sb.toString();
     }
 
-    public static<T> String toString(T[] array) {
+    public static <T> String toString(T[] array) {
         StringBuilder sb = new StringBuilder("[");
         String content = Arrays.stream(array).map(t -> t.toString()).collect(Collectors.joining(", "));
         sb.append(content);
         sb.append("]");
         return sb.toString();
+    }
+
+    public static String twoDimensionCollections2String(List<List<String>> collection) {
+        return collection.stream().map(Object::toString).collect(Collectors.toList()).toString();
     }
 }
