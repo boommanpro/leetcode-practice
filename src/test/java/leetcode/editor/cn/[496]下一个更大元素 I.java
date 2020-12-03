@@ -48,24 +48,7 @@ class SolutionTest496 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-            //nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出 -1
-            Map<Integer, Integer> positionMap = new HashMap<>();
-            for (int i = 0; i < nums2.length; i++) {
-                positionMap.put(nums2[i], i);
-            }
-            for (int i = 0; i < nums1.length; i++) {
-                int temp = nums1[i];
-                for (int j = positionMap.get(temp)+1; j < nums2.length; j++) {
-                    if (nums2[j] > temp) {
-                        nums1[i] = nums2[j];
-                        break;
-                    }
-                }
-                if (nums1[i] == temp) {
-                    nums1[i] = -1;
-                }
-            }
-            return nums1;
+            return null;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -77,7 +60,7 @@ class SolutionTest496 {
         public void defaultSolutionTest() {
             Solution solution = new Solution();
             Assert.assertEquals("[-1, 3, -1]", Arrays.toString(solution.nextGreaterElement(new int[]{4, 1, 2}, new int[]{1, 3, 4, 2})));
-            Assert.assertEquals("[3, -1]", Arrays.toString(solution.nextGreaterElement(new int[]{2,4}, new int[]{1,2,3,4})));
+            Assert.assertEquals("[3, -1]", Arrays.toString(solution.nextGreaterElement(new int[]{2, 4}, new int[]{1, 2, 3, 4})));
         }
     }
 }
