@@ -2,7 +2,6 @@ package leetcode.editor.cn.utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +89,7 @@ public class ArrayUtils {
         return sb.toString();
     }
 
-    public static String twoDimensionCollections2String(List<List<String>> collection) {
+    public static<T> String twoDimensionCollections2String(List<List<T>> collection) {
         return collection.stream().map(Object::toString).collect(Collectors.toList()).toString();
     }
 }

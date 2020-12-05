@@ -1,8 +1,11 @@
 package leetcode.editor.cn;
 
+import leetcode.editor.cn.utils.ArrayUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class SolutionTest118 {
@@ -29,42 +32,24 @@ class SolutionTest118 {
 
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-
         public List<List<Integer>> generate(int numRows) {
-            List<List<Integer>> triangle = new ArrayList<>();
-
-            // First base case; if user requests zero rows, they get zero rows.
+            List<List<Integer>> ans = new ArrayList<>();
             if (numRows == 0) {
-                return triangle;
+                return ans;
             }
-
-            // Second base case; first row is always [1].
-            triangle.add(new ArrayList<>());
-            triangle.get(0).add(1);
-
-            for (int rowNum = 1; rowNum < numRows; rowNum++) {
-                List<Integer> row = new ArrayList<>();
-                List<Integer> prevRow = triangle.get(rowNum - 1);
-
-                // The first row element is always 1.
-                row.add(1);
-
-                // Each triangle element (other than the first and last of each row)
-                // is equal to the sum of the elements above-and-to-the-left and
-                // above-and-to-the-right.
-                for (int j = 1; j < rowNum; j++) {
-                    row.add(prevRow.get(j - 1) + prevRow.get(j));
+            ans.add(Collections.singletonList(1));
+            for (int i = 1; i < numRows; i++) {
+                List<Integer> before = ans.get(i - 1);
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                for (int j = 1; j < i; j++) {
+                    list.add(before.get(j - 1) + before.get(j));
                 }
-
-                // The last row element is always 1.
-                row.add(1);
-
-                triangle.add(row);
+                list.add(1);
+                ans.add(list);
             }
-
-            return triangle;
+            return ans;
         }
-
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -74,6 +59,7 @@ class SolutionTest118 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertEquals("[[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]", ArrayUtils.twoDimensionCollections2String(solution.generate(5)));
         }
     }
 }
