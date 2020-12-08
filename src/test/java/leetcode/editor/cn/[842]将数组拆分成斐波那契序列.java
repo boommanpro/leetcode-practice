@@ -71,41 +71,44 @@ class SolutionTest842 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<Integer> splitIntoFibonacci(String S) {
-            List<Integer> list = new ArrayList<Integer>();
-            backtrack(list, S, S.length(), 0, 0, 0);
-            return list;
+            List<Integer> ans = new ArrayList<>();
+            backTracking(S, S.length(), ans, 0, 0, 0);
+            return ans;
         }
 
-        public boolean backtrack(List<Integer> list, String S, int length, int index, int sum, int prev) {
-            if (index == length) {
-                return list.size() >= 3;
+        private boolean backTracking(String S, int len, List<Integer> ans, int index, int prev, int sum) {
+            if (len == index) {
+                return ans.size() >= 3;
             }
             long currLong = 0;
-            for (int i = index; i < length; i++) {
+            for (int i = index; i < len; i++) {
                 if (i > index && S.charAt(index) == '0') {
-                    break;
+                    return false;
                 }
                 currLong = currLong * 10 + S.charAt(i) - '0';
                 if (currLong > Integer.MAX_VALUE) {
-                    break;
+                    return false;
                 }
                 int curr = (int) currLong;
-                if (list.size() >= 2) {
+                if (ans.size() >= 2) {
                     if (curr < sum) {
                         continue;
-                    } else if (curr > sum) {
-                        break;
+                    }
+                    if (curr > sum) {
+                        return false;
                     }
                 }
-                list.add(curr);
-                if (backtrack(list, S, length, i + 1, prev + curr, curr)) {
+                ans.add(curr);
+                if (backTracking(S, len, ans, i + 1, curr, curr + prev)) {
                     return true;
                 } else {
-                    list.remove(list.size() - 1);
+                    ans.remove(ans.size() - 1);
                 }
             }
             return false;
         }
+
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -115,12 +118,12 @@ class SolutionTest842 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("", solution.splitIntoFibonacci("123456579").toString());
-            Assert.assertEquals("", solution.splitIntoFibonacci("11235813").toString());
-            Assert.assertEquals("", solution.splitIntoFibonacci("112358130").toString());
-            Assert.assertEquals("", solution.splitIntoFibonacci("0123").toString());
-            Assert.assertEquals("", solution.splitIntoFibonacci("1101111").toString());
-            Assert.assertEquals("", solution.splitIntoFibonacci("000").toString());
+            Assert.assertEquals("[123, 456, 579]", solution.splitIntoFibonacci("123456579").toString());
+            Assert.assertEquals("[1, 1, 2, 3, 5, 8, 13]", solution.splitIntoFibonacci("11235813").toString());
+            Assert.assertEquals("[]", solution.splitIntoFibonacci("112358130").toString());
+            Assert.assertEquals("[]", solution.splitIntoFibonacci("0123").toString());
+            Assert.assertEquals("[11, 0, 11, 11]", solution.splitIntoFibonacci("1101111").toString());
+            Assert.assertEquals("[0, 0, 0]", solution.splitIntoFibonacci("000").toString());
         }
     }
 }
