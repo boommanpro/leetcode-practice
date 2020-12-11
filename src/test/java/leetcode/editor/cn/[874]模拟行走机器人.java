@@ -1,5 +1,10 @@
 package leetcode.editor.cn;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest874 {
@@ -52,8 +57,46 @@ class SolutionTest874 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
+        //顺时针
+        private static final int[][] DIRECTION = new int[][]{
+                {0, 1},
+                {1, 0},
+                {0, -1},
+                {-1, 0}
+        };
+
         public int robotSim(int[] commands, int[][] obstacles) {
             int max = 0;
+            int direction = 0;
+            Set<Long> blocking = Arrays.stream(obstacles).map(a -> {
+                long x = (long) a[0] + 30000;
+                long y = (long) a[1] + 30000;
+                return (x << 16) + y;
+            }).collect(Collectors.toSet());
+            int x = 0;
+            int y = 0;
+            for (int command : commands) {
+                switch (command) {
+                    case -2:
+                        direction = (direction + 3) % 4;
+                        break;
+                    case -1:
+                        direction = (direction + 1) % 4;
+                        break;
+                    default:
+                        for (int i = 0; i < command; i++) {
+                            int nx = DIRECTION[direction][0] + x;
+                            int ny = DIRECTION[direction][1] + y;
+                            long code = (((long) nx + 30000) << 16) + ((long) ny + 30000);
+                            if (!blocking.contains(code)) {
+                                x = nx;
+                                y = ny;
+                                max = Math.max(max, x * x + y * y);
+                            }
+                        }
+                }
+            }
             return max;
         }
     }
@@ -65,6 +108,8 @@ class SolutionTest874 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+//            Assert.assertEquals(25, solution.robotSim(new int[]{4, -1, 3}, new int[][]{}));
+            Assert.assertEquals(65, solution.robotSim(new int[]{4, -1, 4, -2, 4}, new int[][]{{2, 4}}));
         }
     }
 }
