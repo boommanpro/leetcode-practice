@@ -1,37 +1,39 @@
 package leetcode.editor.cn;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+
+import leetcode.editor.cn.utils.ArrayUtils;
+import org.junit.Assert;
+import org.junit.Test;
 
 class SolutionTest103 {
-//给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。 
+//给定一个二叉树，返回其节点值的锯齿形层序遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。 
 //
 // 例如： 
 //给定二叉树 [3,9,20,null,null,15,7], 
 //
-//     3
+// 
+//    3
 //   / \
 //  9  20
 //    /  \
 //   15   7
 // 
 //
-// 返回锯齿形层次遍历如下： 
+// 返回锯齿形层序遍历如下： 
 //
-// [
+// 
+//[
 //  [3],
 //  [20,9],
 //  [15,7]
 //]
 // 
 // Related Topics 栈 树 广度优先搜索 
-// 👍 252 👎 0
+// 👍 322 👎 0
 
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
@@ -48,34 +50,33 @@ class SolutionTest103 {
 
         @SuppressWarnings("all")
         public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-            List<List<Integer>> result = new ArrayList<>();
+            List<List<Integer>> ans = new ArrayList<>();
             if (root == null) {
-                return result;
+                return ans;
             }
-            Queue<TreeNode> queue = new LinkedList<>();
+            LinkedList<TreeNode> queue = new LinkedList<>();
             queue.offer(root);
-            boolean reverse = false;
             while (!queue.isEmpty()) {
                 int n = queue.size();
-                List<Integer> curr = new ArrayList<>();
+                List<Integer> sub = new ArrayList<>();
                 while (n > 0) {
-                    TreeNode node = queue.poll();
-                    curr.add(node.val);
-                    if (node.left != null) {
-                        queue.offer(node.left);
+                    TreeNode curr = queue.poll();
+                    if (curr.left != null) {
+                        queue.offer(curr.left);
                     }
-                    if (node.right != null) {
-                        queue.offer(node.right);
+                    if (curr.right != null) {
+                        queue.offer(curr.right);
                     }
+                    sub.add(curr.val);
                     n--;
                 }
-                if (reverse) {
-                    Collections.reverse(curr);
-                }
-                result.add(curr);
-                reverse = !reverse;
+                ans.add(sub);
             }
-            return result;
+            int size = ans.size();
+            for (int i = 1; i < size; i += 2) {
+                Collections.reverse(ans.get(i));
+            }
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -86,7 +87,7 @@ class SolutionTest103 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("[[3], [20, 9], [15, 7]]", solution.zigzagLevelOrder(TreeNode.getTreeNode(new Integer[]{3, 9, 20, null, null, 15, 7})).toString());
+            Assert.assertEquals("[[3], [20, 9], [15, 7]]", ArrayUtils.twoDimensionCollections2String(solution.zigzagLevelOrder(TreeNode.getTreeNode(new Integer[]{3, 9, 20, null, null, 15, 7}))));
             Assert.assertEquals("[]", solution.zigzagLevelOrder(null).toString());
         }
     }
