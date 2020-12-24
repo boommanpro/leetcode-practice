@@ -1,7 +1,5 @@
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,26 +35,28 @@ class SolutionTest135 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public int candy(int[] ratings) {
-            int len = ratings.length;
-            int[] candies = new int[len];
-            //填充糖果默认值
-            Arrays.fill(candies, 1);
-            //正序填充 往前看
+        public int candy(int[] nums) {
+            int len = nums.length;
+            int ans = 1;
+            int prev = 1;
+            int desc = 0;
+            int asc = 1;
             for (int i = 1; i < len; i++) {
-                if (ratings[i] > ratings[i - 1]) {
-                    candies[i] = candies[i - 1] + 1;
-                }
-            }
-            //反序填充 往后看
-            for (int i = len - 2; i >= 0; i--) {
-                if (ratings[i] > ratings[i + 1]) {
-                    if (candies[i] <= candies[i + 1]) {
-                        candies[i] = candies[i + 1] + 1;
+                if (nums[i] >= nums[i - 1]) {
+                    prev = nums[i] == nums[i - 1] ? 1 : prev + 1;
+                    asc = prev;
+                    ans += prev;
+                    desc = 0;
+                } else {
+                    desc++;
+                    if (desc == asc) {
+                        desc++;
                     }
+                    ans += desc;
+                    prev = 1;
                 }
             }
-            return Arrays.stream(candies).sum();
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -71,6 +71,9 @@ class SolutionTest135 {
             Assert.assertEquals(4, solution.candy(new int[]{1, 2, 2}));
             Assert.assertEquals(13, solution.candy(new int[]{1, 2, 87, 87, 87, 2, 1}));
             Assert.assertEquals(21, solution.candy(new int[]{1, 2, 3, 4, 5, 6}));
+            Assert.assertEquals(13, solution.candy(new int[]{1, 3, 5, 3, 2, 1}));
+            Assert.assertEquals(15, solution.candy(new int[]{0, 1, 2, 5, 3, 2, 7}));
+            Assert.assertEquals(18, solution.candy(new int[]{1, 3, 5, 4, 3, 2, 1}));
         }
     }
 }
