@@ -1,5 +1,9 @@
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -71,7 +75,70 @@ class SolutionTest1584 {
     class Solution {
 
         public int minCostConnectPoints(int[][] points) {
-            return 0;
+            // 将所有点的费用算出来排序,然后将可以加入的点加入
+            int n = points.length;
+            List<Edge> list = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i != j) {
+                        list.add(new Edge(i, j, Math.abs(points[i][0] - points[j][0]) + Math.abs(points[i][1] - points[j][1])));
+                    }
+                }
+            }
+            list.sort(Comparator.comparingInt(a -> a.weight));
+            UnionFind unionFind = new UnionFind(n);
+            int ans = 0;
+            for (Edge edge : list) {
+                if (unionFind.union(edge.x, edge.y)) {
+                    ans += edge.weight;
+                }
+            }
+            return ans;
+        }
+
+        public static class Edge {
+
+            int x;
+
+            int y;
+
+            int weight;
+
+            public Edge(int x, int y, int weight) {
+                this.x = x;
+                this.y = y;
+                this.weight = weight;
+            }
+        }
+
+        public static class UnionFind {
+
+            int[] parents;
+
+            public UnionFind(int n) {
+                parents = new int[n];
+                for (int i = 0; i < n; i++) {
+                    parents[i] = i;
+                }
+            }
+
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
+                }
+                parents[px] = py;
+                return true;
+            }
+
+            private int find(int v) {
+                if (v != parents[v]) {
+                    parents[v] = find(parents[v]);
+                }
+                return parents[v];
+            }
+
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -85,8 +152,8 @@ class SolutionTest1584 {
             Assert.assertEquals(20, solution.minCostConnectPoints(new int[][]{{0, 0}, {2, 2}, {3, 10}, {5, 2}, {7, 0}}));
             Assert.assertEquals(18, solution.minCostConnectPoints(new int[][]{{3, 12}, {-2, 5}, {-4, 1}}));
             Assert.assertEquals(4, solution.minCostConnectPoints(new int[][]{{0, 0}, {1, 1}, {1, 0}, {-1, 1}}));
-            Assert.assertEquals(4000000, solution.minCostConnectPoints(new int[][]{{-1000000,-1000000}, {1000000,1000000}}));
-            Assert.assertEquals(0, solution.minCostConnectPoints(new int[][]{{0,0}}));
+            Assert.assertEquals(4000000, solution.minCostConnectPoints(new int[][]{{-1000000, -1000000}, {1000000, 1000000}}));
+            Assert.assertEquals(0, solution.minCostConnectPoints(new int[][]{{0, 0}}));
         }
     }
 }
