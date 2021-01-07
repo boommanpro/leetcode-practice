@@ -1,5 +1,8 @@
 package leetcode.editor.cn;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,12 +63,53 @@ class SolutionTest1631 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        private static  final int[][] DIRECTION = new int[][]{
+                {0, 1},
+                {1, 0},
+                {0, -1},
+                {-1, 0}
+        };
+
+        int row;
+
+        int col;
+
         public int minimumEffortPath(int[][] heights) {
-            return 0;
+            //第一种 利用二分查找 不断逼近可能值
+            int l = 0;
+            int r = 999999;
+            int ans = r;
+            //为了防止走回头路
+            row = heights.length;
+            col = heights[0].length;
+            while (l <= r) {
+                int mid = ((r - l) >> 1) + l;
+                Set<Long> set = new HashSet<>();
+                if (dfs(heights, set, 0, 0, mid)) {
+                    ans = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            return ans;
         }
 
-        public static class UnionFind {
-
+        private boolean dfs(int[][] heights, Set<Long> set, int x, int y, int v) {
+            if (x == row - 1 && y == col - 1) {
+                return true;
+            }
+            set.add((long) (x * 1000000 + y));
+            for (int[] direction : DIRECTION) {
+                int nextX = x + direction[0];
+                int nextY = y + direction[1];
+                if (nextX >= 0 && nextX < row && nextY >= 0 && nextY < col && !set.contains((long) (nextX * 1000000 + nextY)) && (Math.abs(heights[x][y] - heights[nextX][nextY]) <= v)) {
+                    if (dfs(heights, set, nextX, nextY, v)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -79,6 +123,7 @@ class SolutionTest1631 {
             Assert.assertEquals(2, solution.minimumEffortPath(new int[][]{{1, 2, 2}, {3, 8, 2}, {5, 3, 5}}));
             Assert.assertEquals(1, solution.minimumEffortPath(new int[][]{{1, 2, 3}, {3, 8, 4}, {5, 3, 5}}));
             Assert.assertEquals(0, solution.minimumEffortPath(new int[][]{{1, 2, 1, 1, 1}, {1, 2, 1, 2, 1}, {1, 2, 1, 2, 1}, {1, 2, 1, 2, 1}, {1, 1, 1, 2, 1}}));
+            Assert.assertEquals(999999, solution.minimumEffortPath(new int[][]{{1, 1000000}}));
         }
     }
 }
