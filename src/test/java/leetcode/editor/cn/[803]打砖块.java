@@ -83,8 +83,129 @@ class SolutionTest803 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+        private static final int[][] DIRECTION = new int[][]{
+                {1, 0},
+                {-1, 0},
+                {0, 1},
+                {0, -1}
+        };
+
         public int[] hitBricks(int[][] grid, int[][] hits) {
-            return null;
+            // 一块砖直接连接到网格的顶部 => 指的是r=0
+
+            int R = grid.length, C = grid[0].length;
+
+            int[][] A = new int[R][C];
+            //先克隆一份数据 => A
+            for (int r = 0; r < R; ++r) {
+                A[r] = grid[r].clone();
+            }
+            // 将backup处理所有击落为0
+            for (int[] hit : hits) {
+                A[hit[0]][hit[1]] = 0;
+            }
+
+            UnionFind unionFind = new UnionFind(R * C + 1);
+            for (int r = 0; r < R; ++r) {
+                for (int c = 0; c < C; ++c) {
+                    if (A[r][c] == 1) {
+                        int i = r * C + c;
+                        if (r == 0)
+                            unionFind.union(i, R * C);
+                        //向上看
+                        if (r > 0 && A[r - 1][c] == 1)
+                            unionFind.union(i, (r - 1) * C + c);
+                        //向左看
+                        if (c > 0 && A[r][c - 1] == 1)
+                            unionFind.union(i, r * C + c - 1);
+                    }
+                }
+            }
+
+            //----------------------------------------------------------
+
+            int t = hits.length;
+
+            int[] ans = new int[t--];
+
+            while (t >= 0) {
+                // 落点
+                int r = hits[t][0];
+                int c = hits[t][1];
+                int preRoof = unionFind.top();
+                // 如果原来需要击落的位置就是0的话,那么为0
+                if (grid[r][c] == 0) {
+                    t--;
+                } else {
+                    int i = r * C + c;
+                    //尝试将当前和其余四个方向联合
+                    for (int[] direction : DIRECTION) {
+                        int nr = r + direction[0];
+                        int nc = c + direction[1];
+                        if (0 <= nr && nr < R && 0 <= nc && nc < C && A[nr][nc] == 1) {
+                            unionFind.union(i, nr * C + nc);
+                        }
+                    }
+                    if (r == 0) {
+                        unionFind.union(i, R * C);
+                    }
+                    A[r][c] = 1;
+                    ans[t--] = Math.max(0, unionFind.top() - preRoof - 1);
+                }
+            }
+
+            return ans;
+        }
+
+        public static class UnionFind {
+
+            int[] parent;
+
+            int[] rank;
+
+            int[] sz;
+
+            public UnionFind(int N) {
+                parent = new int[N];
+                for (int i = 0; i < N; ++i) {
+                    parent[i] = i;
+                }
+                rank = new int[N];
+                sz = new int[N];
+                Arrays.fill(sz, 1);
+            }
+
+            public int find(int v) {
+                if (parent[v] != v) {
+                    parent[v] = find(parent[v]);
+                }
+                return parent[v];
+            }
+
+            public void union(int x, int y) {
+                int xr = find(x), yr = find(y);
+                if (xr == yr) return;
+
+                if (rank[xr] < rank[yr]) {
+                    int tmp = yr;
+                    yr = xr;
+                    xr = tmp;
+                }
+                if (rank[xr] == rank[yr])
+                    rank[xr]++;
+
+                parent[yr] = xr;
+                sz[xr] += sz[yr];
+            }
+
+            public int size(int x) {
+                return sz[find(x)];
+            }
+
+            public int top() {
+                //计算 R*C的sz
+                return size(sz.length - 1) - 1;
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -95,9 +216,10 @@ class SolutionTest803 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+
             Assert.assertEquals("[2]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 1, 0}}, new int[][]{{1, 0}})));
 
-            Assert.assertEquals("[0, 0]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 0, 0}}, new int[][]{{1, 1}, {1, 0}})));
+//            Assert.assertEquals("[0, 0]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 0, 0}}, new int[][]{{1, 1}, {1, 0}})));
 
         }
     }
