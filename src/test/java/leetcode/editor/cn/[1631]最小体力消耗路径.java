@@ -1,7 +1,8 @@
 package leetcode.editor.cn;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -63,54 +64,89 @@ class SolutionTest1631 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        private static  final int[][] DIRECTION = new int[][]{
-                {0, 1},
+        private static final int[][] DIRECTION = new int[][]{
                 {1, 0},
-                {0, -1},
-                {-1, 0}
+                {-1, 0},
+                {0, 1},
+                {0, -1}
         };
 
-        int row;
-
-        int col;
-
         public int minimumEffortPath(int[][] heights) {
-            //第一种 利用二分查找 不断逼近可能值
-            int l = 0;
-            int r = 999999;
-            int ans = r;
-            //为了防止走回头路
-            row = heights.length;
-            col = heights[0].length;
-            while (l <= r) {
-                int mid = ((r - l) >> 1) + l;
-                Set<Long> set = new HashSet<>();
-                if (dfs(heights, set, 0, 0, mid)) {
-                    ans = mid;
-                    r = mid - 1;
-                } else {
-                    l = mid + 1;
+            //并查集方法 「并查集」：我们可以将所有边按照长度进行排序并依次添加进并查集，直到左上角和右下角连通为止。
+            int row = heights.length;
+            int col = heights[0].length;
+            int factor = Math.max(row, col);
+            List<Edge> list = new ArrayList<>();
+            int cnt = 0;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    for (int[] direction : DIRECTION) {
+                        int nextX = i + direction[0];
+                        int nextY = j + direction[1];
+                        if (nextX >= 0 && nextX < row && nextY >= 0 && nextY < col) {
+                            int toId = cnt + direction[1] + direction[0] * col;
+                            list.add(new Edge(cnt, toId, Math.abs(heights[i][j] - heights[nextX][nextY])));
+                        }
+
+                    }
+                    cnt++;
                 }
             }
-            return ans;
+            list.sort(Comparator.comparing(e -> e.weight));
+            UnionFind unionFind = new UnionFind(col * row);
+            for (Edge edge : list) {
+                unionFind.union(edge.x, edge.y);
+                if (unionFind.find(0) == unionFind.find(row * col - 1)) {
+                    return edge.weight;
+                }
+            }
+            return 0;
         }
 
-        private boolean dfs(int[][] heights, Set<Long> set, int x, int y, int v) {
-            if (x == row - 1 && y == col - 1) {
+        public static class Edge {
+
+            int x;
+
+            int y;
+
+            int weight;
+
+            public Edge(int x, int y, int weight) {
+                this.x = x;
+                this.y = y;
+                this.weight = weight;
+            }
+        }
+
+        public static class UnionFind {
+
+            int[] parents;
+
+            public UnionFind(int n) {
+                parents = new int[n];
+                for (int i = 0; i < n; i++) {
+                    parents[i] = i;
+                }
+            }
+
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
+                }
+                parents[px] = parents[py];
                 return true;
             }
-            set.add((long) (x * 1000000 + y));
-            for (int[] direction : DIRECTION) {
-                int nextX = x + direction[0];
-                int nextY = y + direction[1];
-                if (nextX >= 0 && nextX < row && nextY >= 0 && nextY < col && !set.contains((long) (nextX * 1000000 + nextY)) && (Math.abs(heights[x][y] - heights[nextX][nextY]) <= v)) {
-                    if (dfs(heights, set, nextX, nextY, v)) {
-                        return true;
-                    }
+
+            public int find(int v) {
+                if (v != parents[v]) {
+                    parents[v] = find(parents[v]);
                 }
+                return parents[v];
             }
-            return false;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -124,6 +160,8 @@ class SolutionTest1631 {
             Assert.assertEquals(1, solution.minimumEffortPath(new int[][]{{1, 2, 3}, {3, 8, 4}, {5, 3, 5}}));
             Assert.assertEquals(0, solution.minimumEffortPath(new int[][]{{1, 2, 1, 1, 1}, {1, 2, 1, 2, 1}, {1, 2, 1, 2, 1}, {1, 2, 1, 2, 1}, {1, 1, 1, 2, 1}}));
             Assert.assertEquals(999999, solution.minimumEffortPath(new int[][]{{1, 1000000}}));
+            Assert.assertEquals(5, solution.minimumEffortPath(new int[][]{{4, 3, 4, 10, 5, 5, 9, 2}, {10, 8, 2, 10, 9, 7, 5, 6}, {5, 8, 10, 10, 10, 7, 4, 2}, {5, 1, 3, 1, 1, 3, 1, 9}, {6, 4, 10, 6, 10, 9, 4, 6}}));
+            Assert.assertEquals(6, solution.minimumEffortPath(new int[][]{{10, 8}, {10, 8}, {1, 2}, {10, 3}, {1, 3}, {6, 3}, {5, 2}}));
         }
     }
 }
