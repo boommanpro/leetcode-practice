@@ -91,122 +91,112 @@ class SolutionTest803 {
         };
 
         public int[] hitBricks(int[][] grid, int[][] hits) {
-            // 一块砖直接连接到网格的顶部 => 指的是r=0
-
-            int R = grid.length, C = grid[0].length;
-
-            int[][] A = new int[R][C];
-            //先克隆一份数据 => A
-            for (int r = 0; r < R; ++r) {
-                A[r] = grid[r].clone();
+            //logic 1. 构建临时砖块 clone from grid,将hits都消除
+            //      2. 将砖块做并查集 并对根做size统计
+            //      3. 从后往前加砖块 看有多少砖块union,就可以知道有多少掉落
+            int row = grid.length;
+            int col = grid[0].length;
+            int[][] temp = new int[row][col];
+            for (int i = 0; i < row; i++) {
+                temp[i] = grid[i].clone();
             }
-            // 将backup处理所有击落为0
             for (int[] hit : hits) {
-                A[hit[0]][hit[1]] = 0;
+                int x = hit[0];
+                int y = hit[1];
+                temp[x][y] = 0;
             }
-
-            UnionFind unionFind = new UnionFind(R * C + 1);
-            for (int r = 0; r < R; ++r) {
-                for (int c = 0; c < C; ++c) {
-                    if (A[r][c] == 1) {
-                        int i = r * C + c;
-                        if (r == 0)
-                            unionFind.union(i, R * C);
-                        //向上看
-                        if (r > 0 && A[r - 1][c] == 1)
-                            unionFind.union(i, (r - 1) * C + c);
-                        //向左看
-                        if (c > 0 && A[r][c - 1] == 1)
-                            unionFind.union(i, r * C + c - 1);
-                    }
-                }
-            }
-
-            //----------------------------------------------------------
-
-            int t = hits.length;
-
-            int[] ans = new int[t--];
-
-            while (t >= 0) {
-                // 落点
-                int r = hits[t][0];
-                int c = hits[t][1];
-                int preRoof = unionFind.top();
-                // 如果原来需要击落的位置就是0的话,那么为0
-                if (grid[r][c] == 0) {
-                    t--;
-                } else {
-                    int i = r * C + c;
-                    //尝试将当前和其余四个方向联合
-                    for (int[] direction : DIRECTION) {
-                        int nr = r + direction[0];
-                        int nc = c + direction[1];
-                        if (0 <= nr && nr < R && 0 <= nc && nc < C && A[nr][nc] == 1) {
-                            unionFind.union(i, nr * C + nc);
+            UnionFind unionFind = new UnionFind(row * col + 1);
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (temp[i][j] == 1) {
+                        int id = i * col + j;
+                        if (i == 0) {
+                            unionFind.union(id, row * col);
+                        }
+                        if (i > 0 && temp[i - 1][j] == 1) {
+                            unionFind.union(id, id - col);
+                        }
+                        if (j > 0 && temp[i][j - 1] == 1) {
+                            unionFind.union(id, id - 1);
                         }
                     }
-                    if (r == 0) {
-                        unionFind.union(i, R * C);
-                    }
-                    A[r][c] = 1;
-                    ans[t--] = Math.max(0, unionFind.top() - preRoof - 1);
+
                 }
             }
+            int k = hits.length;
+            int[] ans = new int[k--];
+            while (k >= 0) {
+                int x = hits[k][0];
+                int y = hits[k][1];
+                if (grid[x][y] != 0) {
+                    int prev = unionFind.top();
+                    int id = x * col + y;
+                    if (x == 0) {
+                        unionFind.union(id, row * col);
+                    }
+                    for (int[] direction : DIRECTION) {
+                        int nextX = direction[0] + x;
+                        int nextY = direction[1] + y;
+                        if (nextX >= 0 && nextX < row && nextY >= 0 && nextY < col && temp[nextX][nextY] == 1) {
+                            unionFind.union(id, nextX * col + nextY);
+                        }
+                    }
+                    temp[x][y] = 1;
+                    int curr = unionFind.top();
+                    //如果加上去后顶部有变化,需要减去自身砖
+                    if (curr != prev) {
+                        ans[k] = unionFind.top() - prev - 1;
+                    }
+                }
+                k--;
 
+            }
             return ans;
         }
 
-        public static class UnionFind {
+        public static final class UnionFind {
 
-            int[] parent;
+            int[] parens;
 
-            int[] rank;
+            int[] size;
 
-            int[] sz;
-
-            public UnionFind(int N) {
-                parent = new int[N];
-                for (int i = 0; i < N; ++i) {
-                    parent[i] = i;
+            public UnionFind(int n) {
+                parens = new int[n];
+                size = new int[n];
+                for (int i = 0; i < n; i++) {
+                    parens[i] = i;
                 }
-                rank = new int[N];
-                sz = new int[N];
-                Arrays.fill(sz, 1);
+                Arrays.fill(size, 1);
             }
 
-            public int find(int v) {
-                if (parent[v] != v) {
-                    parent[v] = find(parent[v]);
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
                 }
-                return parent[v];
+                if (px > py) {
+                    int temp = py;
+                    py = px;
+                    px = temp;
+                }
+                parens[px] = py;
+                size[py] += size[px];
+                return true;
             }
 
-            public void union(int x, int y) {
-                int xr = find(x), yr = find(y);
-                if (xr == yr) return;
-
-                if (rank[xr] < rank[yr]) {
-                    int tmp = yr;
-                    yr = xr;
-                    xr = tmp;
+            private int find(int v) {
+                if (v != parens[v]) {
+                    parens[v] = find(parens[v]);
                 }
-                if (rank[xr] == rank[yr])
-                    rank[xr]++;
-
-                parent[yr] = xr;
-                sz[xr] += sz[yr];
-            }
-
-            public int size(int x) {
-                return sz[find(x)];
+                return parens[v];
             }
 
             public int top() {
-                //计算 R*C的sz
-                return size(sz.length - 1) - 1;
+                return size[parens[parens.length - 1]];
             }
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -219,8 +209,9 @@ class SolutionTest803 {
 
             Assert.assertEquals("[2]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 1, 0}}, new int[][]{{1, 0}})));
 
-//            Assert.assertEquals("[0, 0]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 0, 0}}, new int[][]{{1, 1}, {1, 0}})));
+            Assert.assertEquals("[0, 0]", Arrays.toString(solution.hitBricks(new int[][]{{1, 0, 0, 0}, {1, 1, 0, 0}}, new int[][]{{1, 1}, {1, 0}})));
 
+            Assert.assertEquals("[1, 0, 1, 0, 0]", Arrays.toString(solution.hitBricks(new int[][]{{1}, {1}, {1}, {1}, {1}}, new int[][]{{3, 0}, {4, 0}, {1, 0}, {2, 0}, {0, 0}})));
         }
     }
 }
