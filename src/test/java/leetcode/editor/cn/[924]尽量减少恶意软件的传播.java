@@ -58,7 +58,7 @@ class SolutionTest924 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public int minMalwareSpread(int[][] graph, int[] initial) {
+        public int minMalwareSpread(int[][] graph, int[] nums) {
             int N = graph.length;
             UnionFind unionFind = new UnionFind(N);
             for (int i = 0; i < N; i++) {
@@ -69,31 +69,30 @@ class SolutionTest924 {
                 }
             }
             int[] count = new int[N];
-            for (int i : initial) {
+            for (int i : nums) {
+                //对root进行统计,如果count[i]>1的话,哪怕消了这个块,其他的也有病毒,无济于事
                 count[unionFind.find(i)]++;
             }
-
-            int ans = -1, ansSize = -1;
-
-            for (int node : initial) {
-                int root = unionFind.find(node);
-                if (count[root] == 1) {  // unique color
+            int ans = -1;
+            int ansSize = -1;
+            for (int i : nums) {
+                // 此时对病毒的感染能力做判断,能力强的且排在前面的就是答案
+                int root = unionFind.find(i);
+                if (count[root] == 1) {
                     int rootSize = unionFind.size(root);
                     if (rootSize > ansSize) {
                         ansSize = rootSize;
-                        ans = node;
-                    } else if (rootSize == ansSize && node < ans) {
-                        ansSize = rootSize;
-                        ans = node;
+                        ans = i;
+                    } else if (rootSize == ansSize && i < ans) {
+                        ans = i;
                     }
                 }
             }
-
             if (ans == -1) {
-                ans = Arrays.stream(initial).min().getAsInt();
+                //如果没有答案 就返回索引最小的
+                ans = Arrays.stream(nums).min().getAsInt();
             }
             return ans;
-
         }
 
         public static final class UnionFind {
@@ -141,9 +140,9 @@ class SolutionTest924 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-//            Assert.assertEquals(0, solution.minMalwareSpread(new int[][]{{1, 1, 0}, {1, 1, 0}, {0, 0, 1}}, new int[]{0, 1}));
-//            Assert.assertEquals(0, solution.minMalwareSpread(new int[][]{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, new int[]{0, 2}));
-//            Assert.assertEquals(1, solution.minMalwareSpread(new int[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, new int[]{1, 2}));
+            Assert.assertEquals(0, solution.minMalwareSpread(new int[][]{{1, 1, 0}, {1, 1, 0}, {0, 0, 1}}, new int[]{0, 1}));
+            Assert.assertEquals(0, solution.minMalwareSpread(new int[][]{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}, new int[]{0, 2}));
+            Assert.assertEquals(1, solution.minMalwareSpread(new int[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, new int[]{1, 2}));
             Assert.assertEquals(3, solution.minMalwareSpread(new int[][]{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 1}, {0, 0, 1, 1}}, new int[]{3, 1}));
         }
     }
