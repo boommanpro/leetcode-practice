@@ -40,20 +40,36 @@ class SolutionTest189 {
     class Solution {
 
         public void rotate(int[] nums, int k) {
+            if (nums == null || nums.length == 0) {
+                return;
+            }
             k %= nums.length;
-            reverse(nums, 0, nums.length - 1);
-            reverse(nums, 0, k - 1);
-            reverse(nums, k, nums.length - 1);
+            if (k == 0) {
+                return;
+            }
+            int count = 0;
+            for (int i = 0; i < k; i++) {
+                count += move(nums, k, i);
+                if (count == nums.length) {
+                    return;
+                }
+            }
+
         }
 
-        public void reverse(int[] nums, int start, int end) {
-            while (start < end) {
-                int temp = nums[start];
-                nums[start] = nums[end];
-                nums[end] = temp;
-                start++;
-                end--;
-            }
+        private int move(int[] nums, int k, int i) {
+            int p = i;
+            int prev = nums[p];
+            int count = 0;
+            do {
+                int next = (p + k) % nums.length;
+                int temp = nums[next];
+                nums[next] = prev;
+                prev = temp;
+                p = next;
+                count++;
+            } while (p != i);
+            return count;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -64,6 +80,7 @@ class SolutionTest189 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+
             int[] array0 = {1, 2, 3, 4, 5, 6, 7};
             solution.rotate(array0, 3);
             Assert.assertEquals("[5, 6, 7, 1, 2, 3, 4]", Arrays.toString(array0));
@@ -71,6 +88,22 @@ class SolutionTest189 {
             int[] array1 = {-1, -100, 3, 99};
             solution.rotate(array1, 2);
             Assert.assertEquals("[3, 99, -1, -100]", Arrays.toString(array1));
+
+            int[] array2 = {1, 2, 3, 4, 5, 6, 7};
+            solution.rotate(array2, 5);
+            Assert.assertEquals("[3, 4, 5, 6, 7, 1, 2]", Arrays.toString(array2));
+
+            int[] array3 = {1, 2, 3};
+            solution.rotate(array3, 2);
+            Assert.assertEquals("[2, 3, 1]", Arrays.toString(array3));
+
+            int[] array4 = {1, 2};
+            solution.rotate(array4, 1);
+            Assert.assertEquals("[2, 1]", Arrays.toString(array4));
+
+            int[] array5 = {1, 2, 3, 4, 5, 6};
+            solution.rotate(array5, 3);
+            Assert.assertEquals("[4, 5, 6, 1, 2, 3]", Arrays.toString(array5));
         }
     }
 }
