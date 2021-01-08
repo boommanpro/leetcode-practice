@@ -1,9 +1,9 @@
 package leetcode.editor.cn;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 class SolutionTest685 {
 //在本问题中，有根树指满足以下条件的有向图。该树只有一个根节点，所有其他节点都是该根节点的后继。每一个节点只有一个父节点，除了根节点没有父节点。 
@@ -50,65 +50,67 @@ class SolutionTest685 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-
         public int[] findRedundantDirectedConnection(int[][] edges) {
-            int nodesCount = edges.length;
-            UnionFind uf = new UnionFind(nodesCount + 1);
-            int[] parent = new int[nodesCount + 1];
-            for (int i = 1; i <= nodesCount; ++i) {
-                parent[i] = i;
+            int N = edges.length;
+            int[] parents = new int[N + 1];
+            for (int i = 1; i <= N; i++) {
+                parents[i] = i;
             }
+            UnionFind unionFind = new UnionFind(N + 1);
             int conflict = -1;
             int cycle = -1;
-            for (int i = 0; i < nodesCount; ++i) {
-                int[] edge = edges[i];
-                int node1 = edge[0], node2 = edge[1];
-                if (parent[node2] != node2) {
+            for (int i = 0; i < N; i++) {
+                int p = edges[i][0];
+                int c = edges[i][1];
+                if (parents[c] != c) {
                     conflict = i;
                 } else {
-                    parent[node2] = node1;
-                    if (uf.find(node1) == uf.find(node2)) {
+                    parents[c] = p;
+                    if (!unionFind.union(c, p)) {
                         cycle = i;
-                    } else {
-                        uf.union(node1, node2);
                     }
                 }
             }
-            if (conflict < 0) {
-                return new int[]{edges[cycle][0], edges[cycle][1]};
-            } else {
-                int[] conflictEdge = edges[conflict];
-                if (cycle >= 0) {
-                    return new int[]{parent[conflictEdge[1]], conflictEdge[1]};
+            if (cycle > 0) {
+                if (conflict > 0) {
+                    return new int[]{parents[edges[conflict][1]], edges[conflict][1]};
                 } else {
-                    return new int[]{conflictEdge[0], conflictEdge[1]};
+                    return new int[]{edges[cycle][0], edges[cycle][1]};
                 }
+            } else {
+                return new int[]{edges[conflict][0], edges[conflict][1]};
             }
         }
 
-        public static class UnionFind {
-
+        public static final class UnionFind {
             int[] parents;
 
             public UnionFind(int n) {
                 parents = new int[n];
-                for (int i = 0; i < n; ++i) {
+                for (int i = 1; i < n; i++) {
                     parents[i] = i;
                 }
             }
 
-            public void union(int index1, int index2) {
-                parents[find(index1)] = find(index2);
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
+                }
+                parents[px] = py;
+                return true;
             }
 
-            public int find(int index) {
-                if (parents[index] != index) {
-                    parents[index] = find(parents[index]);
+            public int find(int v) {
+                if (v != parents[v]) {
+                    parents[v] = find(parents[v]);
                 }
-                return parents[index];
+                return parents[v];
             }
         }
     }
+
 //leetcode submit region end(Prohibit modification and deletion)
 
     //Do some Test
@@ -119,6 +121,7 @@ class SolutionTest685 {
             Solution solution = new Solution();
             Assert.assertEquals("[2, 3]", Arrays.toString(solution.findRedundantDirectedConnection(new int[][]{{1, 2}, {1, 3}, {2, 3}})));
             Assert.assertEquals("[4, 1]", Arrays.toString(solution.findRedundantDirectedConnection(new int[][]{{1, 2}, {2, 3}, {3, 4}, {4, 1}, {1, 5}})));
+            Assert.assertEquals("[2, 1]", Arrays.toString(solution.findRedundantDirectedConnection(new int[][]{{2, 1}, {3, 1}, {4, 2}, {1, 4}})));
         }
     }
 }
