@@ -3,6 +3,9 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 class SolutionTest959 {
 //在由 1 x 1 方格组成的 N x N 网格 grid 中，每个 1 x 1 方块由 /、\ 或空格构成。这些字符会将方块划分为一些共边的区域。 
 //
@@ -90,7 +93,75 @@ class SolutionTest959 {
 
         // 字符内容只有 '/'  '\'  ' '  三种
         public int regionsBySlashes(String[] grid) {
-            return 0;
+            int N = grid.length;
+            int n = N * N * 4;
+            UnionFind unionFind = new UnionFind(n);
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    int id = 4 * (i * N + j);
+                    char val = grid[i].charAt(j);
+                    if (val != '/') {
+                        unionFind.union(id, id + 1);
+                        unionFind.union(id + 2, id + 3);
+                    }
+                    if (val != '\\') {
+                        unionFind.union(id, id + 3);
+                        unionFind.union(id + 1, id + 2);
+                    }
+                    if (i + 1 < N) {
+                        unionFind.union(id + 1, 4 * ((i + 1) * N + j) + 3);
+                    }
+                    if (i - 1 >= 0) {
+                        unionFind.union(id + 3, 4 * ((i - 1) * N + j) + 1);
+                    }
+                    if (j + 1 < N) {
+                        unionFind.union(id + 2, 4 * (i * N + j + 1));
+                    }
+                    if (j - 1 >= 0) {
+                        unionFind.union(id, 4 * (i * N + j - 1) + 2);
+                    }
+
+                }
+            }
+
+            Set<Integer> set = new HashSet<>();
+            for (int i = 0; i < n; i++) {
+                set.add(unionFind.find(i));
+            }
+            return set.size();
+        }
+
+        public static final class UnionFind {
+            int[] parents;
+
+            public UnionFind(int n) {
+                parents = new int[n];
+                for (int i = 0; i < n; i++) {
+                    parents[i] = i;
+                }
+            }
+
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
+                }
+                if (px > py) {
+                    int temp = py;
+                    py = px;
+                    px = temp;
+                }
+                parents[px] = py;
+                return true;
+            }
+
+            private int find(int v) {
+                if (v != parents[v]) {
+                    parents[v] = find(parents[v]);
+                }
+                return parents[v];
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -104,7 +175,7 @@ class SolutionTest959 {
             Assert.assertEquals(2, solution.regionsBySlashes(new String[]{" /", "/ "}));
             Assert.assertEquals(1, solution.regionsBySlashes(new String[]{" /", "  "}));
             Assert.assertEquals(4, solution.regionsBySlashes(new String[]{"\\\\/", "/\\\\"}));
-            Assert.assertEquals(5, solution.regionsBySlashes(new String[]{"/\\\\", "\\\\/"}));
+            Assert.assertEquals(5, solution.regionsBySlashes(new String[]{"/\\", "\\/"}));
             Assert.assertEquals(3, solution.regionsBySlashes(new String[]{"//", "/ "}));
         }
     }
