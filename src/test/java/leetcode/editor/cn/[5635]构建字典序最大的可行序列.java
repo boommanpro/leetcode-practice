@@ -109,7 +109,7 @@ class SolutionTest5635 {
             Solution solution = new Solution();
             Assert.assertEquals("[3, 1, 2, 3, 2]", Arrays.toString(solution.constructDistancedSequence(3)));
             Assert.assertEquals("[5, 3, 1, 4, 3, 5, 2, 4, 2]", Arrays.toString(solution.constructDistancedSequence(5)));
-            Assert.assertEquals("", Arrays.toString(solution.constructDistancedSequence(10)));
+            Assert.assertEquals("[10, 8, 6, 9, 3, 1, 7, 3, 6, 8, 10, 5, 9, 7, 4, 2, 5, 2, 4]", Arrays.toString(solution.constructDistancedSequence(10)));
         }
     }
 }
