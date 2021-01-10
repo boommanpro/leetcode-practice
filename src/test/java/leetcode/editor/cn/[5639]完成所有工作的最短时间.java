@@ -49,8 +49,6 @@ class SolutionTest5639 {
     class Solution {
         int[] mJobs = null;
         int mK = 0;
-        int mTotal = 0;
-        // cache for state
         int[] totalC = null;
 
         public int minimumTimeRequired(int[] jobs, int k) {
@@ -119,8 +117,8 @@ class SolutionTest5639 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-//            Assert.assertEquals(11, solution.minimumTimeRequired(new int[]{1, 2, 4, 7, 8}, 2));
-            Assert.assertEquals(3, solution.minimumTimeRequired(new int[]{3, 2, 3}, 3));
+            Assert.assertEquals(11, solution.minimumTimeRequired(new int[]{1, 2, 4, 7, 8}, 2));
+            Assert.assertEquals(3, solution.minimumTimeRequired(new int[]{1, 2, 3}, 3));
         }
     }
 }
