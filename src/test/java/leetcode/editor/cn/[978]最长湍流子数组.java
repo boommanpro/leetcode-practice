@@ -50,8 +50,35 @@ class SolutionTest978 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int maxTurbulenceSize(int[] A) {
-            return 0;
+            if (A.length <= 1) {
+                return A.length;
+            }
+            int ans = 1;
+            int[] status = new int[]{0, 1};
+            for (int i = 1; i < A.length; i++) {
+                if (A[i] == A[i - 1]) {
+                    status[0] = 0;
+                    status[1] = 1;
+                } else if (A[i] > A[i - 1]) {
+                    if (status[0] == 1) {
+                        status[1] = 2;
+                    } else {
+                        status[0] = 1;
+                        status[1]++;
+                    }
+                } else {
+                    if (status[0] == -1) {
+                        status[1] = 2;
+                    } else {
+                        status[0] = -1;
+                        status[1]++;
+                    }
+                }
+                ans = Math.max(ans, status[1]);
+            }
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
