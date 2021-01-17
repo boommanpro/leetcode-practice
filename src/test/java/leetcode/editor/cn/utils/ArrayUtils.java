@@ -92,4 +92,15 @@ public class ArrayUtils {
     public static<T> String twoDimensionCollections2String(List<List<T>> collection) {
         return collection.stream().map(Object::toString).collect(Collectors.toList()).toString();
     }
+
+    public static String paintMatrix(int[][] matrix){
+        StringBuilder sb = new StringBuilder();
+        for (int[] ints : matrix) {
+            for (int i : ints) {
+                sb.append(i);
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
