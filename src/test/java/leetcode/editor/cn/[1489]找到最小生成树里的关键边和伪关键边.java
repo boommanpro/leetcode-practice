@@ -1,6 +1,8 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import leetcode.editor.cn.utils.ArrayUtils;
@@ -61,8 +63,102 @@ class SolutionTest1489 {
     class Solution {
 
         public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
-            return new ArrayList<>();
+
+            int[][] newEdges = new int[edges.length][4];
+            for (int i = 0; i < edges.length; i++) {
+                newEdges[i][0] = edges[i][0];
+                newEdges[i][1] = edges[i][1];
+                newEdges[i][2] = edges[i][2];
+                newEdges[i][3] = i;
+            }
+            Arrays.sort(newEdges, Comparator.comparingInt(o -> o[2]));
+            int minValue = 0;
+            UnionFind unionFind = new UnionFind(n);
+            for (int[] edge : newEdges) {
+                if (unionFind.union(edge[0], edge[1])) {
+                    minValue += edge[2];
+                }
+            }
+            List<List<Integer>> ans = new ArrayList<>();
+            ans.add(new ArrayList<>());
+            ans.add(new ArrayList<>());
+            if (!unionFind.isAll()) {
+                //如果没有所有点的集合那么就是失败的
+                return ans;
+            }
+
+            for (int i = 0; i < newEdges.length; i++) {
+                unionFind = new UnionFind(n);
+                int currValue = 0;
+                for (int j = 0; j < newEdges.length; j++) {
+                    if (i != j && unionFind.union(newEdges[j][0], newEdges[j][1])) {
+                        currValue += newEdges[j][2];
+                    }
+                }
+                //是否是关键边决定因素是 没有这条边权重增加 或者无法构成最小生成树
+                if (!unionFind.isAll() || currValue > minValue) {
+                    ans.get(0).add(newEdges[i][3]);
+                    continue;
+                }
+                //是否是伪关键边是 这条边可能在多个最小生成树中出现，但不是在全部最小生成树中出现.
+                unionFind = new UnionFind(n);
+                unionFind.union(newEdges[i][0], newEdges[i][1]);
+                currValue = newEdges[i][2];
+                for (int j = 0; j < newEdges.length; j++) {
+                    if (i != j && unionFind.union(newEdges[j][0], newEdges[j][1])) {
+                        currValue += newEdges[j][2];
+                    }
+                }
+                if (currValue == minValue) {
+                    ans.get(1).add(newEdges[i][3]);
+                }
+            }
+            return ans;
         }
+
+        public static final class UnionFind {
+
+            private final int[] parents;
+
+            private final int[] size;
+
+            public UnionFind(int n) {
+                parents = new int[n];
+                size = new int[n];
+                Arrays.fill(size, 1);
+                for (int i = 0; i < n; i++) {
+                    parents[i] = i;
+                }
+            }
+
+            public boolean union(int x, int y) {
+                int px = find(x);
+                int py = find(y);
+                if (px == py) {
+                    return false;
+                }
+                if (py > px) {
+                    int temp = px;
+                    px = py;
+                    py = temp;
+                }
+                parents[px] = py;
+                size[py] += size[px];
+                return true;
+            }
+
+            private int find(int v) {
+                if (v != parents[v]) {
+                    parents[v] = find(parents[v]);
+                }
+                return parents[v];
+            }
+
+            public boolean isAll() {
+                return size[0] == size.length;
+            }
+        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -72,8 +168,8 @@ class SolutionTest1489 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("", ArrayUtils.twoDimensionCollections2String(solution.findCriticalAndPseudoCriticalEdges(5, new int[][]{{0, 1, 1}, {1, 2, 1}, {2, 3, 2}, {0, 3, 2}, {0, 4, 3}, {3, 4, 3}, {1, 4, 6}})));
-            Assert.assertEquals("", ArrayUtils.twoDimensionCollections2String(solution.findCriticalAndPseudoCriticalEdges(4, new int[][]{{0, 1, 1}, {1, 2, 1}, {2, 3, 1}, {0, 3, 1}})));
+            Assert.assertEquals("[[0, 1], [2, 3, 4, 5]]", ArrayUtils.twoDimensionCollections2String(solution.findCriticalAndPseudoCriticalEdges(5, new int[][]{{0, 1, 1}, {1, 2, 1}, {2, 3, 2}, {0, 3, 2}, {0, 4, 3}, {3, 4, 3}, {1, 4, 6}})));
+//            Assert.assertEquals("[[], [0, 1, 2, 3]]", ArrayUtils.twoDimensionCollections2String(solution.findCriticalAndPseudoCriticalEdges(4, new int[][]{{0, 1, 1}, {1, 2, 1}, {2, 3, 1}, {0, 3, 1}})));
         }
     }
 }
