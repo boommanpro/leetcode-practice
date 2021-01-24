@@ -66,12 +66,15 @@ class SolutionTest5646 {
         public int minimumTeachings(int n, int[][] languages, int[][] friendships) {
             int m = languages.length;
             Map<Integer, Set<Integer>> userLanguage = new HashMap<>();
+            Set<Integer> languageSet = new HashSet<>();
             for (int i = 0; i < languages.length; i++) {
-                userLanguage.put(i + 1, Arrays.stream(languages[i]).boxed().collect(Collectors.toSet()));
+                Set<Integer> currLanguage = Arrays.stream(languages[i]).boxed().collect(Collectors.toSet());
+                userLanguage.put(i + 1, currLanguage);
+                languageSet.addAll(currLanguage);
             }
             Set<Integer> waitCheckUsers = Arrays.stream(friendships).filter(users -> judgeIn(userLanguage.get(users[0]), userLanguage.get(users[1]))).flatMap((Function<int[], Stream<Integer>>) ints -> Arrays.stream(ints).boxed()).collect(Collectors.toSet());
             int ans = m;
-            for (int i = 1; i <= n; i++) {
+            for (Integer i : languageSet) {
                 int curr = 0;
                 for (Integer user : waitCheckUsers) {
                     if (!userLanguage.get(user).contains(i)) {
