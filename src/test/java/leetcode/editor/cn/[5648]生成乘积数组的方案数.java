@@ -60,8 +60,6 @@ class SolutionTest5648 {
                 Map<Integer, Integer> map = getFactorMap(b);
                 BigInteger integer = new BigInteger("1");
                 for (Integer value : map.keySet()) {
-                    System.out.print(value);
-                    System.out.println(": " + map.get(value));
                     integer = integer.multiply(repeatGroup(a, map.get(value)));
                 }
                 integer = integer.remainder(new BigInteger("" + 1000000007));
@@ -83,6 +81,10 @@ class SolutionTest5648 {
         }
 
         private BigInteger repeatGroup(int m, int n) {
+            return C(m + n - 1, n);
+        }
+
+        private BigInteger repeatGroup0(int m, int n) {
             if (n == 0) {
                 return new BigInteger("1");
             }
@@ -102,6 +104,24 @@ class SolutionTest5648 {
             }
             return c;
         }
+
+        private BigInteger C(int m, int n) {
+            BigInteger ans = new BigInteger("1");
+            if (m == n) {
+                return ans;
+            }
+
+            for (int i = 1; i <= m; i++) {
+                ans=ans.multiply(new BigInteger(i + ""));
+            }
+            for (int i = 1; i <= m - n; i++) {
+                ans=ans.divide(new BigInteger(i + ""));
+            }
+            for (int i = 1; i <= n; i++) {
+                ans=ans.divide(new BigInteger(i + ""));
+            }
+            return ans;
+        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -111,9 +131,13 @@ class SolutionTest5648 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            // 1. 重复组合公式 证明方法  实际的摆放方法就是n-1个 | 和 r 个∗ *∗ 的不同摆放方式
             Assert.assertEquals("[4, 1, 50734910]", Arrays.toString(solution.waysToFillArray(new int[][]{{2, 6}, {5, 1}, {73, 660}})));
             Assert.assertEquals("[50734910]", Arrays.toString(solution.waysToFillArray(new int[][]{{73, 660}})));
             Assert.assertEquals("[2701]", Arrays.toString(solution.waysToFillArray(new int[][]{{73, 4}})));
+
+
+
         }
     }
 }
