@@ -3,8 +3,6 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 class SolutionTest424 {
 //给你一个仅由大写英文字母组成的字符串，你可以将任意位置上的字符替换成另外的字符，总共可最多替换 k 次。在执行上述操作后，找到包含重复字母的最长子串的长度。
 // 
@@ -41,16 +39,16 @@ class SolutionTest424 {
                 return s.length();
             }
             int[] dict = new int[26];
-            dict[s.charAt(0) - 'A']++;
             int left = 0;
             int ans = 1;
-            int len = s.length();
-            for (int right = 1; right < len; right++) {
-                char curr = s.charAt(right);
-                dict[curr - 'A']++;
-                if (canPut(dict, k,right-left+1)) {
+            int max = 0;
+            for (int right = 0; right < s.length(); right++) {
+                int p = s.charAt(right) - 'A';
+                dict[p]++;
+                max = Math.max(max, dict[p]);
+                if (right - left + 1 - max <= k) {
                     ans = Math.max(ans, right - left + 1);
-                }else {
+                } else {
                     dict[s.charAt(left) - 'A']--;
                     left++;
                 }
@@ -58,9 +56,7 @@ class SolutionTest424 {
             return ans;
         }
 
-        private boolean canPut(int[] dict, int k,int sum) {
-            return sum - Arrays.stream(dict).max().getAsInt() <= k;
-        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
