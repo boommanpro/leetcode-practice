@@ -3,7 +3,7 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
 
 class SolutionTest1706 {
 //用一个大小为 m x n 的二维网格 grid 表示一个箱子。你有 n 颗球。箱子的顶部和底部都是开着的。 
@@ -74,71 +74,28 @@ class SolutionTest1706 {
         public int[] findBall(int[][] grid) {
             int m = grid.length;
             int n = grid[0].length;
-            UnionFind unionFind = new UnionFind((m + 1) * n);
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    int v = grid[i][j];
-                    if (j + v < 0 || j + v >= n) {
-                        continue;
-                    }
-                    // 判断是否 V型
-                    if (grid[i][j + v] != v) {
-                        continue;
-                    }
-                    unionFind.union(calcId(i, j, n), calcId(i + 1, j + v, n));
-                }
-            }
-
             int[] ans = new int[n];
             for (int i = 0; i < n; i++) {
-                int target = unionFind.find(calcId(0, i, n));
-                if (target / n == m) {
-                    ans[i] = target % n;
-                } else {
-                    ans[i] = -1;
-                }
+                ans[i] = dfsOut(0, i, grid, m, n);
             }
             return ans;
         }
 
 
-        private int calcId(int x, int y, int col) {
-            return x * col + y;
+        public int dfsOut(int x, int y, int[][] matrix, int m, int n) {
+            if (x == m) {
+                return y;
+            }
+            int v = matrix[x][y];
+            if (y + v < 0 || y + v >= n) {
+                return -1;
+            }
+            if (matrix[x][y + v] != v) {
+                return -1;
+            }
+            return dfsOut(x + 1, y + v, matrix, m, n);
         }
 
-
-        public static final class UnionFind {
-            int[] parents;
-
-            public UnionFind(int n) {
-                parents = new int[n];
-                for (int i = 0; i < n; i++) {
-                    parents[i] = i;
-                }
-            }
-
-            public boolean union(int x, int y) {
-                int px = find(x);
-                int py = find(y);
-                if (px == py) {
-                    return false;
-                }
-                if (px > py) {
-                    int temp = py;
-                    py = px;
-                    px = temp;
-                }
-                parents[px] = py;
-                return true;
-            }
-
-            private int find(int v) {
-                if (v != parents[v]) {
-                    parents[v] = find(parents[v]);
-                }
-                return parents[v];
-            }
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
