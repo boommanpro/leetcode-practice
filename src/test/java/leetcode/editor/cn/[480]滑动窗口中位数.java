@@ -3,10 +3,7 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 class SolutionTest480 {
 //中位数是有序序列最中间的那个数。如果序列的大小是偶数，则没有最中间的数；此时中位数是最中间的两个数的平均数。 
@@ -54,29 +51,112 @@ class SolutionTest480 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public double[] medianSlidingWindow(int[] nums, int k) {
-            int len = nums.length;
-            int n = len - k + 1;
-            double[] ans = new double[n];
-
-            for (int i = 0; i < n; i++) {
-                // i -> i+k-1  范围
-                ans[i] = median(nums, i, k);
+            DualHeap dh = new DualHeap(k);
+            for (int i = 0; i < k; ++i) {
+                dh.insert(nums[i]);
+            }
+            double[] ans = new double[nums.length - k + 1];
+            ans[0] = dh.getMedian();
+            for (int i = k; i < nums.length; ++i) {
+                dh.insert(nums[i]);
+                dh.erase(nums[i - k]);
+                ans[i - k + 1] = dh.getMedian();
             }
             return ans;
         }
 
-        private double median(int[] nums, int l, int k) {
-            List<Integer> all = new ArrayList<>();
-            for (int i = 0; i < k; i++) {
-                all.add(nums[l + i]);
+        public static final class DualHeap {
+            // 大根堆，维护较小的一半元素
+            private final PriorityQueue<Integer> small;
+            // 小根堆，维护较大的一半元素
+            private final PriorityQueue<Integer> large;
+            // 哈希表，记录「延迟删除」的元素，key 为元素，value 为需要删除的次数
+            private final Map<Integer, Integer> delayed;
+
+            private final int k;
+            // small 和 large 当前包含的元素个数，需要扣除被「延迟删除」的元素
+            private int smallSize, largeSize;
+
+            public DualHeap(int k) {
+                this.small = new PriorityQueue<>(Comparator.reverseOrder());
+                this.large = new PriorityQueue<>(Integer::compareTo);
+                this.delayed = new HashMap<>();
+                this.k = k;
+                this.smallSize = 0;
+                this.largeSize = 0;
             }
-            Collections.sort(all);
-            if ((k & 1) == 1) {
-                return all.get(k / 2);
+
+            @SuppressWarnings("all")
+            public double getMedian() {
+                return (k & 1) == 1 ? small.peek() : ((double) small.peek() + large.peek()) / 2;
             }
-            return ((long) all.get(k / 2 - 1) + all.get(k / 2)) / 2.0;
+
+            public void insert(int num) {
+                if (small.isEmpty() || num <= small.peek()) {
+                    small.offer(num);
+                    ++smallSize;
+                } else {
+                    large.offer(num);
+                    ++largeSize;
+                }
+                makeBalance();
+            }
+
+            @SuppressWarnings("all")
+            public void erase(int num) {
+                delayed.put(num, delayed.getOrDefault(num, 0) + 1);
+                if (num <= small.peek()) {
+                    --smallSize;
+                    if (num == small.peek()) {
+                        prune(small);
+                    }
+                } else {
+                    --largeSize;
+                    if (num == large.peek()) {
+                        prune(large);
+                    }
+                }
+                makeBalance();
+            }
+
+            // 不断地弹出 heap 的堆顶元素，并且更新哈希表
+            private void prune(PriorityQueue<Integer> heap) {
+                while (!heap.isEmpty()) {
+                    int num = heap.peek();
+                    if (delayed.containsKey(num)) {
+                        delayed.put(num, delayed.get(num) - 1);
+                        if (delayed.get(num) == 0) {
+                            delayed.remove(num);
+                        }
+                        heap.poll();
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            // 调整 small 和 large 中的元素个数，使得二者的元素个数满足要求
+            private void makeBalance() {
+                if (smallSize > largeSize + 1) {
+                    // small 比 large 元素多 2 个
+                    large.offer(small.poll());
+                    --smallSize;
+                    ++largeSize;
+                    // small 堆顶元素被移除，需要进行 prune
+                    prune(small);
+                } else if (smallSize < largeSize) {
+                    // large 比 small 元素多 1 个
+                    small.offer(large.poll());
+                    ++smallSize;
+                    --largeSize;
+                    // large 堆顶元素被移除，需要进行 prune
+                    prune(large);
+                }
+            }
         }
     }
+
+
 //leetcode submit region end(Prohibit modification and deletion)
 
     //Do some Test
