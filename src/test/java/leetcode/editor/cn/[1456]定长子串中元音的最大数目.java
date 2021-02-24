@@ -66,34 +66,22 @@ class SolutionTest1456 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        private static final Set<Character> set = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
 
         public int maxVowels(String s, int k) {
-            int l = 0;
-            int r = k;
             int cnt = 0;
-            int len = Math.min(k, s.length());
-            for (int i = 0; i < len; i++) {
-                char c = s.charAt(i);
-                if (set.contains(c)) {
-                    cnt++;
-                }
+            for (int i = 0; i < k; i++) {
+                cnt += isVowels(s.charAt(i));
             }
             int ans = cnt;
-            while (r < s.length()) {
-                char c = s.charAt(r);
-                if (set.contains(c)) {
-                    cnt++;
-                }
-                r++;
-                c = s.charAt(l);
-                if (set.contains(c)) {
-                    cnt--;
-                }
-                l++;
+            for (int i = k; i < s.length(); i++) {
+                cnt += isVowels(s.charAt(i)) - isVowels(s.charAt(i - k));
                 ans = Math.max(ans, cnt);
             }
             return ans;
+        }
+
+        private int isVowels(char c) {
+            return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ? 1 : 0;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
