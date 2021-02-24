@@ -1,10 +1,11 @@
 package leetcode.editor.cn;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 class SolutionTest剑指Offer59_II {
 //请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都
@@ -45,7 +46,7 @@ class SolutionTest剑指Offer59_II {
 
         Queue<Integer> queue;
 
-        LinkedList<Integer> max;
+        Deque<Integer> max;
 
         public MaxQueue() {
             queue = new LinkedList<>();
@@ -53,58 +54,61 @@ class SolutionTest剑指Offer59_II {
         }
 
         public int max_value() {
-            return max.size() == 0 ? -1 : max.getFirst();
+            return max.size() == 0 ? -1 : max.peek();
         }
 
         public void push_back(int value) {
             queue.add(value);
-            //注意：这里第二个判断条件不能带等号，即max中对于当前queue中的具有相同值的元素会全部存储，而不是存储最近的那个。
-            while (max.size() != 0 && max.getLast() < value) {
-                max.removeLast();
+            while (max.size() != 0 && max.peekLast() < value) {
+                max.pollLast();
             }
             max.add(value);
         }
 
         public int pop_front() {
-            //Integer类型的值的比较不能直接使用==
-            if (max.size() != 0 && queue.peek().equals(max.getFirst())) {
-                max.removeFirst();
+            if (max.size() != 0 && max.peek().equals(queue.peek())) {
+                max.poll();
             }
             return queue.size() == 0 ? -1 : queue.poll();
         }
+    }
 
-        /**
-         * Your MaxQueue object will be instantiated and called as such:
-         * MaxQueue obj = new MaxQueue();
-         * int param_1 = obj.max_value();
-         * obj.push_back(value);
-         * int param_3 = obj.pop_front();
-         */
+    /**
+     * Your MaxQueue object will be instantiated and called as such:
+     * MaxQueue obj = new MaxQueue();
+     * int param_1 = obj.max_value();
+     * obj.push_back(value);
+     * int param_3 = obj.pop_front();
+     */
 //leetcode submit region end(Prohibit modification and deletion)
 
 //Do some Test
-        public static class TestClass {
+    public static class TestClass {
 
-            @Test
-            public void defaultSolutionTest() {
-                MaxQueue queue0 = new MaxQueue();
-                queue0.push_back(1);
-                queue0.push_back(2);
-                Assert.assertEquals(2, queue0.max_value());
-                Assert.assertEquals(1, queue0.pop_front());
-                Assert.assertEquals(2, queue0.max_value());
-                MaxQueue queue1 = new MaxQueue();
-                Assert.assertEquals(-1, queue1.pop_front());
-                Assert.assertEquals(-1, queue1.max_value());
+        @Test
+        public void defaultSolutionTest() {
+            // 本算法基于问题的一个重要性质：当一个元素进入队列的时候，它前面所有比它小的元素就不会再对答案产生影响。
+            MaxQueue queue0 = new MaxQueue();
+            queue0.push_back(3);
+            queue0.push_back(1);
+            queue0.push_back(2);
+            Assert.assertEquals(3, queue0.max_value());
+            Assert.assertEquals(3, queue0.pop_front());
+            Assert.assertEquals(2, queue0.max_value());
+            Assert.assertEquals(1, queue0.pop_front());
+            Assert.assertEquals(2, queue0.max_value());
 
-                MaxQueue queue2 = new MaxQueue();
-                queue2.push_back(3);
-                queue2.push_back(2);
-                queue2.push_back(1);
-                Assert.assertEquals(3, queue2.max_value());
-                Assert.assertEquals(3, queue2.pop_front());
-                Assert.assertEquals(2, queue2.max_value());
-            }
+            MaxQueue queue1 = new MaxQueue();
+            Assert.assertEquals(-1, queue1.pop_front());
+            Assert.assertEquals(-1, queue1.max_value());
+
+            MaxQueue queue2 = new MaxQueue();
+            queue2.push_back(3);
+            queue2.push_back(2);
+            queue2.push_back(1);
+            Assert.assertEquals(3, queue2.max_value());
+            Assert.assertEquals(3, queue2.pop_front());
+            Assert.assertEquals(2, queue2.max_value());
         }
     }
 }
