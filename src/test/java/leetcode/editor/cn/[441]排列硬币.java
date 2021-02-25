@@ -44,7 +44,24 @@ class SolutionTest441 {
     class Solution {
 
         public int arrangeCoins(int n) {
-            return (int)(Math.sqrt(2) * Math.sqrt(n + 0.125) - 0.5);
+            if (n == 0) {
+                return 0;
+            }
+            int k1 = 1;
+            int k2 = n;
+            while (k1 <= k2) {
+                int mid = (k2 - k1 >> 1) + k1;
+                long prev = (long) (0.5d * mid * (mid + 1));
+                long next = (long) (0.5d * (mid + 1) * (mid + 2));
+                if (n >= prev && n < next) {
+                    return mid;
+                } else if (n >= next) {
+                    k1 = mid + 1;
+                } else {
+                    k2 = mid - 1;
+                }
+            }
+            return k1;
         }
 
     }
@@ -59,6 +76,7 @@ class SolutionTest441 {
             Assert.assertEquals(2, solution.arrangeCoins(5));
             Assert.assertEquals(2, solution.arrangeCoins(3));
             Assert.assertEquals(3, solution.arrangeCoins(8));
+            Assert.assertEquals(60070, solution.arrangeCoins(1804289383));
         }
     }
 }
