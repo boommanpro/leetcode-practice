@@ -44,19 +44,26 @@ class SolutionTest1089 {
     class Solution {
 
         public void duplicateZeros(int[] arr) {
-            int[] copy = Arrays.copyOf(arr, arr.length);
-            int p1 = 0;
-            int p2 = 0;
-            while (p2 < arr.length) {
-                if (copy[p1] == 0) {
-                    arr[p2++] = 0;
-                    if (p2 < arr.length) {
-                        arr[p2++] = 0;
+            int last = arr.length - 1;
+            int offset = 0;
+            for (int i = 0; i <= last - offset; i++) {
+                if (arr[i] == 0) {
+                    if (i + offset == last) {
+                        arr[last] = 0;
+                        last--;
+                        offset--;
                     }
-                    p1++;
-                } else {
-                    arr[p2++] = copy[p1++];
+                    offset++;
                 }
+            }
+            last -= offset;
+            while (last >= 0) {
+                arr[last + offset] = arr[last];
+                if (arr[last] == 0) {
+                    offset--;
+                    arr[last + offset] = arr[last];
+                }
+                last--;
             }
         }
     }
@@ -74,6 +81,12 @@ class SolutionTest1089 {
             int[] arr1 = new int[]{1, 2, 3};
             solution.duplicateZeros(arr1);
             Assert.assertEquals("[1, 2, 3]", Arrays.toString(arr1));
+            int[] arr2 = new int[]{8, 4, 5, 0, 0, 0, 0, 7};
+            solution.duplicateZeros(arr2);
+            Assert.assertEquals("[8, 4, 5, 0, 0, 0, 0, 0]", Arrays.toString(arr2));
+            int[] arr3 = new int[]{9, 9, 9, 4, 8, 0, 0, 3, 7, 2, 0, 0, 0, 0, 9, 1, 0, 0, 1, 1, 0, 5, 6, 3, 1, 6, 0, 0, 2, 3, 4, 7, 0, 3, 9, 3, 6, 5, 8, 9, 1, 1, 3, 2, 0, 0, 7, 3, 3, 0, 5, 7, 0, 8, 1, 9, 6, 3, 0, 8, 8, 8, 8, 0, 0, 5, 0, 0, 0, 3, 7, 7, 7, 7, 5, 1, 0, 0, 8, 0, 0};
+            solution.duplicateZeros(arr3);
+            Assert.assertEquals("[9, 9, 9, 4, 8, 0, 0, 0, 0, 3, 7, 2, 0, 0, 0, 0, 0, 0, 0, 0, 9, 1, 0, 0, 0, 0, 1, 1, 0, 0, 5, 6, 3, 1, 6, 0, 0, 0, 0, 2, 3, 4, 7, 0, 0, 3, 9, 3, 6, 5, 8, 9, 1, 1, 3, 2, 0, 0, 0, 0, 7, 3, 3, 0, 0, 5, 7, 0, 0, 8, 1, 9, 6, 3, 0, 0, 8, 8, 8, 8, 0]", Arrays.toString(arr3));
         }
     }
 }
