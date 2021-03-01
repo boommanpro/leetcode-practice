@@ -76,7 +76,22 @@ class SolutionTest852 {
     class Solution {
 
         public int peakIndexInMountainArray(int[] arr) {
-            return 0;
+            int l = 0;
+            int r = arr.length - 1;
+            while (l <= r) {
+                int mid = (r - l >> 1) + l;
+                boolean prev = arr[mid] > arr[mid - 1];
+                boolean next = arr[mid] > arr[mid + 1];
+                if (prev && next) {
+                    return mid;
+                } else if (!prev && next) {
+                    r = mid;
+
+                } else {
+                    l = mid;
+                }
+            }
+            return -1;
         }
 
     }
@@ -93,6 +108,7 @@ class SolutionTest852 {
             Assert.assertEquals(1, solution.peakIndexInMountainArray(new int[]{0, 10, 5, 2}));
             Assert.assertEquals(2, solution.peakIndexInMountainArray(new int[]{3, 4, 5, 1}));
             Assert.assertEquals(2, solution.peakIndexInMountainArray(new int[]{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}));
+            Assert.assertEquals(1, solution.peakIndexInMountainArray(new int[]{3, 5, 3, 2, 0}));
         }
     }
 }
