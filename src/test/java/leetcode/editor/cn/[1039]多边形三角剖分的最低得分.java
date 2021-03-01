@@ -1,5 +1,6 @@
 package leetcode.editor.cn;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest1039 {
@@ -51,10 +52,23 @@ class SolutionTest1039 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public int minScoreTriangulation(int[] values) {
-            return 0;
+        public int minScoreTriangulation(int[] A) {
+            if (A == null || A.length <= 0) {
+                return 0;
+            }
+            int N = A.length;
+            int[][] dp = new int[N][N];
+            for (int len = 3; len <= N; len++) {
+                for (int left = 0; left <= N - len; left++) {
+                    int right = left + len - 1;
+                    dp[left][right] = Integer.MAX_VALUE;
+                    for (int i = left + 1; i < right; i++) {
+                        dp[left][right] = Math.min(dp[left][right], dp[left][i] + dp[i][right] + A[i] * A[left] * A[right]);
+                    }
+                }
+            }
+            return dp[0][N - 1];
         }
-
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -64,6 +78,10 @@ class SolutionTest1039 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertEquals(6, solution.minScoreTriangulation(new int[]{1, 2, 3}));
+            Assert.assertEquals(144, solution.minScoreTriangulation(new int[]{3, 7, 4, 5}));
+            Assert.assertEquals(13, solution.minScoreTriangulation(new int[]{1, 3, 1, 4, 1, 5}));
+            Assert.assertEquals(18, solution.minScoreTriangulation(new int[]{1, 2, 3, 4}));
         }
     }
 }
