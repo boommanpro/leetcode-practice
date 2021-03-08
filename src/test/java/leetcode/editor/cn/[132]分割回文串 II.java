@@ -3,9 +3,6 @@ package leetcode.editor.cn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class SolutionTest132 {
 //给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。 
 //
@@ -63,6 +60,7 @@ class SolutionTest132 {
             Assert.assertEquals(0, solution.minCut("aaaa"));
             Assert.assertEquals(0, solution.minCut("aba"));
             Assert.assertEquals(0, solution.minCut("ababababababababababababcbabababababababababababa"));
+            Assert.assertEquals(452, solution.minCut("apjesgpsxoeiokmqmfgvjslcjukbqxpsobyhjpbgdfruqdkeiszrlmtwgfxyfostpqczidfljwfbbrflkgdvtytbgqalguewnhvvmcgxboycffopmtmhtfizxkmeftcucxpobxmelmjtuzigsxnncxpaibgpuijwhankxbplpyejxmrrjgeoevqozwdtgospohznkoyzocjlracchjqnggbfeebmuvbicbvmpuleywrpzwsihivnrwtxcukwplgtobhgxukwrdlszfaiqxwjvrgxnsveedxseeyeykarqnjrtlaliyudpacctzizcftjlunlgnfwcqqxcqikocqffsjyurzwysfjmswvhbrmshjuzsgpwyubtfbnwajuvrfhlccvfwhxfqthkcwhatktymgxostjlztwdxritygbrbibdgkezvzajizxasjnrcjwzdfvdnwwqeyumkamhzoqhnqjfzwzbixclcxqrtniznemxeahfozp"));
 
         }
     }
