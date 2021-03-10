@@ -36,18 +36,16 @@ class SolutionTest剑指Offer_56_eII {
     class Solution {
 
         public int singleNumber(int[] nums) {
-            int[] cnt = new int[32];
+            int t = 0;
+            int o = 0;
+            // 00
+            // 01
+            // 10
             for (int num : nums) {
-                for (int i = 0; i < 32; i++) {
-                    cnt[i] += (num >> i) & 1;
-                }
+                o = o ^ num & ~t;
+                t = t ^ num & ~o;
             }
-            int ans = 0;
-            for (int i = 0; i < 32; i++) {
-                cnt[i] %= 3;
-                ans += cnt[i] * (1 << i);
-            }
-            return ans;
+            return o;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
