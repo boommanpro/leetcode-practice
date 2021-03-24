@@ -15,6 +15,7 @@ ${question.content}
         public void defaultSolutionTest() {
             Solution solution = new Solution();
         }
+        
     }
 }
 ```
