@@ -35,22 +35,22 @@ class SolutionTest213 {
             if (nums == null || nums.length == 0) {
                 return 0;
             }
-            int n = nums.length;
-            if (n == 1) {
+            if (nums.length == 1) {
                 return nums[0];
             }
-            return Math.max(myRob(Arrays.copyOfRange(nums, 1, n)), myRob(Arrays.copyOfRange(nums, 0, n - 1)));
+            return Math.max(myRob(Arrays.copyOfRange(nums, 0, nums.length - 1)), myRob(Arrays.copyOfRange(nums, 1, nums.length)));
         }
 
         private int myRob(int[] nums) {
-            int pre = 0, curr = 0, temp;
+            int prev = 0, curr = 0, temp;
             for (int num : nums) {
                 temp = curr;
-                curr = Math.max(pre + num, curr);
-                pre = temp;
+                curr = Math.max(curr, prev + num);
+                prev = temp;
             }
             return curr;
         }
+
 
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -63,6 +63,11 @@ class SolutionTest213 {
             Solution solution = new Solution();
             Assert.assertEquals(3, solution.rob(new int[]{2, 3, 2}));
             Assert.assertEquals(4, solution.rob(new int[]{1, 2, 3, 1}));
+            Assert.assertEquals(0, solution.rob(new int[]{0}));
+            Assert.assertEquals(340, solution.rob(new int[]{200, 3, 140, 20, 10}));
+            Assert.assertEquals(200, solution.rob(new int[]{200, 3}));
+            Assert.assertEquals(103, solution.rob(new int[]{1, 3, 1, 3, 100}));
+
         }
     }
 }
