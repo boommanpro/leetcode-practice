@@ -72,61 +72,53 @@ class SolutionTest993 {
 
         @SuppressWarnings("all")
         public boolean isCousins(TreeNode root, int x, int y) {
-            if (x == y || root == null || root.val == x || root.val == y) {
+            // 分别表示当前节点值 深度 父辈节点值
+            if (root == null || root.val == x || root.val == y) {
                 return false;
             }
-            Queue<TreeNode> queue = new LinkedList<>();
-            queue.offer(root);
-            int depth = 0;
-            Node[] cousins = new Node[]{null, null};
+            int[] X = new int[]{x, -1, -1};
+            int[] Y = new int[]{y, -1, -1};
+            LinkedList<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            int depth = 1;
             while (!queue.isEmpty()) {
                 int n = queue.size();
-                depth++;
                 while (n > 0) {
-                    TreeNode node = queue.poll();
-                    if (node.left != null) {
-                        queue.offer(node.left);
-                        setIfEquals(node.val, node.left.val, depth, cousins, x, y);
-                    }
-                    if (node.right != null) {
-                        queue.offer(node.right);
-                        setIfEquals(node.val, node.right.val, depth, cousins, x, y);
-                    }
                     n--;
+                    TreeNode curr = queue.poll();
+                    if (curr.left != null) {
+                        queue.add(curr.left);
+                        if (curr.left.val == x) {
+                            X[1] = depth;
+                            X[2] = curr.val;
+                        }
+                        if (curr.left.val == y) {
+                            Y[1] = depth;
+                            Y[2] = curr.val;
+                        }
+                    }
+                    if (curr.right != null) {
+                        queue.add(curr.right);
+                        if (curr.right.val == x) {
+                            X[1] = depth;
+                            X[2] = curr.val;
+                        }
+                        if (curr.right.val == y) {
+                            Y[1] = depth;
+                            Y[2] = curr.val;
+                        }
+                    }
                 }
-                if (checkFind(cousins)) {
-                    return true;
+                if (X[1] != -1 || Y[1] != -1) {
+                    if (X[2] == Y[2] || (X[2] == -1 || Y[2] == -1)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
+                depth++;
             }
-            return checkFind(cousins);
-        }
-
-        private void setIfEquals(int parent, int val, int depth, Node[] cousins, int x, int y) {
-            if (val == x) {
-                cousins[0] = new Node(depth, parent);
-            }
-            if (val == y) {
-                cousins[1] = new Node(depth, parent);
-            }
-        }
-
-        private boolean checkFind(Node[] cousins) {
-            return cousins[0] != null && cousins[1] != null
-                    && cousins[0].depth == cousins[1].depth
-                    && cousins[0].parent != cousins[1].parent;
-        }
-
-
-        static class Node {
-
-            private final int depth;
-
-            private final int parent;
-
-            public Node(int depth, int parent) {
-                this.depth = depth;
-                this.parent = parent;
-            }
+            return false;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
