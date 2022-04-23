@@ -58,37 +58,48 @@ class SolutionTest587 {
 
         public int[][] outerTrees(int[][] trees) {
             Arrays.sort(trees, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
-            int n = trees.length, tp = 0;
-            int[] stk = new int[n + 10];
-            boolean[] vis = new boolean[n + 10];
-            stk[++tp] = 0; // 不标记起点
+            int n = trees.length;
+            int tp = 0;
+            int[] stack = new int[n + 2];
+            boolean[] visited = new boolean[n + 2];
+            stack[++tp] = 0;
             for (int i = 1; i < n; i++) {
                 int[] c = trees[i];
                 while (tp >= 2) {
-                    int[] a = trees[stk[tp - 1]], b = trees[stk[tp]];
-                    if (getArea(a, b, c) < 0) vis[stk[tp--]] = false;
-                    else break;
+                    int[] a = trees[stack[tp - 1]], b = trees[stack[tp]];
+                    //可以添加
+                    if (getArea(a, b, c) >= 0) {
+                        break;
+                    } else {
+                        visited[stack[tp--]] = false;
+                    }
                 }
-                stk[++tp] = i;
-                vis[i] = true;
+                stack[++tp] = i;
+                visited[i] = true;
             }
             int size = tp;
             for (int i = n - 1; i >= 0; i--) {
-                if (vis[i]) continue;
+                if (visited[i]) {
+                    continue;
+                }
                 int[] c = trees[i];
                 while (tp > size) {
-                    int[] a = trees[stk[tp - 1]], b = trees[stk[tp]];
-                    if (getArea(a, b, c) < 0) tp--;
-                        // vis[stk[tp--]] = false; // 非必须
-                    else break;
+                    int[] a = trees[stack[tp - 1]], b = trees[stack[tp]];
+                    if (getArea(a, b, c) >= 0) {
+                        break;
+                    } else {
+                        tp--;
+                    }
                 }
-                stk[++tp] = i;
-                // vis[i] = true; // 非必须
+                stack[++tp] = i;
             }
             int[][] ans = new int[tp - 1][2];
-            for (int i = 1; i < tp; i++) ans[i - 1] = trees[stk[i]];
+            for (int i = 1; i < tp; i++) {
+                ans[i - 1] = trees[stack[i]];
+            }
             return ans;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
