@@ -61,41 +61,31 @@ class SolutionTest417 {
 
 
         public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-            if (matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0) {
-                return new ArrayList<>();
-            }
-            int m = matrix.length;
-            int n = matrix[0].length;
-            boolean[][] visited = new boolean[m][n];
-            Queue<int[]> input = new LinkedList<>();
-            input.offer(new int[]{0, 0});
-            visited[0][0] = true;
-            for (int i = 1; i < m; i++) {
-                input.offer(new int[]{i, 0});
-                visited[i][0] = true;
-            }
-            for (int i = 1; i < n; i++) {
-                input.offer(new int[]{0, i});
-                visited[0][i] = true;
-            }
-            boolean[][] left = getReachable(input, visited, matrix);
-            input = new LinkedList<>();
-            visited = new boolean[m][n];
-            input.offer(new int[]{m - 1, n - 1});
-            visited[m - 1][n - 1] = true;
-            for (int i = 0; i < m - 1; i++) {
-                input.offer(new int[]{i, n - 1});
-                visited[i][n - 1] = true;
-            }
-            for (int i = 0; i < n - 1; i++) {
-                input.offer(new int[]{m - 1, i});
-                visited[m - 1][i] = true;
-            }
-            boolean[][] right = getReachable(input, visited, matrix);
             List<List<Integer>> ans = new ArrayList<>();
+            int m = matrix.length;
+            if (m == 0) {
+                return ans;
+            }
+            int n = matrix[0].length;
+            boolean[][] pacific = new boolean[m][n];
+            boolean[][] atlantic = new boolean[m][n];
+            for (int i = 0; i < m; i++) {
+                dfs(pacific, matrix, m, n, i, 0);
+            }
+            for (int j = 0; j < n; j++) {
+                dfs(pacific, matrix, m, n, 0, j);
+            }
+            for (int i = 0; i < m; i++) {
+                dfs(atlantic, matrix, m, n, i, n - 1);
+            }
+            for (int j = 0; j < n; j++) {
+                dfs(atlantic, matrix, m, n, m - 1, j);
+            }
+
+
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (left[i][j] && right[i][j]) {
+                    if (pacific[i][j] && atlantic[i][j]) {
                         ans.add(Arrays.asList(i, j));
                     }
                 }
@@ -103,23 +93,22 @@ class SolutionTest417 {
             return ans;
         }
 
-        private boolean[][] getReachable(Queue<int[]> input, boolean[][] visited, int[][] matrix) {
-            int m = matrix.length;
-            int n = matrix[0].length;
-            while (!input.isEmpty()) {
-                int[] start = input.poll();
+        private void dfs(boolean[][] water, int[][] matrix, int m, int n, int i, int j) {
+            water[i][j] = true;
+            Stack<int[]> stack = new Stack<>();
+            stack.add(new int[]{i, j});
+            while (!stack.isEmpty()) {
+                int[] curr = stack.pop();
                 for (int[] direction : DIRECTIONS) {
-                    int nextX = start[0] + direction[0];
-                    int nextY = start[1] + direction[1];
-                    if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && !visited[nextX][nextY] && matrix[nextX][nextY] >= matrix[start[0]][start[1]]) {
-                        input.offer(new int[]{nextX, nextY});
-                        visited[nextX][nextY] = true;
+                    int targetI = curr[0] + direction[0];
+                    int targetJ = curr[1] + direction[1];
+                    if (targetI >= 0 && targetI < m && targetJ >= 0 && targetJ < n && !water[targetI][targetJ] && matrix[targetI][targetJ] >= matrix[curr[0]][curr[1]]) {
+                        water[targetI][targetJ] = true;
+                        stack.add(new int[]{targetI, targetJ});
                     }
                 }
             }
-            return visited;
         }
-
 
     }
 //leetcode submit region end(Prohibit modification and deletion)
