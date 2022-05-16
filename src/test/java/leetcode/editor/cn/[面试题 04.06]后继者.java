@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Stack;
 import java.util.TreeSet;
 
-class SolutionTest面试题04_06{
+class SolutionTest面试题04_06 {
 //设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。 
 //
 // 如果指定节点没有对应的“下一个”节点，则返回null。 
@@ -35,8 +35,8 @@ class SolutionTest面试题04_06{
 //输出: null 
 // Related Topics 树 深度优先搜索 二叉搜索树 二叉树 👍 182 👎 0
 
-public static
-        //leetcode submit region begin(Prohibit modification and deletion)
+    public static
+            //leetcode submit region begin(Prohibit modification and deletion)
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -46,34 +46,36 @@ public static
  *     TreeNode(int x) { val = x; }
  * }
  */
-class Solution {
-    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode prev = null, curr = root;
-        while (!stack.isEmpty() || curr != null) {
-            while (curr != null) {
-                stack.add(curr);
-                curr = curr.left;
+    class Solution {
+        public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+            TreeNode ans = null;
+            if (p.right != null) {
+                ans = p.right;
+                while (ans.left != null) {
+                    ans = ans.left;
+                }
+                return ans;
             }
-            curr = stack.pop();
-            if (prev == p) {
-                return curr;
+            while (root != null) {
+                if (root.val > p.val) {
+                    ans = root;
+                    root = root.left;
+                } else {
+                    root = root.right;
+                }
             }
-            prev = curr;
-            curr = curr.right;
+            return ans;
         }
-        return null;
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
-//Do some Test
-public static class TestClass {
+    //Do some Test
+    public static class TestClass {
 
-    @Test
-    public void defaultSolutionTest() {
-        Solution solution = new Solution();
+        @Test
+        public void defaultSolutionTest() {
+            Solution solution = new Solution();
+        }
+
     }
-
-}
 }
