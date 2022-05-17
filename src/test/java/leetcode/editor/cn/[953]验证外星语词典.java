@@ -54,13 +54,27 @@ class SolutionTest953 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isAlienSorted(String[] words, String order) {
-            Map<Character, Integer> dict = new HashMap<>();
+            int[] dict = new int[26];
             for (int i = 0; i < order.length(); i++) {
-                dict.put(order.charAt(i), i);
+                dict[order.charAt(i) - 'a'] = i;
             }
             String prefix = "";
             for (String word : words) {
-                if (!compareByDict(prefix, word, dict)) {
+                int len = Math.min(prefix.length(), word.length());
+                boolean equals = true;
+                for (int i = 0; i < len; i++) {
+                    char A = prefix.charAt(i);
+                    char B = word.charAt(i);
+                    if (A == B) {
+                        continue;
+                    }
+                    if (dict[A - 'a'] > dict[B - 'a']) {
+                        return false;
+                    }
+                    equals = false;
+                    break;
+                }
+                if (equals && prefix.length() > word.length()) {
                     return false;
                 }
                 prefix = word;
@@ -68,18 +82,7 @@ class SolutionTest953 {
             return true;
         }
 
-        private boolean compareByDict(String prefix, String word, Map<Character, Integer> dict) {
-            int len = Math.min(prefix.length(), word.length());
-            for (int i = 0; i < len; i++) {
-                char A = prefix.charAt(i);
-                char B = word.charAt(i);
-                if (A == B) {
-                    continue;
-                }
-                return dict.get(A) < dict.get(B);
-            }
-            return prefix.length() <= word.length();
-        }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -89,8 +92,8 @@ class SolutionTest953 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertTrue(solution.isAlienSorted(new String[]{"hello","leetcode"},"hlabcdefgijkmnopqrstuvwxyz"));
-            Assert.assertFalse(solution.isAlienSorted(new String[]{"apple","app"},"abcdefghijklmnopqrstuvwxyz"));
+            Assert.assertTrue(solution.isAlienSorted(new String[]{"hello", "leetcode"}, "hlabcdefgijkmnopqrstuvwxyz"));
+            Assert.assertFalse(solution.isAlienSorted(new String[]{"apple", "app"}, "abcdefghijklmnopqrstuvwxyz"));
         }
 
     }
