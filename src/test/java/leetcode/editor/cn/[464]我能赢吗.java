@@ -38,29 +38,30 @@ class SolutionTest464 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        public boolean canIWin(int n, int desiredTotal) {
-            //可能会存在 目标分数大于选择总和的情况
-            if ((1 + n) * n / 2 < desiredTotal) {
+        public boolean canIWin(int n, int x) {
+            int max = n * (n + 1) / 2;
+            if (max < x) {
                 return false;
             }
-            return helper(n, desiredTotal, new Boolean[1 << n], 0);
+            return backTracking(n, x, new Boolean[1 << n], 0);
         }
 
-        private boolean helper(int n, int desiredTotal, Boolean[] dp, int state) {
-            if (dp[state] != null) {
-                return dp[state];
+        private boolean backTracking(int n, int x, Boolean[] state, int curr) {
+            if (state[curr] != null) {
+                return state[curr];
             }
             for (int i = 1; i <= n; i++) {
-                int curr = 1 << (i - 1);
-                if ((curr & state) != 0) {
+                int temp = 1 << (i - 1);
+                if ((temp & curr) != 0) {
                     continue;
                 }
-                if (desiredTotal - i <= 0 || !helper(n, desiredTotal - i, dp, state | curr)) {
-                    return dp[state] = true;
+                if (x - i <= 0 || backTracking(n, x - i, state, curr | temp)) {
+                    return state[curr] = true;
                 }
             }
-            return dp[state] = false;
+            return state[curr] = false;
         }
+
 
         //是否胜利
     }
@@ -75,6 +76,8 @@ class SolutionTest464 {
             Assert.assertFalse(solution.canIWin(10, 11));
             Assert.assertFalse(solution.canIWin(10, 40));
             Assert.assertFalse(solution.canIWin(20, 210));
+            Assert.assertTrue(solution.canIWin(18, 79));
+            Assert.assertTrue(solution.canIWin(6, 16));
         }
     }
 }
