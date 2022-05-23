@@ -73,45 +73,38 @@ class SolutionTest2104 {
 
         public long subArrayRanges(int[] nums) {
             int n = nums.length;
-            int[] leftMin = new int[n];
-            int[] rightMin = new int[n];
-            int[] leftMax = new int[n];
-            int[] rightMax = new int[n];
+            int[] max = getRangeCount(nums, true);
+            int[] min = getRangeCount(nums, false);
             long ans = 0;
+            for (int i = 0; i < n; i++) {
+                ans += (long) (max[i] - min[i]) * nums[i];
+            }
+            return ans;
+        }
+
+        private int[] getRangeCount(int[] nums, boolean max) {
+            int n = nums.length;
+            int[] left = new int[n];
+            int[] right = new int[n];
             Stack<Integer> stack = new Stack<>();
             for (int i = 0; i < n; i++) {
-                while (!stack.isEmpty() && nums[stack.peek()] > nums[i]) {
+                while (!stack.isEmpty() && (max ? nums[i] >= nums[stack.peek()] : nums[i] <= nums[stack.peek()])) {
                     stack.pop();
                 }
-                leftMin[i] = stack.isEmpty() ? -1 : stack.peek();
+                left[i] = stack.isEmpty() ? -1 : stack.peek();
                 stack.push(i);
             }
             stack.clear();
             for (int i = n - 1; i >= 0; i--) {
-                while (!stack.isEmpty() && nums[stack.peek()] >= nums[i]) {
+                while (!stack.isEmpty() && (max ? nums[i] > nums[stack.peek()] : nums[i] < nums[stack.peek()])) {
                     stack.pop();
                 }
-                rightMin[i] = stack.isEmpty() ? n : stack.peek();
+                right[i] = stack.isEmpty() ? n : stack.peek();
                 stack.push(i);
             }
-            stack.clear();
+            int[] ans = new int[n];
             for (int i = 0; i < n; i++) {
-                while (!stack.isEmpty() && nums[stack.peek()] <= nums[i]) {
-                    stack.pop();
-                }
-                leftMax[i] = stack.isEmpty() ? -1 : stack.peek();
-                stack.push(i);
-            }
-            stack.clear();
-            for (int i = n - 1; i >= 0; i--) {
-                while (!stack.isEmpty() && nums[stack.peek()] < nums[i]) {
-                    stack.pop();
-                }
-                rightMax[i] = stack.isEmpty() ? n : stack.peek();
-                stack.push(i);
-            }
-            for (int i = 0; i < n; i++) {
-                ans += nums[i] * ((long) (i - leftMax[i]) * (rightMax[i] - i) - (long) (i - leftMin[i]) * (rightMin[i] - i));
+                ans[i] = (i - left[i]) * (right[i] - i);
             }
             return ans;
         }
@@ -128,6 +121,8 @@ class SolutionTest2104 {
             Assert.assertEquals(4, solution.subArrayRanges(new int[]{1, 2, 3}));
             Assert.assertEquals(4, solution.subArrayRanges(new int[]{1, 3, 3}));
             Assert.assertEquals(59, solution.subArrayRanges(new int[]{4, -2, -3, 4, 1}));
+            Assert.assertEquals(21, solution.subArrayRanges(new int[]{3, 2, 1, 1, 2, 3}));
+            Assert.assertEquals(6, solution.subArrayRanges(new int[]{3, 1, 3}));
         }
 
     }
