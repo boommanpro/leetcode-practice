@@ -1,6 +1,5 @@
 package leetcode.editor.cn;
 
-import com.sun.jndi.cosnaming.CNCtx;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -66,30 +65,37 @@ class SolutionTest2276 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class CountIntervals {
 
-        private int cnt = 0;
 
-        private final TreeMap<Integer, Integer> m = new TreeMap<>();
+        private int count = 0;
+        private TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+
 
         public CountIntervals() {
 
         }
 
         public void add(int left, int right) {
-            // 遍历所有被 [left,right] 覆盖到的区间（部分覆盖也算）
-            for (Map.Entry<Integer, Integer> e = m.ceilingEntry(left); e != null && e.getValue() <= right; e = m.ceilingEntry(left)) {
-                int l = e.getValue(), r = e.getKey();
-                left = Math.min(left, l);   // 合并后的新区间，其左端点为所有被覆盖的区间的左端点的最小值
-                right = Math.max(right, r); // 合并后的新区间，其右端点为所有被覆盖的区间的右端点的最大值
-                cnt -= r - l + 1;
-                m.remove(r);
+            right++;
+            Iterator<Map.Entry<Integer, Integer>> iterator = treeMap.tailMap(left).entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, Integer> curr = iterator.next();
+                int currRight = curr.getKey();
+                int currLeft = curr.getValue();
+                if (currLeft > right) {
+                    break;
+                }
+                count -= currRight - currLeft;
+                iterator.remove();
+                left = Math.min(left, currLeft);
+                right = Math.max(right, currRight);
             }
-            cnt += right - left + 1;
-            m.put(right, left); // 所有被覆盖到的区间与 [left,right] 合并成一个新区间
+            treeMap.put(right, left);
+            count += right - left;
         }
 
 
         public int count() {
-            return cnt;
+            return count;
         }
     }
 
