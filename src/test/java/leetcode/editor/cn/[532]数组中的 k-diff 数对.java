@@ -2,6 +2,8 @@ package leetcode.editor.cn;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 class SolutionTest532 {
 //给定一个整数数组和一个整数 k，你需要在数组里找到 不同的 k-diff 数对，并返回不同的 k-diff 数对 的数目。 
 //
