@@ -43,40 +43,40 @@ class SolutionTest30 {
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<Integer> findSubstring(String s, String[] words) {
-            Map<String, Long> dict = Arrays.stream(words).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-            Map<String, Long> window = new HashMap<>();
+            int len = words[0].length();
             List<Integer> ans = new ArrayList<>();
-            int sum = dict.values().stream().mapToInt(Long::intValue).sum();
-            int max = dict.keySet().stream().mapToInt(String::length).max().getAsInt();
-            for (int i = 0; i < s.length(); i++) {
-                window.clear();
-                if (dfs(s, i, "", dict, window,0, sum, max)) {
-                    ans.add(i);
+            int size = words.length;
+            int n = s.length();
+            Map<String, Integer> dict = Arrays.stream(words).collect(Collectors.groupingBy(Function.identity(), Collectors.reducing(0, e -> 1, Integer::sum)));
+            for (int i = 0; i < len; i++) {
+                int curr = 0;
+                Map<String, Integer> window = new HashMap<>();
+                int k = (n - i) / len;
+                int l = 0;
+                for (int j = 1; j <= k; j++) {
+                    String str = s.substring(i + (j - 1) * len, i + j * len);
+                    if (dict.containsKey(str)) {
+                        while (window.getOrDefault(str, 0) >= dict.get(str)) {
+                            String remove = s.substring(i + l * len, i + (l + 1) * len);
+                            window.put(remove, window.get(remove) - 1);
+                            curr--;
+                            l++;
+                        }
+                        window.put(str, window.getOrDefault(str, 0) + 1);
+                        curr++;
+                    }else {
+                        window.clear();
+                        l = j ;
+                        curr = 0;
+                    }
+                    if (size == curr) {
+                        ans.add(i + l*len);
+                    }
                 }
             }
             return ans;
         }
 
-        private boolean dfs(String s, int i, String current, Map<String, Long> dict, Map<String, Long> window,int currentSize, int sum, int max) {
-            if (currentSize == sum) {
-                return true;
-            }
-            if (i == s.length()) {
-                return false;
-            }
-            if (current.length() > max) {
-                return false;
-            }
-            current += s.charAt(i);
-            if (dict.containsKey(current) && window.getOrDefault(current, 0L) < dict.get(current)) {
-                window.put(current, window.getOrDefault(current, 0L) + 1);
-                if (dfs(s, i + 1, "", dict, window, currentSize + 1, sum, max)) {
-                    return true;
-                }
-                window.put(current, window.get(current) - 1);
-            }
-            return dfs(s, i + 1, current, dict, window, currentSize, sum, max);
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -92,6 +92,10 @@ class SolutionTest30 {
 
             List<Integer> result2 = solution.findSubstring("wordgoodgoodgoodbestword", of("word", "good", "best", "word"));
             Assert.assertArrayEquals(of(), result2.toArray());
+
+
+            Assert.assertEquals("[6, 9, 12]",solution.findSubstring("barfoofoobarthefoobarman",new String[]{"bar","foo","the"}).toString());
+            Assert.assertEquals("[8]",solution.findSubstring("wordgoodgoodgoodbestword",new String[]{"word","good","best","good"}).toString());
 
         }
 
