@@ -4,9 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class SolutionTest30 {
     //给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。
@@ -40,53 +43,39 @@ class SolutionTest30 {
 //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<Integer> findSubstring(String s, String[] words) {
-            if (s == null || s.isEmpty() || words == null || words.length == 0) {
-                return new ArrayList<>();
-            }
-            Map<String, Integer> dictMap = new HashMap<>();
-            for (String word : words) {
-                dictMap.put(word, dictMap.getOrDefault(word, 0) + 1);
-            }
-
-            Map<String, Integer> window = new HashMap<>();
-            int required = dictMap.size();
-            int currentSize = 0;
-
-            int wordLength = words[0].length();
-            //  s = "barfoothefoobarman",
-            //  words = ["foo","bar"]
-            List<Integer> result = new ArrayList<>();
-
-
-            int i = 0, j = wordLength;
-            String currStr;
-            //什么时候i++   1.第一个字符在dict中时  2.找到了一个满足条件的
-            while (j <= s.length() && i + wordLength * words.length <= s.length()) {
-                currStr = s.substring(j - wordLength, j);
-                window.put(currStr, window.getOrDefault(currStr, 0) + 1);
-                //如果dict包含的话,继续向后
-                if (dictMap.containsKey(currStr) && dictMap.get(currStr).equals(window.get(currStr))) {
-                    currentSize++;
-                    j += wordLength;
-                    if (currentSize == required) {
-                        result.add(i);
-                        i++;
-                        j = i + wordLength;
-                        currentSize = 0;
-                        window.clear();
-                    }
-                } else if (dictMap.containsKey(currStr) && dictMap.get(currStr).compareTo(window.get(currStr)) > 0) {
-                    j += wordLength;
-                } else {
-                    i++;
-                    j = i + wordLength;
-                    currentSize = 0;
-                    window.clear();
+            Map<String, Long> dict = Arrays.stream(words).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+            Map<String, Long> window = new HashMap<>();
+            List<Integer> ans = new ArrayList<>();
+            int sum = dict.values().stream().mapToInt(Long::intValue).sum();
+            int max = dict.keySet().stream().mapToInt(String::length).max().getAsInt();
+            for (int i = 0; i < s.length(); i++) {
+                window.clear();
+                if (dfs(s, i, "", dict, window,0, sum, max)) {
+                    ans.add(i);
                 }
             }
+            return ans;
+        }
 
-
-            return result;
+        private boolean dfs(String s, int i, String current, Map<String, Long> dict, Map<String, Long> window,int currentSize, int sum, int max) {
+            if (currentSize == sum) {
+                return true;
+            }
+            if (i == s.length()) {
+                return false;
+            }
+            if (current.length() > max) {
+                return false;
+            }
+            current += s.charAt(i);
+            if (dict.containsKey(current) && window.getOrDefault(current, 0L) < dict.get(current)) {
+                window.put(current, window.getOrDefault(current, 0L) + 1);
+                if (dfs(s, i + 1, "", dict, window, currentSize + 1, sum, max)) {
+                    return true;
+                }
+                window.put(current, window.get(current) - 1);
+            }
+            return dfs(s, i + 1, current, dict, window, currentSize, sum, max);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
