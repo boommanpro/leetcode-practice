@@ -1,6 +1,7 @@
 package leetcode.editor.cn;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
@@ -46,42 +47,9 @@ class SolutionTest658 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
+
         public List<Integer> findClosestElements(int[] arr, int k, int x) {
-            List<Integer> ret = Arrays.stream(arr).boxed().collect(Collectors.toList());
-            int n = ret.size();
-            //如果小于开始数据
-            if (x <= ret.get(0)) {
-                return ret.subList(0, k);
-                //如果大于末尾数据
-            }
-            if (ret.get(n - 1) <= x) {
-                return ret.subList(n - k, n);
-            }
-            //二分查找index
-            //如果搜索键包含在列表中，则返回搜索键的索引
-            // 否则返回 (-(插入点) - 1)。插入点 被定义为将键插入列表的那一点：即第一个大于此键的元素索引
-            int index = Collections.binarySearch(ret, x);
-            //index是第一个大于此键值的位置
-            if (index < 0)
-                index = -index - 1;
-            //  low 最大可以到哪里 即左边最大可以到哪里
-            int low = Math.max(0, index - k - 1);
-            //  high 最多可以填充几个k 右边最大到哪里
-            int high = Math.min(ret.size() - 1, index + k - 1);
-
-            //如果 high -low > k-1 说明元素太多了
-            while (high - low > k - 1) {
-                //如果low的绝对值小于high的绝对值
-                if ((x - ret.get(low)) <= (ret.get(high) - x))
-                    high--;
-                else if ((x - ret.get(low)) > (ret.get(high) - x))
-                    low++;
-                else
-                    System.out.println("unhandled case: " + low + " " + high);
-            }
-            //抽取数据
-
-            return ret.subList(low, high + 1);
+            return Arrays.stream(arr).boxed().map(i -> new int[]{i, Math.abs(x - i)}).sorted((o1, o2) -> {if (o1[1] == o2[1]) {return o1[0] - o2[0];}return o1[1] - o2[1];}).collect(Collectors.toList()).subList(0, k).stream().map(A -> A[0]).sorted().collect(Collectors.toList());
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
