@@ -49,21 +49,18 @@ class SolutionTest667 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int[] constructArray(int n, int k) {
-            int[] answer = new int[n];
+            int[] ans = new int[n];
             int idx = 0;
-            for (int i = 1; i < n - k; i++) {
-                answer[idx] = i;
-                idx++;
+            for (int i = 1; i <= n - k; i++) {
+                ans[idx++] = i;
             }
-            for (int i = n - k, j = n; i <= j; i++, j--) {
-                answer[idx] = i;
-                idx++;
-                if (i != j) {
-                    answer[idx] = j;
-                    idx++;
+            for (int i = n - k + 1, j = n; idx < n; i++, j--) {
+                ans[idx++] = j;
+                if (idx < n) {
+                    ans[idx++] = i;
                 }
             }
-            return answer;
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -74,9 +71,9 @@ class SolutionTest667 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("[1, 3, 2]", Arrays.toString(solution.constructArray(3,2)));
-            Assert.assertEquals("[1, 2, 3, 6, 4, 5]", Arrays.toString(solution.constructArray(6,3)));
-            Assert.assertEquals("[1, 2, 6, 3, 5, 4]", Arrays.toString(solution.constructArray(6,4)));
+            Assert.assertEquals("[1, 3, 2]", Arrays.toString(solution.constructArray(3, 2)));
+            Assert.assertEquals("[1, 2, 3, 6, 4, 5]", Arrays.toString(solution.constructArray(6, 3)));
+            Assert.assertEquals("[1, 2, 6, 3, 5, 4]", Arrays.toString(solution.constructArray(6, 4)));
         }
 
     }
