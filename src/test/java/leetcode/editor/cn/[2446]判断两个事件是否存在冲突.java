@@ -61,29 +61,10 @@ class SolutionTest2446 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean haveConflict(String[] event1, String[] event2) {
-            int[] event1Second = convert2Second(event1);
-            int[] event2Second = convert2Second(event2);
-            if (event1Second[0] <= event2Second[1]) {
-                return compare(event1Second, event2Second);
-            }
-            return compare(event2Second, event1Second);
+            return event1[0].compareTo(event2[1]) <= 0 && event1[1].compareTo(event2[0]) >= 0;
         }
 
-        private boolean compare(int[] event1Second, int[] event2Second) {
-            return event2Second[0] <= event1Second[1];
-        }
 
-        private int[] convert2Second(String[] event1) {
-
-            return new int[]{
-                    convert2Second(event1[0]), convert2Second(event1[1])
-            };
-        }
-
-        private int convert2Second(String event) {
-            String[] array = event.split(":");
-            return Integer.parseInt(array[0]) * 60 + Integer.parseInt(array[1]);
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -93,7 +74,7 @@ class SolutionTest2446 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertTrue(solution.haveConflict(new String[]{"01:15","02:00"},new String[]{"02:00","03:00"}));
+            Assert.assertTrue(solution.haveConflict(new String[]{"01:15", "02:00"}, new String[]{"02:00", "03:00"}));
         }
 
     }
