@@ -69,12 +69,18 @@ class SolutionTest2438 {
             Collections.sort(collections);
             int[] ans = new int[queries.length];
 
-            for (int i = 0; i < queries.length; i++) {
-                long v = 1;
-                for (int l = queries[i][0]; l <= queries[i][1]; l++) {
-                    v = (v * collections.get(l)) % MOD;
+            int[][] dp = new int[collections.size()][collections.size()];
+            for (int i = 0; i < collections.size(); i++) {
+                dp[i][i] = collections.get(i) % MOD;
+            }
+            for (int i = 0; i < collections.size(); i++) {
+                for (int j = i + 1; j < collections.size(); j++) {
+                    dp[i][j] = (int) (((long) dp[i][j - 1] * dp[j][j]) % MOD);
                 }
-                ans[i] = (int) v;
+            }
+
+            for (int i = 0; i < queries.length; i++) {
+                ans[i] = dp[queries[i][0]][queries[i][1]];
             }
             return ans;
         }
@@ -95,8 +101,9 @@ class SolutionTest2438 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
-            Assert.assertEquals("[2, 4, 64]", Arrays.toString(solution.productQueries(15, new int[][]{{0, 1}, {2, 2}, {0, 3}})));
-            Assert.assertEquals("[2]", Arrays.toString(solution.productQueries(2, new int[][]{{0, 0}})));
+//            Assert.assertEquals("[2, 4, 64]", Arrays.toString(solution.productQueries(15, new int[][]{{0, 1}, {2, 2}, {0, 3}})));
+//            Assert.assertEquals("[2]", Arrays.toString(solution.productQueries(2, new int[][]{{0, 0}})));
+            Assert.assertEquals("[147483634]", Arrays.toString(solution.productQueries(919, new int[][]{{0, 6}})));
         }
 
     }
