@@ -51,28 +51,7 @@ class SolutionTest1678 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String interpret(String command) {
-            StringBuilder sb = new StringBuilder();
-            Stack stack = new Stack();
-            for (char c : command.toCharArray()) {
-                if (c == 'G') {
-                    sb.append('G');
-                    continue;
-                }
-                if (c == '(') {
-                    continue;
-                }
-                if (c == ')') {
-                    if (stack.isEmpty()) {
-                        sb.append('o');
-                    } else {
-                        stack.clear();
-                        sb.append("al");
-                    }
-                    continue;
-                }
-                stack.push(c);
-            }
-            return sb.toString();
+            return command.replaceAll("\\(\\)", "o").replaceAll("\\(al\\)", "al");
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
