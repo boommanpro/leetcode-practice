@@ -56,14 +56,15 @@ class SolutionTest1710 {
     class Solution {
 
         public int maximumUnits(int[][] boxTypes, int truckSize) {
-            Arrays.sort(boxTypes, (o1, o2) -> o2[1] - o1[1]);
+            Arrays.sort(boxTypes,(a,b)->{
+                return b[1]-a[1];
+            });
+            int n = boxTypes.length;
             int ans = 0;
-            for (int[] boxType : boxTypes) {
-                int count = boxType[0];
-                int unit = boxType[1];
-                int buy = Math.min(truckSize, count);
-                truckSize -= buy;
-                ans += buy * unit;
+            for (int i = 0; i < n; i++) {
+                int cnt = Math.min(boxTypes[i][0], truckSize);
+                truckSize -= cnt;
+                ans += cnt * boxTypes[i][1];
                 if (truckSize == 0) {
                     return ans;
                 }
