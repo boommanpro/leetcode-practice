@@ -29,68 +29,36 @@ class SolutionTest33 {
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-
         public int search(int[] nums, int target) {
             if (nums == null || nums.length == 0) {
                 return -1;
             }
             int n = nums.length;
-            //找到旋转点
-            int distance = getRotatePosition(nums);
             int l = 0;
             int r = n - 1;
             while (l <= r) {
                 int mid = ((r - l) >> 1) + l;
-                int actual = (mid + distance) % n;
-                if (nums[actual] == target) {
-                    return actual;
+                if (nums[mid] == target) {
+                    return mid;
                 }
-                if (nums[actual] > target) {
-                    r = mid - 1;
+                if (nums[l] <= nums[mid]) {
+                    if (target >= nums[l] && target <= nums[mid]) {
+                        r = mid - 1;
+                    } else {
+                        l = mid + 1;
+                    }
                 } else {
-                    l = mid + 1;
+                    if (target >= nums[mid] && target <= nums[r]) {
+                        l = mid + 1;
+                    } else {
+                        r = mid - 1;
+                    }
                 }
             }
             return -1;
         }
 
-        /**
-         * 这里结合 153 寻找旋转数组中的最小值  只不过这里返回的是坐标
-         */
-        private int getRotatePosition0(int[] nums) {
-            int n = nums.length;
-            if (n == 1) {
-                return 0;
-            }
-            int l = 0;
-            int r = nums.length - 1;
-            while (nums[l] > nums[r]) {
-                l++;
-            }
-            return l;
-        }
 
-        private int getRotatePosition(int[] nums) {
-            int n = nums.length;
-            if (n < 2) {
-                return nums[0];
-            }
-            int target = nums[0];
-            int l = 1;
-            int r = n - 1;
-            if (target < nums[r]) {
-                return 0;
-            }
-            while (l < r) {
-                int mid = ((r - l) >> 1) + l;
-                if (nums[mid] < target) {
-                    r = mid;
-                } else {
-                    l = mid + 1;
-                }
-            }
-            return l;
-        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
@@ -100,6 +68,9 @@ class SolutionTest33 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertEquals(0, solution.search(new int[]{1}, 1));
+            Assert.assertEquals(1, solution.search(new int[]{3, 1}, 1));
+            Assert.assertEquals(-1, solution.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 3));
             Assert.assertEquals(0, solution.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 4));
             Assert.assertEquals(1, solution.search(new int[]{3, 4, 5, 1, 2}, 4));
             Assert.assertEquals(1, solution.search(new int[]{1, 2, 3, 4, 5, 6, 7}, 2));
@@ -109,7 +80,7 @@ class SolutionTest33 {
             Assert.assertEquals(-1, solution.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 3));
             Assert.assertEquals(-1, solution.search(new int[]{0, 1, 2, 4, 5, 6, 7,}, 3));
             Assert.assertEquals(2, solution.search(new int[]{4, 5, 1, 2, 3}, 1));
-            Assert.assertEquals(1, solution.search(new int[]{3,1}, 1));
+            Assert.assertEquals(1, solution.search(new int[]{3, 1}, 1));
         }
     }
 }
