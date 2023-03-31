@@ -58,24 +58,29 @@ class SolutionTest1574 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int findLengthOfShortestSubarray(int[] arr) {
-            int n = arr.length, j = n - 1;
-            while (j > 0 && arr[j - 1] <= arr[j]) {
+            int n = arr.length;
+            int j = arr.length - 1;
+            while (j > 0) {
+                if (arr[j] < arr[j - 1]) {
+                    break;
+                }
                 j--;
             }
             if (j == 0) {
                 return 0;
             }
-            int res = j;
+
+            int ans = j;
             for (int i = 0; i < n; i++) {
                 while (j < n && arr[j] < arr[i]) {
                     j++;
                 }
-                res = Math.min(res, j - i - 1);
-                if (i + 1 < n && arr[i] > arr[i + 1]) {
+                ans = Math.min(ans, j - i - 1);
+                if (i + 1 < n && arr[i + 1] < arr[i]) {
                     break;
                 }
             }
-            return res;
+            return ans;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
