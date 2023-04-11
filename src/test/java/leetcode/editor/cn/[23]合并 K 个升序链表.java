@@ -1,10 +1,11 @@
 package leetcode.editor.cn;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 class SolutionTest23 {
 //给你一个链表数组，每个链表都已经按升序排列。 
@@ -52,7 +53,7 @@ class SolutionTest23 {
 // lists[i].length 的总和不超过 10^4 
 // 
 //
-// Related Topics 链表 分治 堆（优先队列） 归并排序 👍 2268 👎 0
+// Related Topics 链表 分治 堆（优先队列） 归并排序 👍 2403 👎 0
 
     public static
             //leetcode submit region begin(Prohibit modification and deletion)
@@ -68,22 +69,23 @@ class SolutionTest23 {
  */
     class Solution {
         public ListNode mergeKLists(ListNode[] lists) {
-            List<Integer> ans = new ArrayList<>();
+            PriorityQueue<ListNode> treeSet = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
             for (ListNode list : lists) {
-                while (list != null) {
-                    ans.add(list.val);
-                    list = list.next;
+                if (list != null) {
+                    treeSet.add(list);
                 }
             }
-            Collections.sort(ans);
-            ListNode dummy = new ListNode(-1);
-            ListNode curr = dummy;
-            for (Integer v : ans) {
-                ListNode next = new ListNode(v);
-                curr.next = next;
-                curr = next;
+            ListNode head = new ListNode(-1);
+            ListNode curr = head;
+            while (!treeSet.isEmpty()) {
+                ListNode node = treeSet.poll();
+                curr.next = new ListNode(node.val);
+                curr = curr.next;
+                if (node.next != null) {
+                    treeSet.add(node.next);
+                }
             }
-            return dummy.next;
+            return head.next;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -94,6 +96,7 @@ class SolutionTest23 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertEquals("[1, 1, 2, 3, 4, 4, 5, 6]", solution.mergeKLists(new ListNode[]{ListNode.fromArray(new Integer[]{1, 4, 5}), ListNode.fromArray(new Integer[]{1, 3, 4}), ListNode.fromArray(new Integer[]{2, 6})}).toArrayString());
         }
 
     }
