@@ -1,6 +1,7 @@
 package leetcode.editor.cn;
 
 import javafx.util.Pair;
+import org.junit.Assert;
 import org.junit.Test;
 
 class SolutionTest1123 {
@@ -113,6 +114,7 @@ class SolutionTest1123 {
         @Test
         public void defaultSolutionTest() {
             Solution solution = new Solution();
+            Assert.assertEquals("[2, 7, 4]", solution.lcaDeepestLeaves(TreeNode.getTreeNode(new Integer[]{3, 5, 1, 6, 2, 0, 8, null, null, 7, 4})).toIntArrayString());
         }
 
     }
