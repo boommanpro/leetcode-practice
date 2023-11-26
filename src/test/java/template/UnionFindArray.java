@@ -1,13 +1,13 @@
 package template;
 
-public class UnionFind {
+public class UnionFindArray {
     // 连通分量个数
     private int count;
     // 存储每个节点的父节点
     private int[] parent;
 
     // n 为图中节点的个数
-    public UnionFind(int n) {
+    public UnionFindArray(int n) {
         this.count = n;
         parent = new int[n];
         for (int i = 0; i < n; i++) {
