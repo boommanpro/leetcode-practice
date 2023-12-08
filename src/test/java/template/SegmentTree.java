@@ -16,6 +16,18 @@ public class SegmentTree {
         build(0, 0, n - 1);
     }
 
+    public SegmentTree(int[] arr) {
+        int n = arr.length;
+        data = new long[n];
+        for (int i = 0; i < n; i++) {
+            data[i] = arr[i];
+        }
+        maxTree = new long[4 * n];
+        minTree = new long[4 * n];
+        sumTree = new long[4 * n];
+        build(0, 0, n - 1);
+    }
+
 
     private void build(int treeIdx, int l, int r) {
         if (l == r) {
