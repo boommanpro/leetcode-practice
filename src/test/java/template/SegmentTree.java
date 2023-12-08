@@ -1,18 +1,18 @@
 package template;
 
 public class SegmentTree {
-    int[] data;
-    int[] maxTree;
-    int[] minTree;
-    int[] sumTree;
+    long[] data;
+    long[] maxTree;
+    long[] minTree;
+    long[] sumTree;
 
-    public SegmentTree(int[] arr) {
+    public SegmentTree(long[] arr) {
         int n = arr.length;
-        data = new int[n];
+        data = new long[n];
         System.arraycopy(arr, 0, data, 0, n);
-        maxTree = new int[4 * n];
-        minTree = new int[4 * n];
-        sumTree = new int[4 * n];
+        maxTree = new long[4 * n];
+        minTree = new long[4 * n];
+        sumTree = new long[4 * n];
         build(0, 0, n - 1);
     }
 
@@ -35,11 +35,11 @@ public class SegmentTree {
     }
 
 
-    public int queryMax(int l, int r) {
+    public long queryMax(int l, int r) {
         return queryMax(0, 0, data.length - 1, l, r);
     }
 
-    private int queryMax(int treeIdx, int l, int r, int queryL, int queryR) {
+    private long queryMax(int treeIdx, int l, int r, int queryL, int queryR) {
         if (l == queryL && r == queryR) {
             return maxTree[treeIdx];
         }
@@ -52,16 +52,16 @@ public class SegmentTree {
             return queryMax(left, l, mid, queryL, queryR);
         }
 
-        int leftResult = queryMax(left, l, mid, queryL, mid);
-        int rightResult = queryMax(right, mid + 1, r, mid + 1, queryR);
+        long leftResult = queryMax(left, l, mid, queryL, mid);
+        long rightResult = queryMax(right, mid + 1, r, mid + 1, queryR);
         return Math.max(leftResult, rightResult);
     }
 
-    public int queryMin(int l, int r) {
+    public long queryMin(int l, int r) {
         return queryMin(0, 0, data.length - 1, l, r);
     }
 
-    private int queryMin(int treeIdx, int l, int r, int queryL, int queryR) {
+    private long queryMin(int treeIdx, int l, int r, int queryL, int queryR) {
         if (l == queryL && r == queryR) {
             return minTree[treeIdx];
         }
@@ -74,16 +74,16 @@ public class SegmentTree {
             return queryMin(left, l, mid, queryL, queryR);
         }
 
-        int leftResult = queryMin(left, l, mid, queryL, mid);
-        int rightResult = queryMin(right, mid + 1, r, mid + 1, queryR);
+        long leftResult = queryMin(left, l, mid, queryL, mid);
+        long rightResult = queryMin(right, mid + 1, r, mid + 1, queryR);
         return Math.min(leftResult, rightResult);
     }
 
-    public int querySum(int l, int r) {
+    public long querySum(int l, int r) {
         return querySum(0, 0, data.length - 1, l, r);
     }
 
-    private int querySum(int treeIdx, int l, int r, int queryL, int queryR) {
+    private long querySum(int treeIdx, int l, int r, int queryL, int queryR) {
         if (l == queryL && r == queryR) {
             return sumTree[treeIdx];
         }
@@ -96,17 +96,17 @@ public class SegmentTree {
             return querySum(left, l, mid, queryL, queryR);
         }
 
-        int leftResult = querySum(left, l, mid, queryL, mid);
-        int rightResult = querySum(right, mid + 1, r, mid + 1, queryR);
+        long leftResult = querySum(left, l, mid, queryL, mid);
+        long rightResult = querySum(right, mid + 1, r, mid + 1, queryR);
         return leftResult + rightResult;
     }
 
-    public void update(int idx, int v) {
+    public void update(int idx, long v) {
         data[idx] = v;
         update(0, 0, data.length - 1, idx, v);
     }
 
-    private void update(int treeIdx, int l, int r, int idx, int v) {
+    private void update(int treeIdx, int l, int r, int idx, long v) {
         if (l == r) {
             maxTree[treeIdx] = v;
             minTree[treeIdx] = v;

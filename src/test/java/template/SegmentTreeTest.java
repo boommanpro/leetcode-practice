@@ -7,7 +7,7 @@ public class SegmentTreeTest {
 
     @Test
     public void test() {
-        int[] arr = {1, 3, 5, 7, 9, 11};
+        long[] arr = {1, 3, 5, 7, 9, 11};
         SegmentTree segmentTree = new SegmentTree(arr);
 
         Assert.assertEquals(9, segmentTree.queryMax(1, 4));
