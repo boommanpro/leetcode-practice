@@ -118,6 +118,10 @@ public class SegmentTree {
         update(0, 0, data.length - 1, idx, v);
     }
 
+    public long get(int idx){
+        return data[idx];
+    }
+
     private void update(int treeIdx, int l, int r, int idx, long v) {
         if (l == r) {
             maxTree[treeIdx] = v;
