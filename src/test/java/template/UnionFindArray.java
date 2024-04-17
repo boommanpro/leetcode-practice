@@ -29,7 +29,7 @@ public class UnionFindArray {
         if (rootP == rootQ)
             return false;
 
-        parent[rootQ] = rootP;
+        parent[rootP] = rootQ;
         // 两个连通分量合并成一个连通分量
         count--;
         size[rootQ] += size[rootP];
