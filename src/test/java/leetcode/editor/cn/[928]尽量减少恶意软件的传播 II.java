@@ -59,6 +59,9 @@ class SolutionTest928 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int minMalwareSpread(int[][] matrix, int[] nums) {
+
+            // 思路 先合并非病毒节点，然后看一个root节点被病毒感染多少次，
+            // 因为只能去掉一个节点，所以如果被感染次数>1，即无价值，最终看价值数
             int N = matrix.length;
             int[] clean = new int[N];
             int[] count = new int[N];
