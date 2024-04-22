@@ -2,7 +2,7 @@ package template;
 
 import java.util.Arrays;
 
-public class Primes {
+public class MathAlgorithm {
 
     public static boolean[] fastCalcPrimes(int n) {
         boolean[] isPrime = new boolean[n];
@@ -33,4 +33,14 @@ public class Primes {
                 return false;
         return true;
     }
+
+    private long lcm(long a, long b) {
+        return a * b / gcd(a, b);
+    }
+
+    private long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+
 }
