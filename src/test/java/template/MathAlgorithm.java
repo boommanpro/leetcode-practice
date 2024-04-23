@@ -1,5 +1,6 @@
 package template;
 
+import javax.net.ssl.TrustManagerFactory;
 import java.util.Arrays;
 
 public class MathAlgorithm {
@@ -25,8 +26,35 @@ public class MathAlgorithm {
         return isPrime;
     }
 
+    public static boolean[] getPrimeArray(int n){
+        int MX = n + 1;
+        boolean[] PRIME = new boolean[MX];
+        Arrays.fill(PRIME, true);
+        PRIME[1] = false;
+        for (int i = 2; i * i < MX; i++) {
+            if (!PRIME[i]) continue;
+            for (int j = i * i; j < MX; j += i) {
+                PRIME[j] = false; // j 是质数 i 的倍数
+            }
+        }
+        return PRIME;
+    }
+
+    public static boolean[] getNotPrimeArray(int n){
+        int MX = n + 1;
+        boolean[] NOT_PRIME = new boolean[MX];
+        NOT_PRIME[1] = true;
+        for (int i = 2; i * i < MX; i++) {
+            if (NOT_PRIME[i]) continue;
+            for (int j = i * i; j < MX; j += i) {
+                NOT_PRIME[j] = true; // j 是质数 i 的倍数
+            }
+        }
+        return NOT_PRIME;
+    }
+
     // 判断整数 n 是否是素数
-    private static boolean isPrime(int n) {
+    public static boolean isPrime(int n) {
         for (int i = 2; i < n; i++)
             if (n % i == 0)
                 // 有其他整除因子
@@ -34,11 +62,11 @@ public class MathAlgorithm {
         return true;
     }
 
-    private long lcm(long a, long b) {
+    public long lcm(long a, long b) {
         return a * b / gcd(a, b);
     }
 
-    private long gcd(long a, long b) {
+    public long gcd(long a, long b) {
         return b == 0 ? a : gcd(b, a % b);
     }
 
