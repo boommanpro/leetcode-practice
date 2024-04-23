@@ -1,6 +1,5 @@
 package template;
 
-import javax.net.ssl.TrustManagerFactory;
 import java.util.Arrays;
 
 public class MathAlgorithm {
@@ -26,7 +25,7 @@ public class MathAlgorithm {
         return isPrime;
     }
 
-    public static boolean[] getPrimeArray(int n){
+    public static boolean[] getPrimeArray(int n) {
         int MX = n + 1;
         boolean[] PRIME = new boolean[MX];
         Arrays.fill(PRIME, true);
@@ -40,7 +39,23 @@ public class MathAlgorithm {
         return PRIME;
     }
 
-    public static boolean[] getNotPrimeArray(int n){
+    public static long includeExclusionPrinciple(long m, int[] arr) {
+        long cnt = 0;
+        int n = arr.length;
+        for (int i = 1; i < 1 << n; i++) {
+            long lcmRes = 1;
+            for (int j = 0; j < n; j++) {
+                if (((i >> j) & 1) == 1) {
+                    lcmRes = lcm(lcmRes, arr[j]);
+                }
+            }
+            cnt += Integer.bitCount(i) % 2 == 1 ? m / lcmRes : -m / lcmRes;
+        }
+        return cnt;
+    }
+
+
+    public static boolean[] getNotPrimeArray(int n) {
         int MX = n + 1;
         boolean[] NOT_PRIME = new boolean[MX];
         NOT_PRIME[1] = true;
@@ -62,11 +77,11 @@ public class MathAlgorithm {
         return true;
     }
 
-    public long lcm(long a, long b) {
+    public static long lcm(long a, long b) {
         return a * b / gcd(a, b);
     }
 
-    public long gcd(long a, long b) {
+    public static long gcd(long a, long b) {
         return b == 0 ? a : gcd(b, a % b);
     }
 

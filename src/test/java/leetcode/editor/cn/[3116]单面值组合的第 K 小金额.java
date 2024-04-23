@@ -63,7 +63,7 @@ class SolutionTest3116 {
             long left = k - 1, right = (long) mn * k;
             while (left <= right) {
                 long mid = ((right - left) >> 1) + left;
-                if (check(mid, coins, k)) {
+                if (includeExclusionPrinciple(mid, coins)>=k) {
                     right = mid - 1;
                 } else {
                     left = mid + 1;
@@ -73,31 +73,28 @@ class SolutionTest3116 {
 
         }
 
-        private boolean check(long m, int[] coins, int k) {
+        public static long includeExclusionPrinciple(long m, int[] arr) {
             long cnt = 0;
-            next:
-            for (int i = 1; i < (1 << coins.length); i++) {
+            int n = arr.length;
+            for (int i = 1; i < 1 << n; i++) {
                 long lcmRes = 1;
-                for (int j = 0; j < coins.length; j++) {
-                    if ((i >> j & 1) == 1) {
-                        lcmRes = lcm(lcmRes, coins[j]);
-                        if (lcmRes > m) {
-                            continue next;
-                        }
+                for (int j = 0; j < n; j++) {
+                    if (((i >> j) & 1) == 1) {
+                        lcmRes = lcm(lcmRes, arr[j]);
                     }
                 }
                 cnt += Integer.bitCount(i) % 2 == 1 ? m / lcmRes : -m / lcmRes;
             }
-            return cnt >= k;
+            return cnt;
         }
 
         //最小公倍数
-        private long lcm(long a, long b) {
+        private static long lcm(long a, long b) {
             return a * b / gcd(a, b);
         }
 
         //最大公约数
-        private long gcd(long a, long b) {
+        private  static long gcd(long a, long b) {
             return b == 0 ? a : gcd(b, a % b);
         }
     }
