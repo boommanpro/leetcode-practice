@@ -79,27 +79,21 @@ class SolutionTest3106 {
             //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String getSmallestString(String s, int k) {
-            StringBuilder sb = new StringBuilder();
-            int n = s.length();
-            for (int i = 0; i < n; i++) {
-                char c = s.charAt(i);
-                char a = editChar(c, k);
-                k -= Math.min(c - a, ((a - c) + 26) % 26);
-                sb.append(a);
-
-            }
-            return sb.toString();
-        }
-
-        private char editChar(char c, int k) {
-            for (int i = 0; i < 26; i++) {
-                char a = (char) ('a' + i);
-                if (c - a <= k || ((a - c) + 26) % 26 <= k) {
-                    return (char) (i + 'a');
+            char[] t = s.toCharArray();
+            for (int i = 0; i < t.length; i++) {
+                char c = t[i];
+                int dis = Math.min(c - 'a', 'z' - c + 1);
+                if (dis > k) {
+                    t[i] -= k;
+                    break;
                 }
+                t[i] = 'a';
+                k -= dis;
             }
-            return c;
+            return new String(t);
         }
+
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
