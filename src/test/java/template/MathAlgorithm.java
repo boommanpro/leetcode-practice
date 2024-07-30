@@ -85,5 +85,17 @@ public class MathAlgorithm {
         return b == 0 ? a : gcd(b, a % b);
     }
 
+    public static int powMod(int x, int y, int mod) {
+        int res = 1;
+        while (y != 0) {
+            if ((y & 1) != 0) {
+                res = res * x % mod;
+            }
+            x = x * x % mod;
+            y >>= 1;
+        }
+        return res;
+    }
+
 
 }
