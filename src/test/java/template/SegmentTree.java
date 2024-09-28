@@ -118,7 +118,7 @@ public class SegmentTree {
         update(0, 0, data.length - 1, idx, v);
     }
 
-    public long get(int idx){
+    public long get(int idx) {
         return data[idx];
     }
 
@@ -140,5 +140,24 @@ public class SegmentTree {
         maxTree[treeIdx] = Math.max(maxTree[left], maxTree[right]);
         minTree[treeIdx] = Math.min(minTree[left], minTree[right]);
         sumTree[treeIdx] = sumTree[left] + sumTree[right];
+    }
+
+    public int queryMinPosition(int l, int r, long v) {
+        if (queryMax(l, r) < v) {
+            return -1;
+        }
+        while (l < r) {
+            int mid = ((r - l) >> 1) + l;
+            if (queryMax(l, mid) >= v) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+
+    public long getPositionData(int p) {
+        return data[p];
     }
 }

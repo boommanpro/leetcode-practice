@@ -98,9 +98,9 @@ class SolutionTest2286 {
             if (res == -1) {
                 return new int[]{};
             }
-            int v = segmentTree.getPositionData(res);
+            long v = segmentTree.getPositionData(res);
             segmentTree.update(res, v - k);
-            return new int[]{res, m - v};
+            return new int[]{res, (int) (m - v)};
         }
 
         public boolean scatter(int k, int maxRow) {
@@ -109,8 +109,8 @@ class SolutionTest2286 {
             }
             while (k > 0) {
                 int p = segmentTree.queryMinPosition(0, maxRow, 1);
-                int cnt = segmentTree.getPositionData(p);
-                int minus = Math.min(k, cnt);
+                long cnt = segmentTree.getPositionData(p);
+                long minus = Math.min(k, cnt);
                 k -= minus;
                 segmentTree.update(p, cnt - minus);
             }
@@ -259,12 +259,12 @@ class SolutionTest2286 {
                 sumTree[treeIdx] = sumTree[left] + sumTree[right];
             }
 
-            public int queryMinPosition(int l, int r, int v) {
+            public int queryMinPosition(int l, int r, long v) {
                 if (queryMax(l, r) < v) {
                     return -1;
                 }
                 while (l < r) {
-                    int mid = (l + r) / 2;
+                    int mid = ((r - l) >> 1) + l;
                     if (queryMax(l, mid) >= v) {
                         r = mid;
                     } else {
@@ -274,8 +274,8 @@ class SolutionTest2286 {
                 return l;
             }
 
-            public int getPositionData(int p) {
-                return (int) data[p];
+            public long getPositionData(int p) {
+                return data[p];
             }
         }
 
