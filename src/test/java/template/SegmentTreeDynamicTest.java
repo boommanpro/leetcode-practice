@@ -16,7 +16,7 @@ public class SegmentTreeDynamicTest {
         Assert.assertEquals(9, segmentTree.queryMax(1, 4));
         Assert.assertEquals(3, segmentTree.queryMin(1, 4));
         Assert.assertEquals(24, segmentTree.querySum(1, 4));
-        segmentTree.update(1, 3);
+        segmentTree.update(1, 6);
         Assert.assertEquals(9, segmentTree.queryMax(1, 4));
         Assert.assertEquals(5, segmentTree.queryMin(1, 4));
         Assert.assertEquals(27, segmentTree.querySum(1, 4));

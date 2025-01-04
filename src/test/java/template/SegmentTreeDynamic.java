@@ -4,7 +4,7 @@ public class SegmentTreeDynamic {
 
     public class Node {
         private Node left, right;
-        private long sum = 0, min = 0, max = 0, val, add;
+        private long sum = 0, min = 0, max = 0, add;
     }
 
     private final int N;
@@ -16,25 +16,68 @@ public class SegmentTreeDynamic {
         root = new Node();
     }
 
-    public void update(Node node, int start, int end, int l, int r, long add) {
+    public void addUpdate(Node node, int start, int end, int l, int r, long add) {
         if (l <= start && end <= r) {
             node.sum += (end - start + 1) * add;
             node.max += add;
             node.min += add;
-            node.val = add;
             node.add += add;
             return;
         }
         int mid = (start + end) >> 1;
-        pushDown(node, mid - start + 1, end - mid);
+        addPushDown(node, mid - start + 1, end - mid);
         if (l <= mid) {
-            update(node.left, start, mid, l, r, add);
+            addUpdate(node.left, start, mid, l, r, add);
         }
         if (r > mid) {
-            update(node.right, mid + 1, end, l, r, add);
+            addUpdate(node.right, mid + 1, end, l, r, add);
+        }
+        addPushUp(node);
+    }
+
+    public void update(Node node, int start, int end, int l, int r, long val) {
+        if (l <= start && end <= r) {
+            node.sum = val;
+            node.max = val;
+            node.min = val;
+            node.add = val;
+            return;
+        }
+        int mid = (start + end) >> 1;
+        pushDown(node);
+        if (l <= mid) {
+            update(node.left, start, mid, l, r, val);
+        }
+        if (r > mid) {
+            update(node.right, mid + 1, end, l, r, val);
         }
         pushUp(node);
     }
+
+
+    private void pushUp(Node node) {
+        node.max = Math.max(node.left.max, node.right.max);
+        node.min = Math.min(node.left.min, node.right.min);
+        node.sum = node.left.sum + node.right.sum;
+    }
+
+    private void pushDown(Node node) {
+        if (node.left == null) {
+            node.left = new Node();
+        }
+        if (node.right == null) {
+            node.right = new Node();
+        }
+        if (node.add == 0) {
+            return;
+        }
+        node.left.sum = node.add;  // 不需要累加
+        node.right.sum = node.add; // 不需要累加
+        node.left.add = node.add;  // 不需要累加
+        node.right.add = node.add; // 不需要累加
+        node.add = 0;
+    }
+
 
     public long querySum(Node node, int start, int end, int l, int r) {
         if (l <= start && end <= r) {
@@ -42,7 +85,7 @@ public class SegmentTreeDynamic {
         }
         int mid = (start + end) >> 1;
         long ans = 0;
-        pushDown(node, mid - start + 1, end - mid);
+        addPushDown(node, mid - start + 1, end - mid);
         if (l <= mid) {
             ans += querySum(node.left, start, mid, l, r);
         }
@@ -57,7 +100,7 @@ public class SegmentTreeDynamic {
             return node.min;
         }
         int mid = (start + end) >> 1, ans = 0;
-        pushDown(node, mid - start + 1, end - mid);
+        addPushDown(node, mid - start + 1, end - mid);
         long left = Long.MAX_VALUE, right = Long.MAX_VALUE;
         if (l <= mid) {
             left = queryMin(node.left, start, mid, l, r);
@@ -73,7 +116,7 @@ public class SegmentTreeDynamic {
             return node.min;
         }
         int mid = (start + end) >> 1;
-        pushDown(node, mid - start + 1, end - mid);
+        addPushDown(node, mid - start + 1, end - mid);
         long left = Long.MIN_VALUE, right = Long.MIN_VALUE;
         if (l <= mid) {
             left = queryMax(node.left, start, mid, l, r);
@@ -85,13 +128,13 @@ public class SegmentTreeDynamic {
     }
 
 
-    private void pushUp(Node node) {
+    private void addPushUp(Node node) {
         node.sum = node.left.sum + node.right.sum;
         node.min = Math.min(node.left.min, node.right.min);
         node.max = Math.max(node.left.max, node.right.max);
     }
 
-    private void pushDown(Node node, int leftNum, int rightNum) {
+    private void addPushDown(Node node, int leftNum, int rightNum) {
         if (node.left == null) {
             node.left = new Node();
         }
@@ -128,8 +171,20 @@ public class SegmentTreeDynamic {
     }
 
 
+    public void singleAdd(int idx, long add) {
+        addUpdate(root, 0, N, idx, idx, add);
+    }
+
+    public void rangeAdd(int l, int r, long add) {
+        addUpdate(root, 0, N, l, r, add);
+    }
+
     public void update(int idx, long v) {
         update(root, 0, N, idx, idx, v);
+    }
+
+    public void update(int l, int r, long v) {
+        update(root, 0, N, l, r, v);
     }
 
     public long get(int idx) {
